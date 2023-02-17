@@ -3,31 +3,31 @@ Fusebox_Firmware.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  000001c0  2**0
+  0 .data         00000000  00800100  00800100  000001c6  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000014c  00000000  00000000  00000074  2**1
+  1 .text         00000152  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000000b  00800100  00800100  000001c0  2**0
+  2 .bss          0000000b  00800100  00800100  000001c6  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000001c0  2**0
+  3 .comment      00000030  00000000  00000000  000001c6  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000001f0  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000001f8  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000078  00000000  00000000  00000230  2**0
+  5 .debug_aranges 00000078  00000000  00000000  00000238  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000d13  00000000  00000000  000002a8  2**0
+  6 .debug_info   00000cba  00000000  00000000  000002b0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000ad9  00000000  00000000  00000fbb  2**0
+  7 .debug_abbrev 00000abb  00000000  00000000  00000f6a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000003c2  00000000  00000000  00001a94  2**0
+  8 .debug_line   00000354  00000000  00000000  00001a25  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000000dc  00000000  00000000  00001e58  2**2
+  9 .debug_frame  000000dc  00000000  00000000  00001d7c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000005f6  00000000  00000000  00001f34  2**0
+ 10 .debug_str    000005bf  00000000  00000000  00001e58  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000070  00000000  00000000  0000252a  2**0
+ 11 .debug_loc    00000070  00000000  00000000  00002417  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000058  00000000  00000000  0000259a  2**0
+ 12 .debug_ranges 00000058  00000000  00000000  00002487  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -83,7 +83,7 @@ Disassembly of section .text:
   5e:	00 00       	nop
   60:	29 c0       	rjmp	.+82     	; 0xb4 <__bad_interrupt>
   62:	00 00       	nop
-  64:	2e c0       	rjmp	.+92     	; 0xc2 <__vector_25>
+  64:	3e c0       	rjmp	.+124    	; 0xe2 <__vector_25>
   66:	00 00       	nop
   68:	25 c0       	rjmp	.+74     	; 0xb4 <__bad_interrupt>
   6a:	00 00       	nop
@@ -129,121 +129,135 @@ Disassembly of section .text:
   aa:	ab 30       	cpi	r26, 0x0B	; 11
   ac:	b2 07       	cpc	r27, r18
   ae:	e1 f7       	brne	.-8      	; 0xa8 <.do_clear_bss_loop>
-  b0:	3a d0       	rcall	.+116    	; 0x126 <main>
-  b2:	4a c0       	rjmp	.+148    	; 0x148 <_exit>
+  b0:	4a d0       	rcall	.+148    	; 0x146 <main>
+  b2:	4d c0       	rjmp	.+154    	; 0x14e <_exit>
 
 000000b4 <__bad_interrupt>:
   b4:	a5 cf       	rjmp	.-182    	; 0x0 <__vectors>
 
-000000b6 <adc_start_conversion>:
+000000b6 <adc_config>:
+uint8_t adc_next = 0;
+
+
+
+void adc_config(){
+	ADMUX = (1<<REFS0) | (1<<MUX0); // AREF = AVcc and PF0 (ADC0) as input defined
+  b6:	81 e4       	ldi	r24, 0x41	; 65
+  b8:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__TEXT_REGION_LENGTH__+0x7e007c>
+	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (0<<ADPS0) | (1<<ADIE); // ADEN enables ADC, ADPS0,1,2 for ADC prescaler 16, ADIE enables ADC interrupt // see datasheet page 290
+  bc:	ea e7       	ldi	r30, 0x7A	; 122
+  be:	f0 e0       	ldi	r31, 0x00	; 0
+  c0:	8c e8       	ldi	r24, 0x8C	; 140
+  c2:	80 83       	st	Z, r24
+	ADCSRA |= (1<<ADSC); //start first conversation
+  c4:	80 81       	ld	r24, Z
+  c6:	80 64       	ori	r24, 0x40	; 64
+  c8:	80 83       	st	Z, r24
+	DIDR0 |= 1; //Disabling the Digital Input Buffer on this Port because we only use the ADC Port for Programming and ADC
+  ca:	ee e7       	ldi	r30, 0x7E	; 126
+  cc:	f0 e0       	ldi	r31, 0x00	; 0
+  ce:	80 81       	ld	r24, Z
+  d0:	81 60       	ori	r24, 0x01	; 1
+  d2:	80 83       	st	Z, r24
+  d4:	08 95       	ret
+
+000000d6 <adc_start_conversion>:
 }
 
 void adc_start_conversion(){
 	
 	//start next conversion with same config
 	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (1<<ADPS0) | (1<<ADIE) | (1<<ADSC); //prescaler to 16 
-  b6:	8d ec       	ldi	r24, 0xCD	; 205
-  b8:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__TEXT_REGION_LENGTH__+0x7e007a>
+  d6:	8d ec       	ldi	r24, 0xCD	; 205
+  d8:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__TEXT_REGION_LENGTH__+0x7e007a>
 	//!!! Currently we have to Start the conversion manually with ADSC=1. Normally SMCR should auto trigger the conversion but as of now it does not work. neither do we know if the uC goes into Noise reduction mode
 	SMCR = (1<<SM0)|(0<<SM1)|(0<<SM2); //enable ADC noise reduction mode and starts the conversion
-  bc:	82 e0       	ldi	r24, 0x02	; 2
-  be:	83 bf       	out	0x33, r24	; 51
-  c0:	08 95       	ret
+  dc:	82 e0       	ldi	r24, 0x02	; 2
+  de:	83 bf       	out	0x33, r24	; 51
+  e0:	08 95       	ret
 
-000000c2 <__vector_25>:
+000000e2 <__vector_25>:
 }
 
 ISR(ADC_vect){
-  c2:	1f 92       	push	r1
-  c4:	0f 92       	push	r0
-  c6:	0f b6       	in	r0, 0x3f	; 63
-  c8:	0f 92       	push	r0
-  ca:	11 24       	eor	r1, r1
-  cc:	0b b6       	in	r0, 0x3b	; 59
-  ce:	0f 92       	push	r0
-  d0:	2f 93       	push	r18
-  d2:	3f 93       	push	r19
-  d4:	8f 93       	push	r24
-  d6:	ef 93       	push	r30
-  d8:	ff 93       	push	r31
+  e2:	1f 92       	push	r1
+  e4:	0f 92       	push	r0
+  e6:	0f b6       	in	r0, 0x3f	; 63
+  e8:	0f 92       	push	r0
+  ea:	11 24       	eor	r1, r1
+  ec:	0b b6       	in	r0, 0x3b	; 59
+  ee:	0f 92       	push	r0
+  f0:	2f 93       	push	r18
+  f2:	3f 93       	push	r19
+  f4:	8f 93       	push	r24
+  f6:	ef 93       	push	r30
+  f8:	ff 93       	push	r31
 	
 	// store ADC result
 	adc_values[adc_next] = ADC;
-  da:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
-  de:	e8 2f       	mov	r30, r24
-  e0:	f0 e0       	ldi	r31, 0x00	; 0
-  e2:	20 91 78 00 	lds	r18, 0x0078	; 0x800078 <__TEXT_REGION_LENGTH__+0x7e0078>
-  e6:	30 91 79 00 	lds	r19, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7e0079>
-  ea:	ee 0f       	add	r30, r30
-  ec:	ff 1f       	adc	r31, r31
-  ee:	ef 5f       	subi	r30, 0xFF	; 255
-  f0:	fe 4f       	sbci	r31, 0xFE	; 254
-  f2:	31 83       	std	Z+1, r19	; 0x01
-  f4:	20 83       	st	Z, r18
+  fa:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
+  fe:	e8 2f       	mov	r30, r24
+ 100:	f0 e0       	ldi	r31, 0x00	; 0
+ 102:	20 91 78 00 	lds	r18, 0x0078	; 0x800078 <__TEXT_REGION_LENGTH__+0x7e0078>
+ 106:	30 91 79 00 	lds	r19, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7e0079>
+ 10a:	ee 0f       	add	r30, r30
+ 10c:	ff 1f       	adc	r31, r31
+ 10e:	ef 5f       	subi	r30, 0xFF	; 255
+ 110:	fe 4f       	sbci	r31, 0xFE	; 254
+ 112:	31 83       	std	Z+1, r19	; 0x01
+ 114:	20 83       	st	Z, r18
 	adc_next++;
-  f6:	8f 5f       	subi	r24, 0xFF	; 255
-  f8:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 116:	8f 5f       	subi	r24, 0xFF	; 255
+ 118:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <_edata>
 	
 	// reset index var
 	if(adc_next == 5){
-  fc:	85 30       	cpi	r24, 0x05	; 5
-  fe:	11 f4       	brne	.+4      	; 0x104 <__vector_25+0x42>
+ 11c:	85 30       	cpi	r24, 0x05	; 5
+ 11e:	11 f4       	brne	.+4      	; 0x124 <__vector_25+0x42>
 		adc_next = 0;
- 100:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 120:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <_edata>
 	}
 	// select other ADC Input
 	ADMUX = (1<<REFS0) | adc_next;
- 104:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
- 108:	80 64       	ori	r24, 0x40	; 64
- 10a:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__TEXT_REGION_LENGTH__+0x7e007c>
+ 124:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
+ 128:	80 64       	ori	r24, 0x40	; 64
+ 12a:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__TEXT_REGION_LENGTH__+0x7e007c>
 	
 }
- 10e:	ff 91       	pop	r31
- 110:	ef 91       	pop	r30
- 112:	8f 91       	pop	r24
- 114:	3f 91       	pop	r19
- 116:	2f 91       	pop	r18
- 118:	0f 90       	pop	r0
- 11a:	0b be       	out	0x3b, r0	; 59
- 11c:	0f 90       	pop	r0
- 11e:	0f be       	out	0x3f, r0	; 63
- 120:	0f 90       	pop	r0
- 122:	1f 90       	pop	r1
- 124:	18 95       	reti
+ 12e:	ff 91       	pop	r31
+ 130:	ef 91       	pop	r30
+ 132:	8f 91       	pop	r24
+ 134:	3f 91       	pop	r19
+ 136:	2f 91       	pop	r18
+ 138:	0f 90       	pop	r0
+ 13a:	0b be       	out	0x3b, r0	; 59
+ 13c:	0f 90       	pop	r0
+ 13e:	0f be       	out	0x3f, r0	; 63
+ 140:	0f 90       	pop	r0
+ 142:	1f 90       	pop	r1
+ 144:	18 95       	reti
 
-00000126 <main>:
-uint16_t adc_meas_5;
+00000146 <main>:
+//uint16_t adc_values[5];
+//uint8_t adc_next = 0;
 
 int main(void)
 {	
-	//adc_config();
-	ADMUX = (1<<REFS0) | (1<<MUX0) ;//| (1<<MUX1); 
- 126:	81 e4       	ldi	r24, 0x41	; 65
- 128:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__TEXT_REGION_LENGTH__+0x7e007c>
-	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (0<<ADPS0) | (1<<ADIE);
- 12c:	ea e7       	ldi	r30, 0x7A	; 122
- 12e:	f0 e0       	ldi	r31, 0x00	; 0
- 130:	8c e8       	ldi	r24, 0x8C	; 140
- 132:	80 83       	st	Z, r24
-	ADCSRA |= (1<<ADSC); 
- 134:	80 81       	ld	r24, Z
- 136:	80 64       	ori	r24, 0x40	; 64
- 138:	80 83       	st	Z, r24
-	DIDR0 |= 1; 
- 13a:	ee e7       	ldi	r30, 0x7E	; 126
- 13c:	f0 e0       	ldi	r31, 0x00	; 0
- 13e:	80 81       	ld	r24, Z
- 140:	81 60       	ori	r24, 0x01	; 1
- 142:	80 83       	st	Z, r24
+sei(); //interrupts on
+ 146:	78 94       	sei
+	adc_config();
+ 148:	b6 df       	rcall	.-148    	; 0xb6 <adc_config>
+	
+	
 	
 	while (1)
 	{
-		adc_start_conversion();
- 144:	b8 df       	rcall	.-144    	; 0xb6 <adc_start_conversion>
- 146:	fe cf       	rjmp	.-4      	; 0x144 <main+0x1e>
+		adc_start_conversion();  //library function, ISR reads the ADC value every time a flag is placed at the end of a conversion
+ 14a:	c5 df       	rcall	.-118    	; 0xd6 <adc_start_conversion>
+ 14c:	fe cf       	rjmp	.-4      	; 0x14a <main+0x4>
 
-00000148 <_exit>:
- 148:	f8 94       	cli
+0000014e <_exit>:
+ 14e:	f8 94       	cli
 
-0000014a <__stop_program>:
- 14a:	ff cf       	rjmp	.-2      	; 0x14a <__stop_program>
+00000150 <__stop_program>:
+ 150:	ff cf       	rjmp	.-2      	; 0x150 <__stop_program>

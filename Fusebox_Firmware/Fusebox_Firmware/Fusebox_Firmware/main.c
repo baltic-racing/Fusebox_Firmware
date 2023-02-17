@@ -246,32 +246,40 @@ adc_config();
 #include <avr/interrupt.h>
 #include "adc_functions.h"
 
-uint16_t adc_meas_1;
-uint16_t adc_meas_2;
-uint16_t adc_meas_3;
-uint16_t adc_meas_4;
-uint16_t adc_meas_5;
+//uint16_t adc_meas_1;
+// uint16_t adc_meas_2;
+// uint16_t adc_meas_3;
+// uint16_t adc_meas_4;
+// uint16_t adc_meas_5;
+
+//uint16_t adc_values[5];
+//uint8_t adc_next = 0;
 
 int main(void)
 {	
-	//adc_config();
-	ADMUX = (1<<REFS0) | (1<<MUX0) ;//| (1<<MUX1); 
-	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (0<<ADPS0) | (1<<ADIE);
-	ADCSRA |= (1<<ADSC); 
-	DIDR0 |= 1; 
+sei(); //interrupts on
+	adc_config();
+// 	ADMUX = (1<<REFS0) | (1<<MUX0) ;//| (1<<MUX1); manual config, variable Port F (ADCn)
+// 	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (0<<ADPS0) | (1<<ADIE);
+// 	ADCSRA |= (1<<ADSC); 
+// 	DIDR0 |= 1; 
+	
+	
 	
 	while (1)
 	{
-		adc_start_conversion();
+		adc_start_conversion();  //library function, ISR reads the ADC value every time a flag is placed at the end of a conversion
+		//ADCSRA |= (1<<ADIF);
 		
 	}
-
-	adc_meas_1 = adc_get_1();
+	/*
+	adc_meas_1 = adc_get_1();  // get function, should show the specified get_x value in the array, only shows 49225 in all of these, ???
+ 		uint16_t adc_1_value = adc_values[0];
+ 		return adc_1_value;
 	adc_meas_2 = adc_get_2();
 	adc_meas_3 = adc_get_3();
 	adc_meas_4 = adc_get_4();
 	adc_meas_5 = adc_get_5();
-	
-	
-	
+	*/
+	//return adc_get_1();
 }
