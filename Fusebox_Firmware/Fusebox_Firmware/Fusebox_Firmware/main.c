@@ -155,29 +155,123 @@ int main void is above
 // 	return value;
 // 	}   //broken code, needs a do-over
 	
-		//ADC 2 wie Ole
+/*		//ADC 2 wie Ole
 #include <avr/io.h>
 #include <avr/interrupt.h>
-//#include "adc_functions.h"
-uint16_t adc_value;
+#include "adc_functions.h"
+uint16_t value;
 int main(void)
 {	
 DDRB = 0xff;
 PORTB |= (1<<PB3);
 DDRF = 0;	
-ADMUX |= (1<<REFS0);	//AVCC WITH EXTERNAL CAPACITOR ON AREF	
-ADMUX &= ~(1<<MUX4) ; // ADC0 AS INPUT
+//ADMUX |= (1<<REFS0);	//AVCC WITH EXTERNAL CAPACITOR ON AREF	
+//ADMUX &= ~(1<<MUX4) ; // ADC0 AS INPUT
 //ADMUX |= (1<<MUX0); //ADC1 as input
-ADCSRA |= (1<<ADEN) | (1<<ADPS2); //ENABLE ADC, PRESCALE FREQ
-ADCSRA |= (1<<ADSC); // START CONV
+//ADCSRA |= (1<<ADEN) | (1<<ADPS2); //ENABLE ADC, PRESCALE FREQ
+//ADCSRA |= (1<<ADSC); // START CONV
 
-	while (ADCSRA & (1<<ADIF))
+adc_config();
+//	while (ADCSRA & (1<<ADIF))
+	while(1)
 	{
-		adc_value = ADC;
-		ADCSRA |= (1<<ADIF) | (1<<ADSC);
+		value = adc_read();
+		//adc_value = ADC;
+		//ADCSRA |= (1<<ADIF) | (1<<ADSC);
 		//return adc_value;
 	}
 	
 }
+*/
+//	 #include <avr/io.h>
+//	#include <avr/interrupt.h>
+//	#include "adc_functions.h"
+//	#include <util/delay.h>
+//	uint16_t adc_values[5];
+//	uint8_t adc_next = 0;
+//	uint16_t adc_1_value;
+//	uint8_t i; //eventual for() to limit maximal amount of ADC conversions
+// 
+//	 int main(void)
+//	 {
+//	 	DDRF = 0x00;
+//	 	//adc_config();
+//	 	//manual config
+//	 	//========================================================================================================================================
+//	 	ADMUX = (1<<REFS0) | (1<<MUX0); // AREF = AVcc and PF0 (ADC0) as input defined
+//	 	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADIE); // ADEN enables ADC, ADPS0,1,2 for ADC prescaler 16, ADIE enables ADC interrupt // see datasheet page 290
+//	 	ADCSRA |= (1<<ADSC);
+//	 	//========================================================================================================================================
+//	 	//ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (1<<ADPS0) | (1<<ADIE) | (1<<ADSC);
+//	 	//SMCR = (1<<SM0)|(0<<SM1)|(0<<SM2);
+//	 	
+//	 	//ISR(ADC_vect){
+//	 		
+//	 		for(i=0; i<5; i++){
+//	 		adc_values[adc_next] = ADC;
+//	 		adc_next++;
+//			
+//			if(adc_next == 5){
+//				adc_next = 0;
+// 			
+//			ADMUX = (1<<REFS0) | adc_next;
+// 			}
+// 		}
+// 		//while (1)
+// 		//{
+//		//adc_start_conversion();
+//	 	
+// 		//uint16_t adc_get_1();
+// 		/*uint16_t adc_get_1(){
+// 			uint16_t adc_1_value = adc_values[0];
+// 			return adc_1_value;
+//		}*/
+// 		adc_1_value = adc_values[0];//adc_get_1();
+//		uint16_t adc_get_2();
+//	 	uint16_t adc_get_3();
+//		uint16_t adc_get_4();
+//		uint16_t adc_get_5();
+//		//}
+//		/*for (;;)
+//		{
+//			DDRB = 0xff;
+//		PORTB ^= (1<<PB3);
+//		_delay_ms(1500);
+//		}*/
+//		
+//	}
 
 
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include "adc_functions.h"
+
+uint16_t adc_meas_1;
+uint16_t adc_meas_2;
+uint16_t adc_meas_3;
+uint16_t adc_meas_4;
+uint16_t adc_meas_5;
+
+int main(void)
+{	
+	//adc_config();
+	ADMUX = (1<<REFS0) | (1<<MUX0) ;//| (1<<MUX1); 
+	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (0<<ADPS0) | (1<<ADIE);
+	ADCSRA |= (1<<ADSC); 
+	DIDR0 |= 1; 
+	
+	while (1)
+	{
+		adc_start_conversion();
+		
+	}
+
+	adc_meas_1 = adc_get_1();
+	adc_meas_2 = adc_get_2();
+	adc_meas_3 = adc_get_3();
+	adc_meas_4 = adc_get_4();
+	adc_meas_5 = adc_get_5();
+	
+	
+	
+}
