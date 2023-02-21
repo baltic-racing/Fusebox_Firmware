@@ -245,20 +245,34 @@ adc_config();
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "adc_functions.h"
+
+unsigned long long waste_cpu_time;
+
 int main(void)
 {	
-sei(); //interrupts on
-	//adc_config();
- 	ADMUX = (1<<REFS0);// | (1<<MUX0) ;//| (1<<MUX1); manual config, variable Port F (ADCn)
- 	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADIE);
- 	ADCSRA |= (1<<ADSC); 
- 	DIDR0 |= 1; 
-	ADCSRA |= (1<<ADIE);
+	sei(); //interrupts on
+	adc_config();
+ 	//ADMUX = (1<<REFS0);// | (1<<MUX0) ;//| (1<<MUX1); manual config, variable Port F (ADCn)
+ 	//ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADIE);
+ 	//ADCSRA |= (1<<ADSC); 
+ 	//DIDR0 |= 1; 
+	//ADCSRA |= (1<<ADIE);
 	
 	while (1)
 	{
-		adc_start_conversion();  //library function, ISR reads the ADC value every time a flag is placed at the end of a conversion
+		//adc_start_conversion();  //library function, ISR reads the ADC value every time a flag is placed at the end of a conversion
+		// we shouldnt start a conversion on every clock cycle...
+		// that's a recipe for desaster
+		// for now i added the restarting stuff in the ISR
 		//ADCSRA |= (1<<ADIF);
+		
+		// this var is 8bytes
+		// we reset it to zero after it filled
+		// 4byte
+		waste_cpu_time++;
+		if (waste_cpu_time > 0xffffffff){
+			waste_cpu_time = 0;
+		}
 	}
 
 }
