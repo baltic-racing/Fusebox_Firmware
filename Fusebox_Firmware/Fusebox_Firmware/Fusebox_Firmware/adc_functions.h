@@ -18,11 +18,9 @@ void adc_config();
 void adc_start_conversion();
 //getter for adc vars
 //reserverd for future use
-uint16_t adc_get_1();
-uint16_t adc_get_2();
-uint16_t adc_get_3();
-uint16_t adc_get_4();
-uint16_t adc_get_5();
+uint16_t adc_get();
+
+#define ADCVALUES 2
 
 ISR(ADC_vect);
 
