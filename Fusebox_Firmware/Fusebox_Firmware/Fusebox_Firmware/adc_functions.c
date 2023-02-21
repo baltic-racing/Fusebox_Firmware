@@ -32,7 +32,7 @@ void adc_start_conversion(){
 ISR(ADC_vect){
 	
 	// store ADC result
-	adc_values[adc_next] = ADC;// ADCL | (ADCH << 8); low bit erst ablesen
+	adc_values[adc_next] = ADC;// ADCL | (ADCH << 8); //low bit erst ablesen
 	adc_next++;
 	
 	// reset index var
@@ -41,7 +41,7 @@ ISR(ADC_vect){
 	}
 	// select other ADC Input
 	ADMUX = (1<<REFS0) | adc_next;
-	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (0<<ADPS0) | (1<<ADIE);
+
 	adc_start_conversion();
 	
 }

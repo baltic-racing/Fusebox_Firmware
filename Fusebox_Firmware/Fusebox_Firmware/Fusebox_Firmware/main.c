@@ -270,7 +270,7 @@ int main(void)
 		// we reset it to zero after it filled
 		// 4byte
 		waste_cpu_time++;
-		if (waste_cpu_time > 0x1388){
+		if (waste_cpu_time > 0x1F4){ //0xffffffff
 			waste_cpu_time = 0;
 			loops_completed ++;
 			
