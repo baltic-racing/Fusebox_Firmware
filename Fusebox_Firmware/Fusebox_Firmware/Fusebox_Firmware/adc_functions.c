@@ -9,7 +9,7 @@
 #include "adc_functions.h"
 
 // array to store the adc data in
-uint16_t adc_values[ADCVALUES];
+uint16_t adc_values[ADCVALUES]; //Defined in the Header file (2 right now)
 // index var to know which adc will come next
 uint8_t adc_next = 0;
 
@@ -21,7 +21,7 @@ void adc_config(){
 	// ADEN enables ADC
 	// ADIE enables ADC interrupt
 	// see datasheet page 290
-	ADCSRA |= (1<<ADSC); //start first conversation
+	ADCSRA |= (1<<ADSC); //start first conversion
 }
 
 void adc_start_conversion(){
@@ -41,6 +41,7 @@ ISR(ADC_vect){
 	}
 	// select other ADC Input
 	ADMUX = (1<<REFS0) | adc_next;
+	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (0<<ADPS0) | (1<<ADIE);
 	adc_start_conversion();
 	
 }

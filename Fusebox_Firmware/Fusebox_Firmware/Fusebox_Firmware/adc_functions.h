@@ -18,7 +18,7 @@ void adc_config();
 void adc_start_conversion();
 //getter for adc vars
 //reserverd for future use
-uint16_t adc_get();
+uint16_t adc_get(uint8_t adc);
 
 #define ADCVALUES 2
 

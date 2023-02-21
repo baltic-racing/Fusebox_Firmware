@@ -247,7 +247,7 @@ adc_config();
 #include "adc_functions.h"
 
 unsigned long long waste_cpu_time;
-
+unsigned int loops_completed = 0;
 int main(void)
 {	
 	sei(); //interrupts on
@@ -261,17 +261,19 @@ int main(void)
 	while (1)
 	{
 		//adc_start_conversion();  //library function, ISR reads the ADC value every time a flag is placed at the end of a conversion
-		// we shouldnt start a conversion on every clock cycle...
-		// that's a recipe for desaster
-		// for now i added the restarting stuff in the ISR
+		// we shouldn't start a conversion on every clock cycle...
+		// that's a recipe for disaster
+		// for now I added the restarting stuff in the ISR
 		//ADCSRA |= (1<<ADIF);
 		
 		// this var is 8bytes
 		// we reset it to zero after it filled
 		// 4byte
 		waste_cpu_time++;
-		if (waste_cpu_time > 0xffffffff){
+		if (waste_cpu_time > 0x1388){
 			waste_cpu_time = 0;
+			loops_completed ++;
+			
 		}
 	}
 
