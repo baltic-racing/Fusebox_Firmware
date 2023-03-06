@@ -193,7 +193,7 @@ ISR(ADC_vect){
   f8:	ff 93       	push	r31
 	
 	// store ADC result
-	adc_values[adc_next] = ADC;// ADCL | (ADCH << 8); //low bit erst ablesen
+	adc_values[adc_next] = ADC;// ADCL | (ADCH << 8); low bit erst ablesen
   fa:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
   fe:	e8 2f       	mov	r30, r24
  100:	f0 e0       	ldi	r31, 0x00	; 0
@@ -280,11 +280,11 @@ int main(void)
  192:	70 93 0c 01 	sts	0x010C, r23	; 0x80010c <waste_cpu_time+0x5>
  196:	80 93 0d 01 	sts	0x010D, r24	; 0x80010d <waste_cpu_time+0x6>
  19a:	90 93 0e 01 	sts	0x010E, r25	; 0x80010e <waste_cpu_time+0x7>
-		if (waste_cpu_time > 0x1F4){ //0xffffffff
- 19e:	24 3f       	cpi	r18, 0xF4	; 244
- 1a0:	31 40       	sbci	r19, 0x01	; 1
- 1a2:	41 05       	cpc	r20, r1
- 1a4:	51 05       	cpc	r21, r1
+		if (waste_cpu_time > 0xffffffff){ //0xffffffff
+ 19e:	2f 3f       	cpi	r18, 0xFF	; 255
+ 1a0:	3f 4f       	sbci	r19, 0xFF	; 255
+ 1a2:	4f 4f       	sbci	r20, 0xFF	; 255
+ 1a4:	5f 4f       	sbci	r21, 0xFF	; 255
  1a6:	61 05       	cpc	r22, r1
  1a8:	71 05       	cpc	r23, r1
  1aa:	81 05       	cpc	r24, r1

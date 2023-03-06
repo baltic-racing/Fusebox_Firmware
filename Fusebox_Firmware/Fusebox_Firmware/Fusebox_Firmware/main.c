@@ -270,7 +270,7 @@ int main(void)
 		// we reset it to zero after it filled
 		// 4byte
 		waste_cpu_time++;
-		if (waste_cpu_time > 0x1F4){ //0xffffffff
+		if (waste_cpu_time > 0xffffffff){ //0xffffffff
 			waste_cpu_time = 0;
 			loops_completed ++;
 			
@@ -280,3 +280,36 @@ int main(void)
 }
 
 
+/*#include <avr/io.h>
+#include <avr/interrupt.h>
+
+uint16_t voltage = 0;
+
+int main(void)
+{
+	ADMUX = (1<<REFS0) | (1<<MUX0);// | (1<<MUX0); // AREF = AVcc and PF0 (ADC0) as input defined
+	//ADMUX = (1<<MUX0);
+	ADCSRA = (1<<ADEN) | (1<<ADPS2);// | (0<<ADPS1) | (0<<ADPS0);// | (1<<ADIE);
+	ADCSRA |= (1<<ADSC); //start first conversion
+	
+		while((ADCSRA & (1 << ADSC))) {
+			// just loop
+		}
+	// Analogue value should now be in ADCL (low byte) and ADCH (high byte).
+	voltage = ADCL; // read low byte first
+	voltage += (ADCH << 8); // then read high byte
+	//voltage = ADC;
+	
+	//voltage = 1023 - voltage; //invert it (no need?)
+}*/
+
+//3khz timer
+TCCR0A |= (1<<WGM01) | (1<<WGM00) | (1<<CS01) | (1<<CS00); //ctc mode 64 pre
+TCCR0A |= (1<<COM0A1); //clear ocr0a on match
+//TIMSK0 = (1<<OCIE0A);// Interrupt enable???
+OCR0A =83.333333333 ;		//	3khz frequenz oder 3 ms??  32000/(2*64*83.33333) = 3 Hz  OCR0A = 0.0833333 for 3000hz?
+
+ISR(TIMER0_COMP_vect){ //isr fur timer0 => arbeitet mit die frequenz von 3kHz wenn OCR0A = 0.08333?
+PD2 
+PD3 functions
+}
