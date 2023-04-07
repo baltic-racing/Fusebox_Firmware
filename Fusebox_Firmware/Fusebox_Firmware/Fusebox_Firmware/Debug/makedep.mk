@@ -4,5 +4,9 @@
 
 adc_functions.c
 
+fuse_read_out_config.c
+
 main.c
+
+Misc_Functions.c
 
