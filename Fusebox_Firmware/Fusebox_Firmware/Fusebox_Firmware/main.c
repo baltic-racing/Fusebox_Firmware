@@ -241,7 +241,7 @@ adc_config();
 //		
 //	}
 
-
+/*
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "adc_functions.h"
@@ -278,9 +278,9 @@ int main(void)
 	}
 
 }
-
-
-/*#include <avr/io.h>
+*/
+/*
+#include <avr/io.h>
 #include <avr/interrupt.h>
 
 uint16_t voltage = 0;
@@ -301,15 +301,24 @@ int main(void)
 	//voltage = ADC;
 	
 	//voltage = 1023 - voltage; //invert it (no need?)
-}*/
-
-//3khz timer
-TCCR0A |= (1<<WGM01) | (1<<WGM00) | (1<<CS01) | (1<<CS00); //ctc mode 64 pre
-TCCR0A |= (1<<COM0A1); //clear ocr0a on match
-//TIMSK0 = (1<<OCIE0A);// Interrupt enable???
-OCR0A =83.333333333 ;		//	3khz frequenz oder 3 ms??  32000/(2*64*83.33333) = 3 Hz  OCR0A = 0.0833333 for 3000hz?
-
-ISR(TIMER0_COMP_vect){ //isr fur timer0 => arbeitet mit die frequenz von 3kHz wenn OCR0A = 0.08333?
-PD2 
-PD3 functions
 }
+
+*/
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+int main(void)
+{
+	TCCR0A |= (1<<WGM01) | (1<<CS01) | (1<<CS00); //ctc mode 64 pre
+	//TCCR0A |= (1<<COM0A1); //clear ocr0a on match
+	TIMSK0 = (1<<OCIE0A);// Interrupt enable???
+	OCR0A =42 ;		//	3khz frequenz oder 3 ms??  16000000/(2*64*42) = 2976 hz
+	DDRD |= (1 << PD3); //Set PD3 as an output
+	sei();
+
+	
+	}
+	ISR(TIMER0_COMP_vect){ //isr fur timer0
+		PORTD ^= (1<<PD3);
+	}
