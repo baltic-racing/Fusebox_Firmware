@@ -323,9 +323,63 @@ int main(void)
 		PORTD ^= (1<<PD3);
 	}*/
 
+#include "adc_functions.h"
+#include "fuse_read_out_config.h"
+#include "Misc_Functions.h"
+unsigned long long waste_cpu_time;
+unsigned int loops_completed = 0;
+uint16_t voltage = 0;
 
 int main(void){
 	//configs
 	//while 1
 	//can stuff?
+	
+	fuse_read_out();
+	//port_config();    => this function messes up the Interrupts and makes it impossible do perform the ADC conversion
+	sys_timer_config();
+	adc_config();
+	//sys_tick_heart();//put into the while(1)
+	sei();
+
+	while (1)
+	{
+		 //adc_start_conversion();
+		//adc_get(1); 
+		// we shouldn't start a conversion on every clock cycle...
+		// that's a recipe for disaster
+		// for now I added the restarting stuff in the ISR
+		//ADCSRA |= (1<<ADIF);
+		
+		// this var is 8bytes
+		// we reset it to zero after it filled
+		// 4byte
+		
+		if (waste_cpu_time < 0x02){ //0xffffffff   0x3E8 = 1000
+			
+			waste_cpu_time++;
+			
+			
+		}
+		else{
+			adc_start_conversion();
+			loops_completed ++;
+			waste_cpu_time = 0;
+		}
+		
+	/*ADMUX = (1<<REFS0) | (1<<MUX0);// | (1<<MUX0); // AREF = AVcc and PF0 (ADC0) as input defined
+	//ADMUX = (1<<MUX0);
+	ADCSRA = (1<<ADEN) | (1<<ADPS2);// | (0<<ADPS1) | (0<<ADPS0);// | (1<<ADIE);
+	ADCSRA |= (1<<ADSC); //start first conversion
+	
+	while((ADCSRA & (1 << ADSC))) {
+		// just loop
+	}
+	// Analogue value should now be in ADCL (low byte) and ADCH (high byte).
+	voltage = ADCL; // read low byte first
+	voltage += (ADCH << 8); // then read high byte
+	//voltage = ADC;
+	
+	//voltage = 1023 - voltage; //invert it (no need?)*/
+	}
 }

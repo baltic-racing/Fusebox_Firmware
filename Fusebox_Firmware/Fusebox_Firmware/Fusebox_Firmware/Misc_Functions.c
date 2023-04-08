@@ -17,7 +17,7 @@ void sys_timer_config(){   //all previous software uses a 1ms timer/counter =>CT
 	TCCR0A |= (1<<WGM01);
 	TCCR0A |= (1<<CS01) | (1<<CS00);
 	TIMSK0 |= (1<<OCF0A);  //interrupt flags possible
-	OCR0A = 100; // what timer do we need
+	OCR0A = 200; // what timer do we need
 }
 
 void sys_tick_heart(){
