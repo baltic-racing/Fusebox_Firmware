@@ -1,7 +1,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-int main(void)
+void timer0_config()
 {
 	TCCR0A |= (1<<WGM01) | (1<<CS01) | (1<<CS00); //ctc mode 64 pre
 	//TCCR0A |= (1<<COM0A1); //clear ocr0a on match
@@ -10,6 +10,9 @@ int main(void)
 	DDRD |= (1 << PD3); //Set PD3 as an output
 	  sei();
 
-	ISR(TIMER0_COMP_vect){ //isr fur timer0 => arbeitet mit die frequenz von 3kHz wenn OCR0A = 0.08333?
-	PORTB = (1<<PB3);
-	}
+	
+}
+	
+	ISR(TIMER0_COMP_vect){ //isr fur timer0 NEEDS TO BE CHANGED TO TIMER 1, MULTIPLE COUNTERS!!!!!!
+		PORTB = (1<<PB3);
+		

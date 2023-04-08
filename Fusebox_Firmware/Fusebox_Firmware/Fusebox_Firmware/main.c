@@ -322,3 +322,10 @@ int main(void)
 	ISR(TIMER0_COMP_vect){ //isr fur timer0
 		PORTD ^= (1<<PD3);
 	}*/
+
+
+int main(void){
+	//configs
+	//while 1
+	//can stuff?
+}

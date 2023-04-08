@@ -21,7 +21,7 @@ void sys_timer_config(){   //all previous software uses a 1ms timer/counter =>CT
 }
 
 void sys_tick_heart(){
-	PORTB ^= PB4; //toggle the Heart led on Pin 4, will be controlled by the timer in main.c
+	PORTB ^= PB4; //toggle the Heart led on Pin 4, will be controlled by the super loop in main.c
 	
 };
 

@@ -18,9 +18,9 @@ uint8_t	FRO_WP_Sup		=	0;
 uint16_t fuse_read_out(){
 	//shifting bits so  that an input in the register is always gonna be read as 1 (1 means a Fuse is in, 0 means a fuse is out), otherwise a Fuse 0b00000010 is a decimal 2
 																												// with the  shit operation 0b00000010>>1 is a decimal 1 (0b00000001)
-	FRO_Aim_EVO			=	(PINA & 0b00000001); //no need to shift
+	FRO_Aim_EVO			=	(PINA & 0b00000001); //no need to shift 
 	FRO_Shutdown		=	(PINA & 0b00000010)>>1;  //FRO_Shutdown at PA1, 1st bit of that register, therefore we shift the 1st bit to the 0th bit
-	FRO_Brakelight		=	(PINA & 0b00000100)>>2;
+	FRO_Brakelight		=	(PINA & 0b00000100)>>2;  //alternative way of writing this is PINA & (1<<PB2), meaning it reads out the state of the register at the bit of PIN 2 (2nd bit) (the bit still is not shifted in this form => (PINA & (1<<PB2))>>2 ?)
 	FRO_24V				=	(PINA & 0b00001000)>>3;
 	
 	FRO_HV_Distri		=	(PINE & 0b00000001);
@@ -32,6 +32,7 @@ uint16_t fuse_read_out(){
 	FRO_FAN_ACC_Sup		=	(PINE & 0b01000000)>>6;
 	FRO_WP_Sup			=	(PINE & 0b10000000)>>7;
 	
-//code that sends the pin states using CAN comes here	
+//code that sends the pin states using CAN comes here? 
+//  CANLIB FROM OLE?
 
 }
