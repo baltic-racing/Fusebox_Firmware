@@ -336,7 +336,7 @@ int main(void){
 	//can stuff?
 	
 	fuse_read_out();
-	//port_config();    => this function messes up the Interrupts and makes it impossible do perform the ADC conversion
+	port_config(); //   => this function messes up the Interrupts and makes it impossible do perform the ADC conversion , correction, the DDRF is the issue here
 	sys_timer_config();
 	adc_config();
 	//sys_tick_heart();//put into the while(1)
