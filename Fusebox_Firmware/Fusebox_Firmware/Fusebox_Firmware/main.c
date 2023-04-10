@@ -355,7 +355,7 @@ int main(void){
 		// we reset it to zero after it filled
 		// 4byte
 		
-		if (waste_cpu_time < 0x02){ //0xffffffff   0x3E8 = 1000
+		if (waste_cpu_time < 0x3E8){ //0xffffffff   0x3E8 = 1000
 			
 			waste_cpu_time++;
 			
