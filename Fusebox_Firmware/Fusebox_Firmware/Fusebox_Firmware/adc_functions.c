@@ -20,6 +20,7 @@ void adc_config(){
 	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (0<<ADPS0) | (1<<ADIE);
 	// ADEN enables ADC
 	// ADIE enables ADC interrupt
+	// ADPS (Prescaler) 16
 	// see datasheet page 290
 	ADCSRA |= (1<<ADSC); //start first conversion
 }
