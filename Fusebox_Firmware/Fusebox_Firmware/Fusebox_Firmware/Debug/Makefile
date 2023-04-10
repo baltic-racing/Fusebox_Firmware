@@ -38,9 +38,12 @@ SUBDIRS :=
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../adc_functions.c \
+../fan_power_unit_control.c \
 ../fuse_read_out_config.c \
 ../main.c \
-../Misc_Functions.c
+../Misc_Functions.c \
+../shutdown_circuit_indicator.c \
+../water_pump_control.c
 
 
 PREPROCESSING_SRCS += 
@@ -51,27 +54,39 @@ ASM_SRCS +=
 
 OBJS +=  \
 adc_functions.o \
+fan_power_unit_control.o \
 fuse_read_out_config.o \
 main.o \
-Misc_Functions.o
+Misc_Functions.o \
+shutdown_circuit_indicator.o \
+water_pump_control.o
 
 OBJS_AS_ARGS +=  \
 adc_functions.o \
+fan_power_unit_control.o \
 fuse_read_out_config.o \
 main.o \
-Misc_Functions.o
+Misc_Functions.o \
+shutdown_circuit_indicator.o \
+water_pump_control.o
 
 C_DEPS +=  \
 adc_functions.d \
+fan_power_unit_control.d \
 fuse_read_out_config.d \
 main.d \
-Misc_Functions.d
+Misc_Functions.d \
+shutdown_circuit_indicator.d \
+water_pump_control.d
 
 C_DEPS_AS_ARGS +=  \
 adc_functions.d \
+fan_power_unit_control.d \
 fuse_read_out_config.d \
 main.d \
-Misc_Functions.d
+Misc_Functions.d \
+shutdown_circuit_indicator.d \
+water_pump_control.d
 
 OUTPUT_FILE_PATH +=Fusebox_Firmware.elf
 
@@ -94,6 +109,13 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
+./fan_power_unit_control.o: .././fan_power_unit_control.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=at90can128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ./fuse_read_out_config.o: .././fuse_read_out_config.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
@@ -109,6 +131,20 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./Misc_Functions.o: .././Misc_Functions.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=at90can128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./shutdown_circuit_indicator.o: .././shutdown_circuit_indicator.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=at90can128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./water_pump_control.o: .././water_pump_control.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=at90can128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
