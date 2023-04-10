@@ -9,7 +9,8 @@
 #ifndef FAN_POWER_UNIT_CONTROL_H_
 #define FAN_POWER_UNIT_CONTROL_H_
 
-
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
 
 

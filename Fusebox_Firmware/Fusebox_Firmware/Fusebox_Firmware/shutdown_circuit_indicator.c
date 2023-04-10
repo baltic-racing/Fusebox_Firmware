@@ -4,6 +4,8 @@
  * Created: 10.04.2023 15:34:19
  *  Author: adaam
  */ 
+ #include <avr/io.h>
+ #include <avr/interrupt.h>
  
  uint8_t	SCI_TSMS_5V			=	0;
  uint8_t	SCI_INV0_5V			=	0;

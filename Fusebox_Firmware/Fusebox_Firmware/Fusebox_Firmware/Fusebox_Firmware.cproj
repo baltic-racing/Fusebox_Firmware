@@ -165,6 +165,12 @@
     <Compile Include="adc_functions.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="fan_power_unit_control.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="fan_power_unit_control.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="fuse_read_out_config.c">
       <SubType>compile</SubType>
     </Compile>
@@ -178,6 +184,18 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Misc_Functions.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="shutdown_circuit_indicator.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="shutdown_circuit_indicator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="water_pump_control.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="water_pump_control.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
