@@ -12,7 +12,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-void timer0_config();
-ISR(TIMER0_COMP_vect);
+void timer2_config();
+ISR(TIMER2_COMP_vect);
 
 #endif /* READY_TO_DRIVE_SOUND_CONFIG_H_ */

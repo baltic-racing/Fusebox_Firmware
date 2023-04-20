@@ -31,13 +31,14 @@ void adc_start_conversion(){
 }
 
 ISR(ADC_vect){
-	
+	//cli();
 	// store ADC result
 	adc_values[adc_next] = ADC;// ADCL | (ADCH << 8); //low bit erst ablesen
 	adc_next++;
-	adc_values[0] = (ADC*5)/1023;  //cant decide where in the code this should go without testing
-	adc_values[1] = ((ADC*5)/1023)+((10000*(ADC*5)/1023)/2500); //no way this is efficient, needs to be optimized later
+	//adc_values[0] = (ADC*5)/1023;  //cant decide where in the code this should go without testing
+	//adc_values[1] = ((ADC*5)/1023)+((10000*(ADC*5)/1023)/2500); //no way this is efficient, needs to be optimized later
 	// reset index var
+	//sei();
 	if(adc_next == ADCVALUES){
 		adc_next = 0;
 	}

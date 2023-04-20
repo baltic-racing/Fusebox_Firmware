@@ -2,7 +2,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-unsigned long sys_time = 0;
+volatile unsigned long sys_time = 0;
 
 void port_config(){
 	DDRA = 0;   //Fuse Read Out Inputs
@@ -17,11 +17,11 @@ void sys_timer_config(){   //all previous software uses a 1ms timer/counter =>CT
 	TCCR0A |= (1<<WGM01);
 	TCCR0A |= (1<<CS01) | (1<<CS00);
 	TIMSK0 |= (1<<OCF0A);  //interrupt flags possible
-	OCR0A = 200; // what timer do we need, btw the compiler doesnt like anything bigger than 300 for some reason (reason is the 2^8 bits = 256)
+	OCR0A = 250; // what timer do we need, btw the compiler doesnt like anything bigger than 300 for some reason (reason is the 2^8 bits = 256)
 }
 
 void sys_tick_heart(){
-	PORTB ^= PB4; //toggle the Heart led on Pin 4, will be controlled by the super loop in main.c
+	PORTB ^= (1<<PB4); //toggle the Heart led on Pin 4, will be controlled by the super loop in main.c
 	
 };
 

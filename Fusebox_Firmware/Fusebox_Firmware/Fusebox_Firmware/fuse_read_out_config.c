@@ -32,7 +32,11 @@ uint16_t fuse_read_out(){
 	FRO_FAN_ACC_Sup		=	(PINE & 0b01000000)>>6;
 	FRO_WP_Sup			=	(PINE & 0b10000000)>>7;
 	
-//code that sends the pin states using CAN comes here? 
-//  CANLIB FROM OLE?
+//code that sends the pin states using CAN comes here? just throw all the data into an Integer that will later be sent using CAN
+uint16_t Fuse_States = 0;
+ /* set bits of this integer to correspond with our 11 fuses*/
+ Fuse_States |= (FRO_Aim_EVO<<0) | (FRO_Shutdown<<1) | (FRO_Brakelight<<2/*>>0b0000000000000010*/) | (FRO_24V>>3) | (FRO_HV_Distri>>4) | (FRO_TSAL>>5) | (FRO_TSAC>>6) | (FRO_INV0>>7) | (FRO_INV1>>8) | (FRO_FAN_PU_Sup>>9) | (FRO_FAN_ACC_Sup>>10) | (FRO_WP_Sup>>11);
+/* all fuses being a logical 1 (fuse is IN) give us the following value : 0b0000011111111111 = 11d , because we shifted fuse bits in the read function, we can just 
+assign those 1s to any bit within our 16 bit integer, just like we do with registers*/
 
 }
