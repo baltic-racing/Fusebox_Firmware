@@ -272,7 +272,7 @@ ISR(TIMER2_COMP_vect)
  186:	9f 93       	push	r25
 	cli();
  188:	f8 94       	cli
-	PORTD ^= (1<<PD3);
+	PORTD ^= (1<<R2D);
  18a:	9b b1       	in	r25, 0x0b	; 11
  18c:	88 e0       	ldi	r24, 0x08	; 8
  18e:	89 27       	eor	r24, r25

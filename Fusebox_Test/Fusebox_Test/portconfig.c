@@ -12,7 +12,7 @@ volatile unsigned long sys_time = 0;
 void pin_config(void)
 {
 	DDRB |= (1<<PB3) | (1<<PB4);
-	DDRD |= (1<<PD3);
+	DDRD |= (1<<R2D);
 }
 
 void sys_timer_config(void)
@@ -65,6 +65,6 @@ ISR(TIMER0_COMP_vect)
 ISR(TIMER2_COMP_vect)
 {
 	cli();
-	PORTD ^= (1<<PD3);
+	PORTD ^= (1<<R2D);
 	sei();
 }
