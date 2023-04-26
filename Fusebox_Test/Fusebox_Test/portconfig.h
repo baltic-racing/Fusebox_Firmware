@@ -12,7 +12,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define R2D PD3
+#define R2D PD2
 
 void pin_config(void);
 void sys_timer_config(void);

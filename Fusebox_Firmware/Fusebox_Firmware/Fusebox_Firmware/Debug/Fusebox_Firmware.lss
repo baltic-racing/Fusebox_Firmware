@@ -541,8 +541,8 @@ void timer2_config() // timer 1 needs to replace timer 0
 	TIMSK2 = (1<<OCIE2A);// Interrupt enabl
  31c:	82 e0       	ldi	r24, 0x02	; 2
  31e:	80 93 70 00 	sts	0x0070, r24	; 0x800070 <__TEXT_REGION_LENGTH__+0x7e0070>
-	OCR2A =31-1 ;		//	  16000000/(2*64*42) = 2976 Hz
- 322:	8e e1       	ldi	r24, 0x1E	; 30
+	OCR2A =42-1 ;		//	  16000000/(2*64*42) = 2976 Hz
+ 322:	89 e2       	ldi	r24, 0x29	; 41
  324:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <__TEXT_REGION_LENGTH__+0x7e00b3>
  328:	08 95       	ret
 
@@ -560,9 +560,9 @@ ISR(TIMER2_COMP_vect){ //isr fur timer2
  336:	9f 93       	push	r25
 	cli();
  338:	f8 94       	cli
-	PORTD ^= (1<<PD3);
+	PORTD ^= (1<<PD2);
  33a:	9b b1       	in	r25, 0x0b	; 11
- 33c:	88 e0       	ldi	r24, 0x08	; 8
+ 33c:	84 e0       	ldi	r24, 0x04	; 4
  33e:	89 27       	eor	r24, r25
  340:	8b b9       	out	0x0b, r24	; 11
 	sei();

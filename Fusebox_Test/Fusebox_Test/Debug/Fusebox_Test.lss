@@ -189,7 +189,7 @@ Disassembly of section .text:
   f4:	88 61       	ori	r24, 0x18	; 24
   f6:	84 b9       	out	0x04, r24	; 4
   f8:	8a b1       	in	r24, 0x0a	; 10
-  fa:	88 60       	ori	r24, 0x08	; 8
+  fa:	84 60       	ori	r24, 0x04	; 4
   fc:	8a b9       	out	0x0a, r24	; 10
   fe:	08 95       	ret
 
@@ -274,7 +274,7 @@ ISR(TIMER2_COMP_vect)
  188:	f8 94       	cli
 	PORTD ^= (1<<R2D);
  18a:	9b b1       	in	r25, 0x0b	; 11
- 18c:	88 e0       	ldi	r24, 0x08	; 8
+ 18c:	84 e0       	ldi	r24, 0x04	; 4
  18e:	89 27       	eor	r24, r25
  190:	8b b9       	out	0x0b, r24	; 11
 	sei();
