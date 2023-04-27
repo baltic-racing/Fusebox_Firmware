@@ -3,31 +3,31 @@ Fusebox_Firmware.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000002  00800100  00000356  000003ea  2**0
+  0 .data         0000001e  00800100  0000039a  0000042e  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000356  00000000  00000000  00000094  2**1
+  1 .text         0000039a  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000015  00800102  00800102  000003ec  2**0
+  2 .bss          00000018  0080011e  0080011e  0000044c  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000003ec  2**0
+  3 .comment      00000030  00000000  00000000  0000044c  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  0000041c  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  0000047c  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000d8  00000000  00000000  0000045c  2**0
+  5 .debug_aranges 000000e0  00000000  00000000  000004bc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000fe8  00000000  00000000  00000534  2**0
+  6 .debug_info   000010ee  00000000  00000000  0000059c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000c3f  00000000  00000000  0000151c  2**0
+  7 .debug_abbrev 00000c74  00000000  00000000  0000168a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000006d2  00000000  00000000  0000215b  2**0
+  8 .debug_line   00000712  00000000  00000000  000022fe  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000001a0  00000000  00000000  00002830  2**2
+  9 .debug_frame  000001b0  00000000  00000000  00002a10  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000006f8  00000000  00000000  000029d0  2**0
+ 10 .debug_str    00000744  00000000  00000000  00002bc0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000198  00000000  00000000  000030c8  2**0
+ 11 .debug_loc    00000198  00000000  00000000  00003304  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000088  00000000  00000000  00003260  2**0
+ 12 .debug_ranges 00000090  00000000  00000000  0000349c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -51,7 +51,7 @@ Disassembly of section .text:
   1e:	00 00       	nop
   20:	56 c0       	rjmp	.+172    	; 0xce <__bad_interrupt>
   22:	00 00       	nop
-  24:	82 c1       	rjmp	.+772    	; 0x32a <__vector_9>
+  24:	a4 c1       	rjmp	.+840    	; 0x36e <__vector_9>
   26:	00 00       	nop
   28:	52 c0       	rjmp	.+164    	; 0xce <__bad_interrupt>
   2a:	00 00       	nop
@@ -65,7 +65,7 @@ Disassembly of section .text:
   3a:	00 00       	nop
   3c:	48 c0       	rjmp	.+144    	; 0xce <__bad_interrupt>
   3e:	00 00       	nop
-  40:	43 c1       	rjmp	.+646    	; 0x2c8 <__vector_16>
+  40:	65 c1       	rjmp	.+714    	; 0x30c <__vector_16>
   42:	00 00       	nop
   44:	44 c0       	rjmp	.+136    	; 0xce <__bad_interrupt>
   46:	00 00       	nop
@@ -120,20 +120,20 @@ Disassembly of section .text:
   a0:	11 e0       	ldi	r17, 0x01	; 1
   a2:	a0 e0       	ldi	r26, 0x00	; 0
   a4:	b1 e0       	ldi	r27, 0x01	; 1
-  a6:	e6 e5       	ldi	r30, 0x56	; 86
+  a6:	ea e9       	ldi	r30, 0x9A	; 154
   a8:	f3 e0       	ldi	r31, 0x03	; 3
   aa:	00 e0       	ldi	r16, 0x00	; 0
   ac:	0b bf       	out	0x3b, r16	; 59
   ae:	02 c0       	rjmp	.+4      	; 0xb4 <__do_copy_data+0x14>
   b0:	07 90       	elpm	r0, Z+
   b2:	0d 92       	st	X+, r0
-  b4:	a2 30       	cpi	r26, 0x02	; 2
+  b4:	ae 31       	cpi	r26, 0x1E	; 30
   b6:	b1 07       	cpc	r27, r17
   b8:	d9 f7       	brne	.-10     	; 0xb0 <__do_copy_data+0x10>
 
 000000ba <__do_clear_bss>:
   ba:	21 e0       	ldi	r18, 0x01	; 1
-  bc:	a2 e0       	ldi	r26, 0x02	; 2
+  bc:	ae e1       	ldi	r26, 0x1E	; 30
   be:	b1 e0       	ldi	r27, 0x01	; 1
   c0:	01 c0       	rjmp	.+2      	; 0xc4 <.do_clear_bss_start>
 
@@ -141,11 +141,11 @@ Disassembly of section .text:
   c2:	1d 92       	st	X+, r1
 
 000000c4 <.do_clear_bss_start>:
-  c4:	a7 31       	cpi	r26, 0x17	; 23
+  c4:	a6 33       	cpi	r26, 0x36	; 54
   c6:	b2 07       	cpc	r27, r18
   c8:	e1 f7       	brne	.-8      	; 0xc2 <.do_clear_bss_loop>
   ca:	c0 d0       	rcall	.+384    	; 0x24c <main>
-  cc:	42 c1       	rjmp	.+644    	; 0x352 <_exit>
+  cc:	64 c1       	rjmp	.+712    	; 0x396 <_exit>
 
 000000ce <__bad_interrupt>:
   ce:	98 cf       	rjmp	.-208    	; 0x0 <__vectors>
@@ -210,20 +210,20 @@ ISR(ADC_vect){
 	//cli();
 	// store ADC result
 	adc_values[adc_next] = ADC;// ADCL | (ADCH << 8); //low bit erst ablesen
- 114:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 114:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <__data_end>
  118:	e8 2f       	mov	r30, r24
  11a:	f0 e0       	ldi	r31, 0x00	; 0
  11c:	20 91 78 00 	lds	r18, 0x0078	; 0x800078 <__TEXT_REGION_LENGTH__+0x7e0078>
  120:	30 91 79 00 	lds	r19, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7e0079>
  124:	ee 0f       	add	r30, r30
  126:	ff 1f       	adc	r31, r31
- 128:	ed 5e       	subi	r30, 0xED	; 237
+ 128:	ee 5c       	subi	r30, 0xCE	; 206
  12a:	fe 4f       	sbci	r31, 0xFE	; 254
  12c:	31 83       	std	Z+1, r19	; 0x01
  12e:	20 83       	st	Z, r18
 	adc_next++;
  130:	8f 5f       	subi	r24, 0xFF	; 255
- 132:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <__data_end>
+ 132:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <__data_end>
 	//adc_values[0] = (ADC*5)/1023;  //cant decide where in the code this should go without testing
 	//adc_values[1] = ((ADC*5)/1023)+((10000*(ADC*5)/1023)/2500); //no way this is efficient, needs to be optimized later
 	// reset index var
@@ -232,11 +232,11 @@ ISR(ADC_vect){
  136:	82 30       	cpi	r24, 0x02	; 2
  138:	11 f4       	brne	.+4      	; 0x13e <__vector_25+0x50>
 		adc_next = 0;
- 13a:	10 92 02 01 	sts	0x0102, r1	; 0x800102 <__data_end>
+ 13a:	10 92 1e 01 	sts	0x011E, r1	; 0x80011e <__data_end>
 	}
 	// select other ADC Input
 	ADMUX = (1<<REFS0) | adc_next;
- 13e:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 13e:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <__data_end>
  142:	80 64       	ori	r24, 0x40	; 64
  144:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__TEXT_REGION_LENGTH__+0x7e007c>
 
@@ -273,14 +273,14 @@ uint16_t fuse_read_out(){
 	FRO_Aim_EVO			=	(PINA & 0b00000001); //no need to shift 
  170:	80 b1       	in	r24, 0x00	; 0
  172:	81 70       	andi	r24, 0x01	; 1
- 174:	80 93 0e 01 	sts	0x010E, r24	; 0x80010e <FRO_Aim_EVO>
+ 174:	80 93 2a 01 	sts	0x012A, r24	; 0x80012a <FRO_Aim_EVO>
 	FRO_Shutdown		=	(PINA & 0b00000010)>>1;  //FRO_Shutdown at PA1, 1st bit of that register, therefore we shift the 1st bit to the 0th bit
  178:	80 b1       	in	r24, 0x00	; 0
  17a:	82 70       	andi	r24, 0x02	; 2
  17c:	90 e0       	ldi	r25, 0x00	; 0
  17e:	95 95       	asr	r25
  180:	87 95       	ror	r24
- 182:	80 93 0d 01 	sts	0x010D, r24	; 0x80010d <FRO_Shutdown>
+ 182:	80 93 29 01 	sts	0x0129, r24	; 0x800129 <FRO_Shutdown>
 	FRO_Brakelight		=	(PINA & 0b00000100)>>2;  //alternative way of writing this is PINA & (1<<PB2), meaning it reads out the state of the register at the bit of PIN 2 (2nd bit) (the bit still is not shifted in this form => (PINA & (1<<PB2))>>2 ?)
  186:	80 b1       	in	r24, 0x00	; 0
  188:	84 70       	andi	r24, 0x04	; 4
@@ -289,7 +289,7 @@ uint16_t fuse_read_out(){
  18e:	87 95       	ror	r24
  190:	95 95       	asr	r25
  192:	87 95       	ror	r24
- 194:	80 93 0c 01 	sts	0x010C, r24	; 0x80010c <FRO_Brakelight>
+ 194:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <FRO_Brakelight>
 	FRO_24V				=	(PINA & 0b00001000)>>3;
  198:	80 b1       	in	r24, 0x00	; 0
  19a:	88 70       	andi	r24, 0x08	; 8
@@ -300,19 +300,19 @@ uint16_t fuse_read_out(){
  1a4:	87 95       	ror	r24
  1a6:	95 95       	asr	r25
  1a8:	87 95       	ror	r24
- 1aa:	80 93 0b 01 	sts	0x010B, r24	; 0x80010b <FRO_24V>
+ 1aa:	80 93 27 01 	sts	0x0127, r24	; 0x800127 <FRO_24V>
 	
 	FRO_HV_Distri		=	(PINE & 0b00000001);
  1ae:	8c b1       	in	r24, 0x0c	; 12
  1b0:	81 70       	andi	r24, 0x01	; 1
- 1b2:	80 93 0a 01 	sts	0x010A, r24	; 0x80010a <FRO_HV_Distri>
+ 1b2:	80 93 26 01 	sts	0x0126, r24	; 0x800126 <FRO_HV_Distri>
 	FRO_TSAL			=	(PINE & 0b00000010)>>1;
  1b6:	8c b1       	in	r24, 0x0c	; 12
  1b8:	82 70       	andi	r24, 0x02	; 2
  1ba:	90 e0       	ldi	r25, 0x00	; 0
  1bc:	95 95       	asr	r25
  1be:	87 95       	ror	r24
- 1c0:	80 93 09 01 	sts	0x0109, r24	; 0x800109 <FRO_TSAL>
+ 1c0:	80 93 25 01 	sts	0x0125, r24	; 0x800125 <FRO_TSAL>
 	FRO_TSAC			=	(PINE & 0b00000100)>>2;
  1c4:	8c b1       	in	r24, 0x0c	; 12
  1c6:	84 70       	andi	r24, 0x04	; 4
@@ -321,7 +321,7 @@ uint16_t fuse_read_out(){
  1cc:	87 95       	ror	r24
  1ce:	95 95       	asr	r25
  1d0:	87 95       	ror	r24
- 1d2:	80 93 08 01 	sts	0x0108, r24	; 0x800108 <FRO_TSAC>
+ 1d2:	80 93 24 01 	sts	0x0124, r24	; 0x800124 <FRO_TSAC>
 	FRO_INV0			=	(PINE & 0b00001000)>>3;
  1d6:	8c b1       	in	r24, 0x0c	; 12
  1d8:	88 70       	andi	r24, 0x08	; 8
@@ -332,7 +332,7 @@ uint16_t fuse_read_out(){
  1e2:	87 95       	ror	r24
  1e4:	95 95       	asr	r25
  1e6:	87 95       	ror	r24
- 1e8:	80 93 07 01 	sts	0x0107, r24	; 0x800107 <FRO_INV0>
+ 1e8:	80 93 23 01 	sts	0x0123, r24	; 0x800123 <FRO_INV0>
 	FRO_INV1			=	(PINE & 0b00010000)>>4;
  1ec:	8c b1       	in	r24, 0x0c	; 12
  1ee:	80 71       	andi	r24, 0x10	; 16
@@ -345,7 +345,7 @@ uint16_t fuse_read_out(){
  1fc:	87 95       	ror	r24
  1fe:	95 95       	asr	r25
  200:	87 95       	ror	r24
- 202:	80 93 06 01 	sts	0x0106, r24	; 0x800106 <FRO_INV1>
+ 202:	80 93 22 01 	sts	0x0122, r24	; 0x800122 <FRO_INV1>
 	FRO_FAN_PU_Sup		=	(PINE & 0b00100000)>>5;
  206:	8c b1       	in	r24, 0x0c	; 12
  208:	80 72       	andi	r24, 0x20	; 32
@@ -360,7 +360,7 @@ uint16_t fuse_read_out(){
  21a:	87 95       	ror	r24
  21c:	95 95       	asr	r25
  21e:	87 95       	ror	r24
- 220:	80 93 05 01 	sts	0x0105, r24	; 0x800105 <FRO_FAN_PU_Sup>
+ 220:	80 93 21 01 	sts	0x0121, r24	; 0x800121 <FRO_FAN_PU_Sup>
 	FRO_FAN_ACC_Sup		=	(PINE & 0b01000000)>>6;
  224:	8c b1       	in	r24, 0x0c	; 12
  226:	80 74       	andi	r24, 0x40	; 64
@@ -373,13 +373,13 @@ uint16_t fuse_read_out(){
  234:	00 0c       	add	r0, r0
  236:	88 1f       	adc	r24, r24
  238:	99 1f       	adc	r25, r25
- 23a:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <FRO_FAN_ACC_Sup>
+ 23a:	80 93 20 01 	sts	0x0120, r24	; 0x800120 <FRO_FAN_ACC_Sup>
 	FRO_WP_Sup			=	(PINE & 0b10000000)>>7;
  23e:	8c b1       	in	r24, 0x0c	; 12
  240:	88 1f       	adc	r24, r24
  242:	88 27       	eor	r24, r24
  244:	88 1f       	adc	r24, r24
- 246:	80 93 03 01 	sts	0x0103, r24	; 0x800103 <FRO_WP_Sup>
+ 246:	80 93 1f 01 	sts	0x011F, r24	; 0x80011f <FRO_WP_Sup>
  /* set bits of this integer to correspond with our 11 fuses*/
  Fuse_States |= (FRO_Aim_EVO<<0) | (FRO_Shutdown<<1) | (FRO_Brakelight<<2/*>>0b0000000000000010*/) | (FRO_24V>>3) | (FRO_HV_Distri>>4) | (FRO_TSAL>>5) | (FRO_TSAC>>6) | (FRO_INV0>>7) | (FRO_INV1>>8) | (FRO_FAN_PU_Sup>>9) | (FRO_FAN_ACC_Sup>>10) | (FRO_WP_Sup>>11);
 /* all fuses being a logical 1 (fuse is IN) give us the following value : 0b0000011111111111 = 11d , because we shifted fuse bits in the read function, we can just 
@@ -388,7 +388,7 @@ assign those 1s to any bit within our 16 bit integer, just like we do with regis
  24a:	08 95       	ret
 
 0000024c <main>:
-unsigned long time_old_100ms = 0;
+
 
 int main(void){
 	
@@ -396,12 +396,12 @@ int main(void){
 	fuse_read_out();
  24c:	91 df       	rcall	.-222    	; 0x170 <fuse_read_out>
 	port_config(); //   => this function messes up the Interrupts and makes it impossible do perform the ADC conversion , correction, the DDRF is the issue here
- 24e:	20 d0       	rcall	.+64     	; 0x290 <port_config>
+ 24e:	42 d0       	rcall	.+132    	; 0x2d4 <port_config>
 	sys_timer_config();
- 250:	28 d0       	rcall	.+80     	; 0x2a2 <sys_timer_config>
+ 250:	4a d0       	rcall	.+148    	; 0x2e6 <sys_timer_config>
 	adc_config();
  252:	3e df       	rcall	.-388    	; 0xd0 <adc_config>
- 254:	5e d0       	rcall	.+188    	; 0x312 <timer2_config>
+ 254:	80 d0       	rcall	.+256    	; 0x356 <timer2_config>
 	timer2_config();
  256:	78 94       	sei
  258:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
@@ -414,169 +414,205 @@ int main(void){
  25c:	90 e0       	ldi	r25, 0x00	; 0
  25e:	a0 e0       	ldi	r26, 0x00	; 0
  260:	b0 e0       	ldi	r27, 0x00	; 0
- 262:	40 91 0f 01 	lds	r20, 0x010F	; 0x80010f <sys_time>
- 266:	50 91 10 01 	lds	r21, 0x0110	; 0x800110 <sys_time+0x1>
- 26a:	60 91 11 01 	lds	r22, 0x0111	; 0x800111 <sys_time+0x2>
- 26e:	70 91 12 01 	lds	r23, 0x0112	; 0x800112 <sys_time+0x3>
+ 262:	40 91 2b 01 	lds	r20, 0x012B	; 0x80012b <sys_time>
+ 266:	50 91 2c 01 	lds	r21, 0x012C	; 0x80012c <sys_time+0x1>
+ 26a:	60 91 2d 01 	lds	r22, 0x012D	; 0x80012d <sys_time+0x2>
+ 26e:	70 91 2e 01 	lds	r23, 0x012E	; 0x80012e <sys_time+0x3>
  272:	48 17       	cp	r20, r24
  274:	59 07       	cpc	r21, r25
  276:	6a 07       	cpc	r22, r26
  278:	7b 07       	cpc	r23, r27
  27a:	70 f3       	brcs	.-36     	; 0x258 <main+0xc>
- 27c:	20 d0       	rcall	.+64     	; 0x2be <sys_tick_heart>
+ 27c:	42 d0       	rcall	.+132    	; 0x302 <sys_tick_heart>
 			sys_tick_heart();
- 27e:	10 92 0f 01 	sts	0x010F, r1	; 0x80010f <sys_time>
+ 27e:	10 92 2b 01 	sts	0x012B, r1	; 0x80012b <sys_time>
 			//PORTB ^= (1<<PB4);
 			sys_time = 0;	
- 282:	10 92 10 01 	sts	0x0110, r1	; 0x800110 <sys_time+0x1>
- 286:	10 92 11 01 	sts	0x0111, r1	; 0x800111 <sys_time+0x2>
- 28a:	10 92 12 01 	sts	0x0112, r1	; 0x800112 <sys_time+0x3>
- 28e:	e4 cf       	rjmp	.-56     	; 0x258 <main+0xc>
+ 282:	10 92 2c 01 	sts	0x012C, r1	; 0x80012c <sys_time+0x1>
+ 286:	10 92 2d 01 	sts	0x012D, r1	; 0x80012d <sys_time+0x2>
+ 28a:	10 92 2e 01 	sts	0x012E, r1	; 0x80012e <sys_time+0x3>
+ 28e:	e0 91 2f 01 	lds	r30, 0x012F	; 0x80012f <note_next>
+			OCR2A = song[note_next];
+ 292:	f0 e0       	ldi	r31, 0x00	; 0
+ 294:	ef 5f       	subi	r30, 0xFF	; 255
+ 296:	fe 4f       	sbci	r31, 0xFE	; 254
+ 298:	80 81       	ld	r24, Z
+ 29a:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <__TEXT_REGION_LENGTH__+0x7e00b3>
+ 29e:	80 91 30 01 	lds	r24, 0x0130	; 0x800130 <note_length>
+	
+	note_length++;
+ 2a2:	90 91 31 01 	lds	r25, 0x0131	; 0x800131 <note_length+0x1>
+ 2a6:	01 96       	adiw	r24, 0x01	; 1
+ 2a8:	90 93 31 01 	sts	0x0131, r25	; 0x800131 <note_length+0x1>
+ 2ac:	80 93 30 01 	sts	0x0130, r24	; 0x800130 <note_length>
+ 2b0:	c3 97       	sbiw	r24, 0x33	; 51
+ 2b2:	49 f4       	brne	.+18     	; 0x2c6 <main+0x7a>
 
-00000290 <port_config>:
+	if (note_length == 51)
+ 2b4:	10 92 31 01 	sts	0x0131, r1	; 0x800131 <note_length+0x1>
+	{
+		note_length = 0;
+ 2b8:	10 92 30 01 	sts	0x0130, r1	; 0x800130 <note_length>
+ 2bc:	80 91 2f 01 	lds	r24, 0x012F	; 0x80012f <note_next>
+		note_next++;	
+ 2c0:	8f 5f       	subi	r24, 0xFF	; 255
+ 2c2:	80 93 2f 01 	sts	0x012F, r24	; 0x80012f <note_next>
+ 2c6:	80 91 2f 01 	lds	r24, 0x012F	; 0x80012f <note_next>
+	}
+		if (note_next == 29)
+ 2ca:	8d 31       	cpi	r24, 0x1D	; 29
+ 2cc:	29 f6       	brne	.-118    	; 0x258 <main+0xc>
+ 2ce:	10 92 2f 01 	sts	0x012F, r1	; 0x80012f <note_next>
+	{
+		note_next = 0;
+ 2d2:	c2 cf       	rjmp	.-124    	; 0x258 <main+0xc>
+
+000002d4 <port_config>:
 #include <avr/interrupt.h>
 
 volatile unsigned long sys_time = 0;
 
 void port_config(){
 	DDRA = 0;   //Fuse Read Out Inputs
- 290:	11 b8       	out	0x01, r1	; 1
+ 2d4:	11 b8       	out	0x01, r1	; 1
 	DDRB = 0 | (1<<PB0) | (1<<PB1) |(1<<PB2) | (1<<PB3) | (1<<PB4); //WP, fan and LED outputs
- 292:	8f e1       	ldi	r24, 0x1F	; 31
- 294:	84 b9       	out	0x04, r24	; 4
+ 2d6:	8f e1       	ldi	r24, 0x1F	; 31
+ 2d8:	84 b9       	out	0x04, r24	; 4
 	DDRC = 0; // Shutdown circuit just like FRO is an input (indicates the state of those pins for debugging purposes)
- 296:	17 b8       	out	0x07, r1	; 7
+ 2da:	17 b8       	out	0x07, r1	; 7
 	DDRD = 0 | (1<<PD2) | (1<<PD3) | (1<<PD5) | (1<<PD6); // timer for the buzzer and can outputs
- 298:	8c e6       	ldi	r24, 0x6C	; 108
- 29a:	8a b9       	out	0x0a, r24	; 10
+ 2dc:	8c e6       	ldi	r24, 0x6C	; 108
+ 2de:	8a b9       	out	0x0a, r24	; 10
 	DDRE = 0; //Fuse Read Out Inputs
- 29c:	1d b8       	out	0x0d, r1	; 13
+ 2e0:	1d b8       	out	0x0d, r1	; 13
 	DDRF = 0; /*| (1<<PF4) | (1<<PF5) | (1<<PF6) | (1<<PF7);*/ // should i set these as output?
- 29e:	10 ba       	out	0x10, r1	; 16
- 2a0:	08 95       	ret
+ 2e2:	10 ba       	out	0x10, r1	; 16
+ 2e4:	08 95       	ret
 
-000002a2 <sys_timer_config>:
+000002e6 <sys_timer_config>:
 }
 
 void sys_timer_config(){   //all previous software uses a 1ms timer/counter =>CTC with OCR0A=250
 	TCCR0A |= (1<<WGM01);
- 2a2:	84 b5       	in	r24, 0x24	; 36
- 2a4:	88 60       	ori	r24, 0x08	; 8
- 2a6:	84 bd       	out	0x24, r24	; 36
+ 2e6:	84 b5       	in	r24, 0x24	; 36
+ 2e8:	88 60       	ori	r24, 0x08	; 8
+ 2ea:	84 bd       	out	0x24, r24	; 36
 	TCCR0A |= (1<<CS01) | (1<<CS00);
- 2a8:	84 b5       	in	r24, 0x24	; 36
- 2aa:	83 60       	ori	r24, 0x03	; 3
- 2ac:	84 bd       	out	0x24, r24	; 36
+ 2ec:	84 b5       	in	r24, 0x24	; 36
+ 2ee:	83 60       	ori	r24, 0x03	; 3
+ 2f0:	84 bd       	out	0x24, r24	; 36
 	TIMSK0 |= (1<<OCF0A);  //interrupt flags possible
- 2ae:	ee e6       	ldi	r30, 0x6E	; 110
- 2b0:	f0 e0       	ldi	r31, 0x00	; 0
- 2b2:	80 81       	ld	r24, Z
- 2b4:	82 60       	ori	r24, 0x02	; 2
- 2b6:	80 83       	st	Z, r24
+ 2f2:	ee e6       	ldi	r30, 0x6E	; 110
+ 2f4:	f0 e0       	ldi	r31, 0x00	; 0
+ 2f6:	80 81       	ld	r24, Z
+ 2f8:	82 60       	ori	r24, 0x02	; 2
+ 2fa:	80 83       	st	Z, r24
 	OCR0A = 250; // what timer do we need, btw the compiler doesnt like anything bigger than 300 for some reason (reason is the 2^8 bits = 256)
- 2b8:	8a ef       	ldi	r24, 0xFA	; 250
- 2ba:	87 bd       	out	0x27, r24	; 39
- 2bc:	08 95       	ret
+ 2fc:	8a ef       	ldi	r24, 0xFA	; 250
+ 2fe:	87 bd       	out	0x27, r24	; 39
+ 300:	08 95       	ret
 
-000002be <sys_tick_heart>:
+00000302 <sys_tick_heart>:
 }
 
 void sys_tick_heart(){
 	PORTB ^= (1<<PB4); //toggle the Heart led on Pin 4, will be controlled by the super loop in main.c
- 2be:	95 b1       	in	r25, 0x05	; 5
- 2c0:	80 e1       	ldi	r24, 0x10	; 16
- 2c2:	89 27       	eor	r24, r25
- 2c4:	85 b9       	out	0x05, r24	; 5
- 2c6:	08 95       	ret
+ 302:	95 b1       	in	r25, 0x05	; 5
+ 304:	80 e1       	ldi	r24, 0x10	; 16
+ 306:	89 27       	eor	r24, r25
+ 308:	85 b9       	out	0x05, r24	; 5
+ 30a:	08 95       	ret
 
-000002c8 <__vector_16>:
+0000030c <__vector_16>:
 	
 };
 
 ISR(TIMER0_COMP_vect){
- 2c8:	1f 92       	push	r1
- 2ca:	0f 92       	push	r0
- 2cc:	0f b6       	in	r0, 0x3f	; 63
- 2ce:	0f 92       	push	r0
- 2d0:	11 24       	eor	r1, r1
- 2d2:	8f 93       	push	r24
- 2d4:	9f 93       	push	r25
- 2d6:	af 93       	push	r26
- 2d8:	bf 93       	push	r27
+ 30c:	1f 92       	push	r1
+ 30e:	0f 92       	push	r0
+ 310:	0f b6       	in	r0, 0x3f	; 63
+ 312:	0f 92       	push	r0
+ 314:	11 24       	eor	r1, r1
+ 316:	8f 93       	push	r24
+ 318:	9f 93       	push	r25
+ 31a:	af 93       	push	r26
+ 31c:	bf 93       	push	r27
 	sys_time++;  //system time incremented on each interrupt flag from the CTC compare register => every OCR0A
- 2da:	80 91 0f 01 	lds	r24, 0x010F	; 0x80010f <sys_time>
- 2de:	90 91 10 01 	lds	r25, 0x0110	; 0x800110 <sys_time+0x1>
- 2e2:	a0 91 11 01 	lds	r26, 0x0111	; 0x800111 <sys_time+0x2>
- 2e6:	b0 91 12 01 	lds	r27, 0x0112	; 0x800112 <sys_time+0x3>
- 2ea:	01 96       	adiw	r24, 0x01	; 1
- 2ec:	a1 1d       	adc	r26, r1
- 2ee:	b1 1d       	adc	r27, r1
- 2f0:	80 93 0f 01 	sts	0x010F, r24	; 0x80010f <sys_time>
- 2f4:	90 93 10 01 	sts	0x0110, r25	; 0x800110 <sys_time+0x1>
- 2f8:	a0 93 11 01 	sts	0x0111, r26	; 0x800111 <sys_time+0x2>
- 2fc:	b0 93 12 01 	sts	0x0112, r27	; 0x800112 <sys_time+0x3>
- 300:	bf 91       	pop	r27
- 302:	af 91       	pop	r26
- 304:	9f 91       	pop	r25
- 306:	8f 91       	pop	r24
- 308:	0f 90       	pop	r0
- 30a:	0f be       	out	0x3f, r0	; 63
- 30c:	0f 90       	pop	r0
- 30e:	1f 90       	pop	r1
- 310:	18 95       	reti
+ 31e:	80 91 2b 01 	lds	r24, 0x012B	; 0x80012b <sys_time>
+ 322:	90 91 2c 01 	lds	r25, 0x012C	; 0x80012c <sys_time+0x1>
+ 326:	a0 91 2d 01 	lds	r26, 0x012D	; 0x80012d <sys_time+0x2>
+ 32a:	b0 91 2e 01 	lds	r27, 0x012E	; 0x80012e <sys_time+0x3>
+ 32e:	01 96       	adiw	r24, 0x01	; 1
+ 330:	a1 1d       	adc	r26, r1
+ 332:	b1 1d       	adc	r27, r1
+ 334:	80 93 2b 01 	sts	0x012B, r24	; 0x80012b <sys_time>
+ 338:	90 93 2c 01 	sts	0x012C, r25	; 0x80012c <sys_time+0x1>
+ 33c:	a0 93 2d 01 	sts	0x012D, r26	; 0x80012d <sys_time+0x2>
+ 340:	b0 93 2e 01 	sts	0x012E, r27	; 0x80012e <sys_time+0x3>
+ 344:	bf 91       	pop	r27
+ 346:	af 91       	pop	r26
+ 348:	9f 91       	pop	r25
+ 34a:	8f 91       	pop	r24
+ 34c:	0f 90       	pop	r0
+ 34e:	0f be       	out	0x3f, r0	; 63
+ 350:	0f 90       	pop	r0
+ 352:	1f 90       	pop	r1
+ 354:	18 95       	reti
 
-00000312 <timer2_config>:
-#include <avr/interrupt.h>
-#include "ready_to_drive_sound_config.h"
+00000356 <timer2_config>:
+	OCR2A =42 ;		//	  16000000/(2*64*42) = 2976 Hz
+	//sei();
+		
+}
 
-void timer2_config() // timer 1 needs to replace timer 0
-{
-	TCCR2A |= (1<<WGM21) | (1<<CS22);// | (1<<CS21) | (1<<CS20); //ctc mode 64 pre
- 312:	e0 eb       	ldi	r30, 0xB0	; 176
- 314:	f0 e0       	ldi	r31, 0x00	; 0
- 316:	80 81       	ld	r24, Z
- 318:	8c 60       	ori	r24, 0x0C	; 12
- 31a:	80 83       	st	Z, r24
-	//TCCR0A |= (1<<COM0A1); //clear ocr0a on match
-	TIMSK2 = (1<<OCIE2A);// Interrupt enabl
- 31c:	82 e0       	ldi	r24, 0x02	; 2
- 31e:	80 93 70 00 	sts	0x0070, r24	; 0x800070 <__TEXT_REGION_LENGTH__+0x7e0070>
-	OCR2A =42-1 ;		//	  16000000/(2*64*42) = 2976 Hz
- 322:	89 e2       	ldi	r24, 0x29	; 41
- 324:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <__TEXT_REGION_LENGTH__+0x7e00b3>
- 328:	08 95       	ret
+void funny_function(){
+ 356:	e0 eb       	ldi	r30, 0xB0	; 176
+ 358:	f0 e0       	ldi	r31, 0x00	; 0
+ 35a:	80 81       	ld	r24, Z
+ 35c:	8c 60       	ori	r24, 0x0C	; 12
+ 35e:	80 83       	st	Z, r24
+ 360:	82 e0       	ldi	r24, 0x02	; 2
+ 362:	80 93 70 00 	sts	0x0070, r24	; 0x800070 <__TEXT_REGION_LENGTH__+0x7e0070>
+ 366:	8a e2       	ldi	r24, 0x2A	; 42
+ 368:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <__TEXT_REGION_LENGTH__+0x7e00b3>
+ 36c:	08 95       	ret
 
-0000032a <__vector_9>:
-	//sei();	
+0000036e <__vector_9>:
+	
 }
 
 ISR(TIMER2_COMP_vect){ //isr fur timer2 
- 32a:	1f 92       	push	r1
- 32c:	0f 92       	push	r0
- 32e:	0f b6       	in	r0, 0x3f	; 63
- 330:	0f 92       	push	r0
- 332:	11 24       	eor	r1, r1
- 334:	8f 93       	push	r24
- 336:	9f 93       	push	r25
+ 36e:	1f 92       	push	r1
+ 370:	0f 92       	push	r0
+ 372:	0f b6       	in	r0, 0x3f	; 63
+ 374:	0f 92       	push	r0
+ 376:	11 24       	eor	r1, r1
+ 378:	8f 93       	push	r24
+ 37a:	9f 93       	push	r25
 	cli();
- 338:	f8 94       	cli
+ 37c:	f8 94       	cli
 	PORTD ^= (1<<PD2);
- 33a:	9b b1       	in	r25, 0x0b	; 11
- 33c:	84 e0       	ldi	r24, 0x04	; 4
- 33e:	89 27       	eor	r24, r25
- 340:	8b b9       	out	0x0b, r24	; 11
+ 37e:	9b b1       	in	r25, 0x0b	; 11
+ 380:	84 e0       	ldi	r24, 0x04	; 4
+ 382:	89 27       	eor	r24, r25
+ 384:	8b b9       	out	0x0b, r24	; 11
 	sei();
- 342:	78 94       	sei
- 344:	9f 91       	pop	r25
- 346:	8f 91       	pop	r24
- 348:	0f 90       	pop	r0
- 34a:	0f be       	out	0x3f, r0	; 63
- 34c:	0f 90       	pop	r0
- 34e:	1f 90       	pop	r1
- 350:	18 95       	reti
+ 386:	78 94       	sei
+		if (note_next == 4)
+	{
+		note_next = 0;
+	}
+	*/
+ 388:	9f 91       	pop	r25
+ 38a:	8f 91       	pop	r24
+ 38c:	0f 90       	pop	r0
+ 38e:	0f be       	out	0x3f, r0	; 63
+ 390:	0f 90       	pop	r0
+ 392:	1f 90       	pop	r1
+ 394:	18 95       	reti
 
-00000352 <_exit>:
- 352:	f8 94       	cli
+00000396 <_exit>:
+ 396:	f8 94       	cli
 
-00000354 <__stop_program>:
- 354:	ff cf       	rjmp	.-2      	; 0x354 <__stop_program>
+00000398 <__stop_program>:
+ 398:	ff cf       	rjmp	.-2      	; 0x398 <__stop_program>

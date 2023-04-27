@@ -25,5 +25,7 @@ uint8_t /* no need for 16?*/ SCI_read_out(){
 	SCI_INV1_5V			=	(PINA & 01000000)>>6;
 	
 	
-	//can library?
+uint8_t SCI_States = 0;
+SCI_States |= (SCI_TSMS_5V<<0) | (SCI_INV0_5V<<1) | (SCI_TSAC_5V<<2) | (SCI_SDB_Left_5V<<3) | (SCI_HV_Distri_5V<<4) | (SCI_SDB_Right_5V<<5) | (SCI_INV1_5V);
+//data that will be sent through CAN packaged into SCI states variable
 }

@@ -28,7 +28,7 @@ void R2D_config(void)
 {
 	TCCR2A = 0 | (1<<WGM21) | (1<<CS22);
 	TIMSK2 = 0 | (1<<OCIE2A); //compare interrupt enable
-	OCR2A = 41-1;
+	OCR2A = 81-1;
 }
 
 void R2D_function(uint8_t Hi_thresh, uint8_t Lo_thresh, uint8_t R2D_switch)

@@ -331,10 +331,17 @@ int main(void)
 unsigned long long waste_cpu_time;
 unsigned int loops_completed = 0;
 uint16_t voltage = 0;
-uint8_t heart_beat = 100;
+uint8_t heart_beat = 4;
 unsigned long sys_time; //no need to write =0!!
 unsigned long time_old = 0;
 unsigned long time_old_100ms = 0;
+
+
+uint16_t note_length;
+uint8_t OCR2A_next;
+uint8_t song[29];
+uint8_t note_next ;
+
 
 int main(void){
 	
@@ -355,9 +362,23 @@ int main(void){
 			sys_tick_heart();
 			//PORTB ^= (1<<PB4);
 			sys_time = 0;	
+			OCR2A = song[note_next];
+	
+	note_length++;
+
+	if (note_length == 51)
+	{
+		note_length = 0;
+		note_next++;	
+	}
+		if (note_next == 29)
+	{
+		note_next = 0;
+	}
 		}
 		
 		}
+		
 		
 	
 	}
