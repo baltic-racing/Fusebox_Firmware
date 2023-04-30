@@ -4,9 +4,9 @@
 
 volatile unsigned long sys_time = 0;
 
-void port_config(){
+void port_config(){  //0 input, 1 output
 	DDRA = 0;   //Fuse Read Out Inputs
-	DDRB = 0 | (1<<PB0) | (1<<PB1) |(1<<PB2) | (1<<PB3) | (1<<PB4); //WP, fan and LED outputs
+	DDRB = 0 | (1<<PB0) |(1<<PB2) | (1<<PB3) | (1<<PB4) | (1<<PB5); //WP, fan and LED outputs
 	DDRC = 0; // Shutdown circuit just like FRO is an input (indicates the state of those pins for debugging purposes)
 	DDRD = 0 | (1<<PD2) | (1<<PD3) | (1<<PD5) | (1<<PD6); // timer for the buzzer and can outputs
 	DDRE = 0; //Fuse Read Out Inputs

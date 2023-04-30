@@ -328,39 +328,64 @@ int main(void)
 #include "Misc_Functions.h"
 #include "shutdown_circuit_indicator.h"
 #include "ready_to_drive_sound_config.h"
+#include "canlib.h"
 unsigned long long waste_cpu_time;
 unsigned int loops_completed = 0;
 uint16_t voltage = 0;
-uint8_t heart_beat = 4;
+uint8_t heart_beat = 255;
 unsigned long sys_time; //no need to write =0!!
 unsigned long time_old = 0;
 unsigned long time_old_100ms = 0;
 
 
-uint16_t note_length;
+uint8_t note_length;
 uint8_t OCR2A_next;
 uint8_t song[29];
 uint8_t note_next ;
 
 
+
 int main(void){
 	
-	
+	can_cfg();
+	//can_check_free();
+
 	fuse_read_out();
-	port_config(); //   => this function messes up the Interrupts and makes it impossible do perform the ADC conversion , correction, the DDRF is the issue here
+	port_config(); 
 	sys_timer_config();
 	adc_config();
 	timer2_config();
 	
 	sei();
 
+
+	struct CAN_MOB can_FB_mob;//data to send  FB = fusebox, outgoing fusebox message with its 8 dataBYTES
+	can_FB_mob.mob_id = 0;
+	can_FB_mob.mob_idmask = 0;
+	can_FB_mob.mob_number = 0;
+	uint8_t FB_databytes[8];  //
+
+	/*struct CAN_MOB can_FRO2_mob;
+	can_FRO2_mob->mob_id = ;
+	can_FRO2_mob->mob_idmask = ;
+	can_FRO2_mob->mob_number = ;
+	uint8_t FRO2_ADC databytes[8]; */ // 
+
+	/*struct CAN_MOB can_SCI_mob;
+	can_SCI_mob.mob_id = ;
+	can_SCI_mob.mob_idmask = ;
+	can_SCI_mob.mob_number = ;
+	uint8_t SCI_databytes[8];  //7 scri readings*/
+
+	
+
 	while (1)
 	{
 		
-		
-		if (sys_time >= heart_beat){ 
+		//duty cycle!!!
+		if (sys_time >= heart_beat)		{ 
 			sys_tick_heart();
-			//PORTB ^= (1<<PB4);
+			//PORTB ^= (1<<PB4); 
 			sys_time = 0;	
 			OCR2A = song[note_next];
 	
@@ -372,13 +397,29 @@ int main(void){
 		note_next++;	
 	}
 		if (note_next == 29)
-	{
-		note_next = 0;
-	}
+		{
+			note_next = 0;
 		}
-		
-		}
-		
+										}
+
+	if((sys_time - time_old) >= 10){  //10ms
+				time_old = sys_time;
+				//time_old_100++; use for a longer loop later
+
+//fuse_read_out()&0xff			// input &0xff gives you the first byte (8bit) (least significant byte)
+//(fuse_read_out()>>8)&0xff		//shifting 1 byte to the right gives us the next 8 bit bundle, now we've read the full 16 bit value
+
+	FB_databytes[0]	= fuse_read_out()&0xff		;			//  lsb
+	FB_databytes[1]	= (fuse_read_out()>>8)&0xff	;			//  msb
+	FB_databytes[2]	= SCI_read_out()			;			// fits in 8 bits
+	FB_databytes[3]	= adc_get(0)				;
+	FB_databytes[4]	= adc_get(1)				;  
+	FB_databytes[6]	= 0							;
+	FB_databytes[7]	= 0							;
 		
 	
+	can_tx(&can_FB_mob, FB_databytes);  //& is a reference operator 
+									}
+
 	}
+}

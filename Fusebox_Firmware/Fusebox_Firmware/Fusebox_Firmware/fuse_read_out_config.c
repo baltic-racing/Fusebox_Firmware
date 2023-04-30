@@ -20,7 +20,7 @@ uint16_t fuse_read_out(){
 																												// with the  shit operation 0b00000010>>1 is a decimal 1 (0b00000001)
 	FRO_Aim_EVO			=	(PINA & 0b00000001); //no need to shift 
 	FRO_Shutdown		=	(PINA & 0b00000010)>>1;  //FRO_Shutdown at PA1, 1st bit of that register, therefore we shift the 1st bit to the 0th bit
-	FRO_Brakelight		=	(PINA & 0b00000100)>>2;  //alternative way of writing this is PINA & (1<<PB2), meaning it reads out the state of the register at the bit of PIN 2 (2nd bit) (the bit still is not shifted in this form => (PINA & (1<<PB2))>>2 ?)
+	FRO_Brakelight		=	(PINA & 0b00000100)>>2;  //alternative way of writing this is PINA & (1<<PB2), meaning it reads out the state of the register at the bit of PIN 2 (2nd bit) (the bit still is not shifted in this form => (PINA & (1<<PB2))>>2)
 	FRO_24V				=	(PINA & 0b00001000)>>3;
 	
 	FRO_HV_Distri		=	(PINE & 0b00000001);
@@ -33,10 +33,13 @@ uint16_t fuse_read_out(){
 	FRO_WP_Sup			=	(PINE & 0b10000000)>>7;
 	
 //code that sends the pin states using CAN comes here? just throw all the data into an Integer that will later be sent using CAN
-uint16_t Fuse_States = 0;
+uint8_t Fuse_States = 0;
+
  /* set bits of this integer to correspond with our 11 fuses*/
- Fuse_States |= (FRO_Aim_EVO<<0) | (FRO_Shutdown<<1) | (FRO_Brakelight<<2/*>>0b0000000000000010*/) | (FRO_24V>>3) | (FRO_HV_Distri>>4) | (FRO_TSAL>>5) | (FRO_TSAC>>6) | (FRO_INV0>>7) | (FRO_INV1>>8) | (FRO_FAN_PU_Sup>>9) | (FRO_FAN_ACC_Sup>>10) | (FRO_WP_Sup>>11);
+Fuse_States |= (FRO_Aim_EVO<<0) | (FRO_Shutdown<<1) | (FRO_Brakelight<<2/*>>0b0000000000000010*/) | (FRO_24V>>3) | (FRO_HV_Distri>>4) | (FRO_TSAL>>5) | (FRO_TSAC>>6) | (FRO_INV0>>7) | (FRO_INV1>>8) | (FRO_FAN_PU_Sup>>9) | (FRO_FAN_ACC_Sup>>10) | (FRO_WP_Sup>>11);
+
 /* all fuses being a logical 1 (fuse is IN) give us the following value : 0b0000011111111111 = 11d , because we shifted fuse bits in the read function, we can just 
 assign those 1s to any bit within our 16 bit integer, just like we do with registers*/
+return Fuse_States;
 
 }

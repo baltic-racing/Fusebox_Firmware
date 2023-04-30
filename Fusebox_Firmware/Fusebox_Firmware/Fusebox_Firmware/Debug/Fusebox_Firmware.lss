@@ -3,31 +3,31 @@ Fusebox_Firmware.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         0000001e  00800100  0000039a  0000042e  2**0
+  0 .data         0000001e  00800100  000005e4  00000678  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000039a  00000000  00000000  00000094  2**1
+  1 .text         000005e4  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000018  0080011e  0080011e  0000044c  2**0
+  2 .bss          00000022  0080011e  0080011e  00000696  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  0000044c  2**0
+  3 .comment      00000030  00000000  00000000  00000696  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  0000047c  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000006c8  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000e0  00000000  00000000  000004bc  2**0
+  5 .debug_aranges 00000138  00000000  00000000  00000708  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000010ee  00000000  00000000  0000059c  2**0
+  6 .debug_info   000014f3  00000000  00000000  00000840  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000c74  00000000  00000000  0000168a  2**0
+  7 .debug_abbrev 00000e5b  00000000  00000000  00001d33  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000712  00000000  00000000  000022fe  2**0
+  8 .debug_line   00000b30  00000000  00000000  00002b8e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000001b0  00000000  00000000  00002a10  2**2
+  9 .debug_frame  00000258  00000000  00000000  000036c0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000744  00000000  00000000  00002bc0  2**0
+ 10 .debug_str    0000087f  00000000  00000000  00003918  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000198  00000000  00000000  00003304  2**0
+ 11 .debug_loc    0000042f  00000000  00000000  00004197  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000090  00000000  00000000  0000349c  2**0
+ 12 .debug_ranges 000000c8  00000000  00000000  000045c6  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -51,7 +51,7 @@ Disassembly of section .text:
   1e:	00 00       	nop
   20:	56 c0       	rjmp	.+172    	; 0xce <__bad_interrupt>
   22:	00 00       	nop
-  24:	a4 c1       	rjmp	.+840    	; 0x36e <__vector_9>
+  24:	9b c2       	rjmp	.+1334   	; 0x55c <__vector_9>
   26:	00 00       	nop
   28:	52 c0       	rjmp	.+164    	; 0xce <__bad_interrupt>
   2a:	00 00       	nop
@@ -65,7 +65,7 @@ Disassembly of section .text:
   3a:	00 00       	nop
   3c:	48 c0       	rjmp	.+144    	; 0xce <__bad_interrupt>
   3e:	00 00       	nop
-  40:	65 c1       	rjmp	.+714    	; 0x30c <__vector_16>
+  40:	5c c2       	rjmp	.+1208   	; 0x4fa <__vector_16>
   42:	00 00       	nop
   44:	44 c0       	rjmp	.+136    	; 0xce <__bad_interrupt>
   46:	00 00       	nop
@@ -120,8 +120,8 @@ Disassembly of section .text:
   a0:	11 e0       	ldi	r17, 0x01	; 1
   a2:	a0 e0       	ldi	r26, 0x00	; 0
   a4:	b1 e0       	ldi	r27, 0x01	; 1
-  a6:	ea e9       	ldi	r30, 0x9A	; 154
-  a8:	f3 e0       	ldi	r31, 0x03	; 3
+  a6:	e4 ee       	ldi	r30, 0xE4	; 228
+  a8:	f5 e0       	ldi	r31, 0x05	; 5
   aa:	00 e0       	ldi	r16, 0x00	; 0
   ac:	0b bf       	out	0x3b, r16	; 59
   ae:	02 c0       	rjmp	.+4      	; 0xb4 <__do_copy_data+0x14>
@@ -141,11 +141,11 @@ Disassembly of section .text:
   c2:	1d 92       	st	X+, r1
 
 000000c4 <.do_clear_bss_start>:
-  c4:	a6 33       	cpi	r26, 0x36	; 54
+  c4:	a0 34       	cpi	r26, 0x40	; 64
   c6:	b2 07       	cpc	r27, r18
   c8:	e1 f7       	brne	.-8      	; 0xc2 <.do_clear_bss_loop>
-  ca:	c0 d0       	rcall	.+384    	; 0x24c <main>
-  cc:	64 c1       	rjmp	.+712    	; 0x396 <_exit>
+  ca:	77 d1       	rcall	.+750    	; 0x3ba <main>
+  cc:	89 c2       	rjmp	.+1298   	; 0x5e0 <_exit>
 
 000000ce <__bad_interrupt>:
   ce:	98 cf       	rjmp	.-208    	; 0x0 <__vectors>
@@ -217,7 +217,7 @@ ISR(ADC_vect){
  120:	30 91 79 00 	lds	r19, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7e0079>
  124:	ee 0f       	add	r30, r30
  126:	ff 1f       	adc	r31, r31
- 128:	ee 5c       	subi	r30, 0xCE	; 206
+ 128:	e4 5c       	subi	r30, 0xC4	; 196
  12a:	fe 4f       	sbci	r31, 0xFE	; 254
  12c:	31 83       	std	Z+1, r19	; 0x01
  12e:	20 83       	st	Z, r18
@@ -264,355 +264,712 @@ ISR(ADC_vect){
  16c:	1f 90       	pop	r1
  16e:	18 95       	reti
 
-00000170 <fuse_read_out>:
+00000170 <adc_get>:
+
+// getter for each adc var
+uint16_t adc_get(uint8_t adc){
+	return adc_values[adc];
+ 170:	e8 2f       	mov	r30, r24
+ 172:	f0 e0       	ldi	r31, 0x00	; 0
+ 174:	ee 0f       	add	r30, r30
+ 176:	ff 1f       	adc	r31, r31
+ 178:	e4 5c       	subi	r30, 0xC4	; 196
+ 17a:	fe 4f       	sbci	r31, 0xFE	; 254
+}
+ 17c:	80 81       	ld	r24, Z
+ 17e:	91 81       	ldd	r25, Z+1	; 0x01
+ 180:	08 95       	ret
+
+00000182 <can_check_free>:
+		CANPAGE = (to_receive->mob_number << MOBNB0) | (1 << AINC) | byte;
+		data[byte] = CANMSG;
+	}
+	
+	
+}
+ 182:	88 30       	cpi	r24, 0x08	; 8
+ 184:	78 f0       	brcs	.+30     	; 0x1a4 <can_check_free+0x22>
+ 186:	20 91 dd 00 	lds	r18, 0x00DD	; 0x8000dd <__TEXT_REGION_LENGTH__+0x7e00dd>
+ 18a:	90 e0       	ldi	r25, 0x00	; 0
+ 18c:	08 97       	sbiw	r24, 0x08	; 8
+ 18e:	30 e0       	ldi	r19, 0x00	; 0
+ 190:	02 c0       	rjmp	.+4      	; 0x196 <can_check_free+0x14>
+ 192:	35 95       	asr	r19
+ 194:	27 95       	ror	r18
+ 196:	8a 95       	dec	r24
+ 198:	e2 f7       	brpl	.-8      	; 0x192 <can_check_free+0x10>
+ 19a:	81 e0       	ldi	r24, 0x01	; 1
+ 19c:	20 ff       	sbrs	r18, 0
+ 19e:	0d c0       	rjmp	.+26     	; 0x1ba <can_check_free+0x38>
+ 1a0:	80 e0       	ldi	r24, 0x00	; 0
+ 1a2:	08 95       	ret
+ 1a4:	20 91 dc 00 	lds	r18, 0x00DC	; 0x8000dc <__TEXT_REGION_LENGTH__+0x7e00dc>
+ 1a8:	30 e0       	ldi	r19, 0x00	; 0
+ 1aa:	02 c0       	rjmp	.+4      	; 0x1b0 <can_check_free+0x2e>
+ 1ac:	35 95       	asr	r19
+ 1ae:	27 95       	ror	r18
+ 1b0:	8a 95       	dec	r24
+ 1b2:	e2 f7       	brpl	.-8      	; 0x1ac <can_check_free+0x2a>
+ 1b4:	81 e0       	ldi	r24, 0x01	; 1
+ 1b6:	20 fd       	sbrc	r18, 0
+ 1b8:	80 e0       	ldi	r24, 0x00	; 0
+ 1ba:	08 95       	ret
+
+000001bc <can_cfg>:
+ 1bc:	10 92 d8 00 	sts	0x00D8, r1	; 0x8000d8 <__TEXT_REGION_LENGTH__+0x7e00d8>
+ 1c0:	40 e0       	ldi	r20, 0x00	; 0
+ 1c2:	29 c0       	rjmp	.+82     	; 0x216 <can_cfg+0x5a>
+ 1c4:	80 e1       	ldi	r24, 0x10	; 16
+ 1c6:	48 9f       	mul	r20, r24
+ 1c8:	90 01       	movw	r18, r0
+ 1ca:	11 24       	eor	r1, r1
+ 1cc:	82 2f       	mov	r24, r18
+ 1ce:	88 60       	ori	r24, 0x08	; 8
+ 1d0:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7e00ed>
+ 1d4:	10 92 ee 00 	sts	0x00EE, r1	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7e00ee>
+ 1d8:	10 92 ef 00 	sts	0x00EF, r1	; 0x8000ef <__TEXT_REGION_LENGTH__+0x7e00ef>
+ 1dc:	10 92 f0 00 	sts	0x00F0, r1	; 0x8000f0 <__TEXT_REGION_LENGTH__+0x7e00f0>
+ 1e0:	10 92 f1 00 	sts	0x00F1, r1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7e00f1>
+ 1e4:	10 92 f2 00 	sts	0x00F2, r1	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7e00f2>
+ 1e8:	10 92 f3 00 	sts	0x00F3, r1	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7e00f3>
+ 1ec:	10 92 f4 00 	sts	0x00F4, r1	; 0x8000f4 <__TEXT_REGION_LENGTH__+0x7e00f4>
+ 1f0:	10 92 f5 00 	sts	0x00F5, r1	; 0x8000f5 <__TEXT_REGION_LENGTH__+0x7e00f5>
+ 1f4:	10 92 f6 00 	sts	0x00F6, r1	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7e00f6>
+ 1f8:	10 92 f7 00 	sts	0x00F7, r1	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7e00f7>
+ 1fc:	80 e0       	ldi	r24, 0x00	; 0
+ 1fe:	08 c0       	rjmp	.+16     	; 0x210 <can_cfg+0x54>
+ 200:	98 2f       	mov	r25, r24
+ 202:	92 2b       	or	r25, r18
+ 204:	98 60       	ori	r25, 0x08	; 8
+ 206:	90 93 ed 00 	sts	0x00ED, r25	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7e00ed>
+ 20a:	10 92 fa 00 	sts	0x00FA, r1	; 0x8000fa <__TEXT_REGION_LENGTH__+0x7e00fa>
+ 20e:	8f 5f       	subi	r24, 0xFF	; 255
+ 210:	88 30       	cpi	r24, 0x08	; 8
+ 212:	b0 f3       	brcs	.-20     	; 0x200 <can_cfg+0x44>
+ 214:	4f 5f       	subi	r20, 0xFF	; 255
+ 216:	4f 30       	cpi	r20, 0x0F	; 15
+ 218:	a8 f2       	brcs	.-86     	; 0x1c4 <can_cfg+0x8>
+ 21a:	82 e0       	ldi	r24, 0x02	; 2
+ 21c:	80 93 e2 00 	sts	0x00E2, r24	; 0x8000e2 <__TEXT_REGION_LENGTH__+0x7e00e2>
+ 220:	8c e0       	ldi	r24, 0x0C	; 12
+ 222:	80 93 e3 00 	sts	0x00E3, r24	; 0x8000e3 <__TEXT_REGION_LENGTH__+0x7e00e3>
+ 226:	87 e3       	ldi	r24, 0x37	; 55
+ 228:	80 93 e4 00 	sts	0x00E4, r24	; 0x8000e4 <__TEXT_REGION_LENGTH__+0x7e00e4>
+ 22c:	10 92 db 00 	sts	0x00DB, r1	; 0x8000db <__TEXT_REGION_LENGTH__+0x7e00db>
+ 230:	e8 ed       	ldi	r30, 0xD8	; 216
+ 232:	f0 e0       	ldi	r31, 0x00	; 0
+ 234:	80 81       	ld	r24, Z
+ 236:	82 60       	ori	r24, 0x02	; 2
+ 238:	80 83       	st	Z, r24
+ 23a:	08 95       	ret
+
+0000023c <can_tx>:
+void can_tx(struct CAN_MOB *to_send, uint8_t *data){
+ 23c:	cf 93       	push	r28
+ 23e:	df 93       	push	r29
+ 240:	ec 01       	movw	r28, r24
+	
+	for(uint8_t byte = 0; byte <8; byte++){
+ 242:	20 e0       	ldi	r18, 0x00	; 0
+ 244:	10 c0       	rjmp	.+32     	; 0x266 <can_tx+0x2a>
+		CANPAGE = (to_send->mob_number << MOBNB0) | (1 << AINC) | byte;
+ 246:	8a 81       	ldd	r24, Y+2	; 0x02
+ 248:	30 e1       	ldi	r19, 0x10	; 16
+ 24a:	83 9f       	mul	r24, r19
+ 24c:	c0 01       	movw	r24, r0
+ 24e:	11 24       	eor	r1, r1
+ 250:	82 2b       	or	r24, r18
+ 252:	88 60       	ori	r24, 0x08	; 8
+ 254:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7e00ed>
+		CANMSG = data[byte];
+ 258:	fb 01       	movw	r30, r22
+ 25a:	e2 0f       	add	r30, r18
+ 25c:	f1 1d       	adc	r31, r1
+ 25e:	80 81       	ld	r24, Z
+ 260:	80 93 fa 00 	sts	0x00FA, r24	; 0x8000fa <__TEXT_REGION_LENGTH__+0x7e00fa>
+	
+	
+}
+void can_tx(struct CAN_MOB *to_send, uint8_t *data){
+	
+	for(uint8_t byte = 0; byte <8; byte++){
+ 264:	2f 5f       	subi	r18, 0xFF	; 255
+ 266:	28 30       	cpi	r18, 0x08	; 8
+ 268:	70 f3       	brcs	.-36     	; 0x246 <can_tx+0xa>
+		CANPAGE = (to_send->mob_number << MOBNB0) | (1 << AINC) | byte;
+		CANMSG = data[byte];
+	}
+	
+	CANPAGE = to_send->mob_number << MOBNB0;
+ 26a:	8a 81       	ldd	r24, Y+2	; 0x02
+ 26c:	82 95       	swap	r24
+ 26e:	80 7f       	andi	r24, 0xF0	; 240
+ 270:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7e00ed>
+	if (can_check_free(to_send->mob_number)){
+ 274:	8a 81       	ldd	r24, Y+2	; 0x02
+ 276:	85 df       	rcall	.-246    	; 0x182 <can_check_free>
+ 278:	88 23       	and	r24, r24
+ 27a:	09 f1       	breq	.+66     	; 0x2be <can_tx+0x82>
+		CANSTMOB = 0;
+ 27c:	ee ee       	ldi	r30, 0xEE	; 238
+ 27e:	f0 e0       	ldi	r31, 0x00	; 0
+ 280:	10 82       	st	Z, r1
+		CANIDT1 = to_send->mob_id>>3;
+ 282:	88 81       	ld	r24, Y
+ 284:	86 95       	lsr	r24
+ 286:	86 95       	lsr	r24
+ 288:	86 95       	lsr	r24
+ 28a:	80 93 f3 00 	sts	0x00F3, r24	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7e00f3>
+		CANIDT2 = (to_send->mob_id << 5) & 0b11100000;
+ 28e:	88 81       	ld	r24, Y
+ 290:	20 e2       	ldi	r18, 0x20	; 32
+ 292:	82 9f       	mul	r24, r18
+ 294:	c0 01       	movw	r24, r0
+ 296:	11 24       	eor	r1, r1
+ 298:	80 93 f2 00 	sts	0x00F2, r24	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7e00f2>
+		CANIDT3 = 0;
+ 29c:	10 92 f1 00 	sts	0x00F1, r1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7e00f1>
+		CANIDT4 = 0;
+ 2a0:	10 92 f0 00 	sts	0x00F0, r1	; 0x8000f0 <__TEXT_REGION_LENGTH__+0x7e00f0>
+		CANIDM1 = 0; //0b11111111;
+ 2a4:	10 92 f7 00 	sts	0x00F7, r1	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7e00f7>
+		CANIDM2 = 0; //0b11100000;
+ 2a8:	10 92 f6 00 	sts	0x00F6, r1	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7e00f6>
+		CANIDM3 = 0;
+ 2ac:	10 92 f5 00 	sts	0x00F5, r1	; 0x8000f5 <__TEXT_REGION_LENGTH__+0x7e00f5>
+		CANIDM4 = 0;
+ 2b0:	10 92 f4 00 	sts	0x00F4, r1	; 0x8000f4 <__TEXT_REGION_LENGTH__+0x7e00f4>
+		CANSTMOB = 0;
+ 2b4:	10 82       	st	Z, r1
+		CANCDMOB = (1<<CONMOB0) | 1 << DLC3;
+ 2b6:	88 e4       	ldi	r24, 0x48	; 72
+ 2b8:	80 93 ef 00 	sts	0x00EF, r24	; 0x8000ef <__TEXT_REGION_LENGTH__+0x7e00ef>
+		CANSTMOB = 0;
+ 2bc:	10 82       	st	Z, r1
+	}
+	
+}
+ 2be:	df 91       	pop	r29
+ 2c0:	cf 91       	pop	r28
+ 2c2:	08 95       	ret
+
+000002c4 <fuse_read_out>:
 
 
 uint16_t fuse_read_out(){
 	//shifting bits so  that an input in the register is always gonna be read as 1 (1 means a Fuse is in, 0 means a fuse is out), otherwise a Fuse 0b00000010 is a decimal 2
 																												// with the  shit operation 0b00000010>>1 is a decimal 1 (0b00000001)
 	FRO_Aim_EVO			=	(PINA & 0b00000001); //no need to shift 
- 170:	80 b1       	in	r24, 0x00	; 0
- 172:	81 70       	andi	r24, 0x01	; 1
- 174:	80 93 2a 01 	sts	0x012A, r24	; 0x80012a <FRO_Aim_EVO>
+ 2c4:	40 b1       	in	r20, 0x00	; 0
+ 2c6:	84 2f       	mov	r24, r20
+ 2c8:	81 70       	andi	r24, 0x01	; 1
+ 2ca:	80 93 2a 01 	sts	0x012A, r24	; 0x80012a <FRO_Aim_EVO>
 	FRO_Shutdown		=	(PINA & 0b00000010)>>1;  //FRO_Shutdown at PA1, 1st bit of that register, therefore we shift the 1st bit to the 0th bit
- 178:	80 b1       	in	r24, 0x00	; 0
- 17a:	82 70       	andi	r24, 0x02	; 2
- 17c:	90 e0       	ldi	r25, 0x00	; 0
- 17e:	95 95       	asr	r25
- 180:	87 95       	ror	r24
- 182:	80 93 29 01 	sts	0x0129, r24	; 0x800129 <FRO_Shutdown>
-	FRO_Brakelight		=	(PINA & 0b00000100)>>2;  //alternative way of writing this is PINA & (1<<PB2), meaning it reads out the state of the register at the bit of PIN 2 (2nd bit) (the bit still is not shifted in this form => (PINA & (1<<PB2))>>2 ?)
- 186:	80 b1       	in	r24, 0x00	; 0
- 188:	84 70       	andi	r24, 0x04	; 4
- 18a:	90 e0       	ldi	r25, 0x00	; 0
- 18c:	95 95       	asr	r25
- 18e:	87 95       	ror	r24
- 190:	95 95       	asr	r25
- 192:	87 95       	ror	r24
- 194:	80 93 28 01 	sts	0x0128, r24	; 0x800128 <FRO_Brakelight>
+ 2ce:	40 b1       	in	r20, 0x00	; 0
+ 2d0:	42 70       	andi	r20, 0x02	; 2
+ 2d2:	50 e0       	ldi	r21, 0x00	; 0
+ 2d4:	55 95       	asr	r21
+ 2d6:	47 95       	ror	r20
+ 2d8:	40 93 29 01 	sts	0x0129, r20	; 0x800129 <FRO_Shutdown>
+	FRO_Brakelight		=	(PINA & 0b00000100)>>2;  //alternative way of writing this is PINA & (1<<PB2), meaning it reads out the state of the register at the bit of PIN 2 (2nd bit) (the bit still is not shifted in this form => (PINA & (1<<PB2))>>2)
+ 2dc:	20 b1       	in	r18, 0x00	; 0
+ 2de:	24 70       	andi	r18, 0x04	; 4
+ 2e0:	30 e0       	ldi	r19, 0x00	; 0
+ 2e2:	35 95       	asr	r19
+ 2e4:	27 95       	ror	r18
+ 2e6:	35 95       	asr	r19
+ 2e8:	27 95       	ror	r18
+ 2ea:	20 93 28 01 	sts	0x0128, r18	; 0x800128 <FRO_Brakelight>
 	FRO_24V				=	(PINA & 0b00001000)>>3;
- 198:	80 b1       	in	r24, 0x00	; 0
- 19a:	88 70       	andi	r24, 0x08	; 8
- 19c:	90 e0       	ldi	r25, 0x00	; 0
- 19e:	95 95       	asr	r25
- 1a0:	87 95       	ror	r24
- 1a2:	95 95       	asr	r25
- 1a4:	87 95       	ror	r24
- 1a6:	95 95       	asr	r25
- 1a8:	87 95       	ror	r24
- 1aa:	80 93 27 01 	sts	0x0127, r24	; 0x800127 <FRO_24V>
+ 2ee:	60 b1       	in	r22, 0x00	; 0
+ 2f0:	68 70       	andi	r22, 0x08	; 8
+ 2f2:	70 e0       	ldi	r23, 0x00	; 0
+ 2f4:	75 95       	asr	r23
+ 2f6:	67 95       	ror	r22
+ 2f8:	75 95       	asr	r23
+ 2fa:	67 95       	ror	r22
+ 2fc:	75 95       	asr	r23
+ 2fe:	67 95       	ror	r22
+ 300:	60 93 27 01 	sts	0x0127, r22	; 0x800127 <FRO_24V>
 	
 	FRO_HV_Distri		=	(PINE & 0b00000001);
- 1ae:	8c b1       	in	r24, 0x0c	; 12
- 1b0:	81 70       	andi	r24, 0x01	; 1
- 1b2:	80 93 26 01 	sts	0x0126, r24	; 0x800126 <FRO_HV_Distri>
+ 304:	9c b1       	in	r25, 0x0c	; 12
+ 306:	91 70       	andi	r25, 0x01	; 1
+ 308:	90 93 26 01 	sts	0x0126, r25	; 0x800126 <FRO_HV_Distri>
 	FRO_TSAL			=	(PINE & 0b00000010)>>1;
- 1b6:	8c b1       	in	r24, 0x0c	; 12
- 1b8:	82 70       	andi	r24, 0x02	; 2
- 1ba:	90 e0       	ldi	r25, 0x00	; 0
- 1bc:	95 95       	asr	r25
- 1be:	87 95       	ror	r24
- 1c0:	80 93 25 01 	sts	0x0125, r24	; 0x800125 <FRO_TSAL>
+ 30c:	6c b1       	in	r22, 0x0c	; 12
+ 30e:	62 70       	andi	r22, 0x02	; 2
+ 310:	70 e0       	ldi	r23, 0x00	; 0
+ 312:	75 95       	asr	r23
+ 314:	67 95       	ror	r22
+ 316:	60 93 25 01 	sts	0x0125, r22	; 0x800125 <FRO_TSAL>
 	FRO_TSAC			=	(PINE & 0b00000100)>>2;
- 1c4:	8c b1       	in	r24, 0x0c	; 12
- 1c6:	84 70       	andi	r24, 0x04	; 4
- 1c8:	90 e0       	ldi	r25, 0x00	; 0
- 1ca:	95 95       	asr	r25
- 1cc:	87 95       	ror	r24
- 1ce:	95 95       	asr	r25
- 1d0:	87 95       	ror	r24
- 1d2:	80 93 24 01 	sts	0x0124, r24	; 0x800124 <FRO_TSAC>
+ 31a:	6c b1       	in	r22, 0x0c	; 12
+ 31c:	64 70       	andi	r22, 0x04	; 4
+ 31e:	70 e0       	ldi	r23, 0x00	; 0
+ 320:	75 95       	asr	r23
+ 322:	67 95       	ror	r22
+ 324:	75 95       	asr	r23
+ 326:	67 95       	ror	r22
+ 328:	60 93 24 01 	sts	0x0124, r22	; 0x800124 <FRO_TSAC>
 	FRO_INV0			=	(PINE & 0b00001000)>>3;
- 1d6:	8c b1       	in	r24, 0x0c	; 12
- 1d8:	88 70       	andi	r24, 0x08	; 8
- 1da:	90 e0       	ldi	r25, 0x00	; 0
- 1dc:	95 95       	asr	r25
- 1de:	87 95       	ror	r24
- 1e0:	95 95       	asr	r25
- 1e2:	87 95       	ror	r24
- 1e4:	95 95       	asr	r25
- 1e6:	87 95       	ror	r24
- 1e8:	80 93 23 01 	sts	0x0123, r24	; 0x800123 <FRO_INV0>
+ 32c:	6c b1       	in	r22, 0x0c	; 12
+ 32e:	68 70       	andi	r22, 0x08	; 8
+ 330:	70 e0       	ldi	r23, 0x00	; 0
+ 332:	75 95       	asr	r23
+ 334:	67 95       	ror	r22
+ 336:	75 95       	asr	r23
+ 338:	67 95       	ror	r22
+ 33a:	75 95       	asr	r23
+ 33c:	67 95       	ror	r22
+ 33e:	60 93 23 01 	sts	0x0123, r22	; 0x800123 <FRO_INV0>
 	FRO_INV1			=	(PINE & 0b00010000)>>4;
- 1ec:	8c b1       	in	r24, 0x0c	; 12
- 1ee:	80 71       	andi	r24, 0x10	; 16
- 1f0:	90 e0       	ldi	r25, 0x00	; 0
- 1f2:	95 95       	asr	r25
- 1f4:	87 95       	ror	r24
- 1f6:	95 95       	asr	r25
- 1f8:	87 95       	ror	r24
- 1fa:	95 95       	asr	r25
- 1fc:	87 95       	ror	r24
- 1fe:	95 95       	asr	r25
- 200:	87 95       	ror	r24
- 202:	80 93 22 01 	sts	0x0122, r24	; 0x800122 <FRO_INV1>
+ 342:	6c b1       	in	r22, 0x0c	; 12
+ 344:	60 71       	andi	r22, 0x10	; 16
+ 346:	70 e0       	ldi	r23, 0x00	; 0
+ 348:	75 95       	asr	r23
+ 34a:	67 95       	ror	r22
+ 34c:	75 95       	asr	r23
+ 34e:	67 95       	ror	r22
+ 350:	75 95       	asr	r23
+ 352:	67 95       	ror	r22
+ 354:	75 95       	asr	r23
+ 356:	67 95       	ror	r22
+ 358:	60 93 22 01 	sts	0x0122, r22	; 0x800122 <FRO_INV1>
 	FRO_FAN_PU_Sup		=	(PINE & 0b00100000)>>5;
- 206:	8c b1       	in	r24, 0x0c	; 12
- 208:	80 72       	andi	r24, 0x20	; 32
- 20a:	90 e0       	ldi	r25, 0x00	; 0
- 20c:	95 95       	asr	r25
- 20e:	87 95       	ror	r24
- 210:	95 95       	asr	r25
- 212:	87 95       	ror	r24
- 214:	95 95       	asr	r25
- 216:	87 95       	ror	r24
- 218:	95 95       	asr	r25
- 21a:	87 95       	ror	r24
- 21c:	95 95       	asr	r25
- 21e:	87 95       	ror	r24
- 220:	80 93 21 01 	sts	0x0121, r24	; 0x800121 <FRO_FAN_PU_Sup>
+ 35c:	6c b1       	in	r22, 0x0c	; 12
+ 35e:	60 72       	andi	r22, 0x20	; 32
+ 360:	70 e0       	ldi	r23, 0x00	; 0
+ 362:	75 95       	asr	r23
+ 364:	67 95       	ror	r22
+ 366:	75 95       	asr	r23
+ 368:	67 95       	ror	r22
+ 36a:	75 95       	asr	r23
+ 36c:	67 95       	ror	r22
+ 36e:	75 95       	asr	r23
+ 370:	67 95       	ror	r22
+ 372:	75 95       	asr	r23
+ 374:	67 95       	ror	r22
+ 376:	60 93 21 01 	sts	0x0121, r22	; 0x800121 <FRO_FAN_PU_Sup>
 	FRO_FAN_ACC_Sup		=	(PINE & 0b01000000)>>6;
- 224:	8c b1       	in	r24, 0x0c	; 12
- 226:	80 74       	andi	r24, 0x40	; 64
- 228:	90 e0       	ldi	r25, 0x00	; 0
- 22a:	08 2e       	mov	r0, r24
- 22c:	89 2f       	mov	r24, r25
- 22e:	00 0c       	add	r0, r0
- 230:	88 1f       	adc	r24, r24
- 232:	99 0b       	sbc	r25, r25
- 234:	00 0c       	add	r0, r0
- 236:	88 1f       	adc	r24, r24
- 238:	99 1f       	adc	r25, r25
- 23a:	80 93 20 01 	sts	0x0120, r24	; 0x800120 <FRO_FAN_ACC_Sup>
+ 37a:	6c b1       	in	r22, 0x0c	; 12
+ 37c:	60 74       	andi	r22, 0x40	; 64
+ 37e:	70 e0       	ldi	r23, 0x00	; 0
+ 380:	06 2e       	mov	r0, r22
+ 382:	67 2f       	mov	r22, r23
+ 384:	00 0c       	add	r0, r0
+ 386:	66 1f       	adc	r22, r22
+ 388:	77 0b       	sbc	r23, r23
+ 38a:	00 0c       	add	r0, r0
+ 38c:	66 1f       	adc	r22, r22
+ 38e:	77 1f       	adc	r23, r23
+ 390:	60 93 20 01 	sts	0x0120, r22	; 0x800120 <FRO_FAN_ACC_Sup>
 	FRO_WP_Sup			=	(PINE & 0b10000000)>>7;
- 23e:	8c b1       	in	r24, 0x0c	; 12
- 240:	88 1f       	adc	r24, r24
- 242:	88 27       	eor	r24, r24
- 244:	88 1f       	adc	r24, r24
- 246:	80 93 1f 01 	sts	0x011F, r24	; 0x80011f <FRO_WP_Sup>
+ 394:	9c b1       	in	r25, 0x0c	; 12
+ 396:	99 1f       	adc	r25, r25
+ 398:	99 27       	eor	r25, r25
+ 39a:	99 1f       	adc	r25, r25
+ 39c:	90 93 1f 01 	sts	0x011F, r25	; 0x80011f <FRO_WP_Sup>
+	
+//code that sends the pin states using CAN comes here? just throw all the data into an Integer that will later be sent using CAN
+uint8_t Fuse_States = 0;
+
  /* set bits of this integer to correspond with our 11 fuses*/
- Fuse_States |= (FRO_Aim_EVO<<0) | (FRO_Shutdown<<1) | (FRO_Brakelight<<2/*>>0b0000000000000010*/) | (FRO_24V>>3) | (FRO_HV_Distri>>4) | (FRO_TSAL>>5) | (FRO_TSAC>>6) | (FRO_INV0>>7) | (FRO_INV1>>8) | (FRO_FAN_PU_Sup>>9) | (FRO_FAN_ACC_Sup>>10) | (FRO_WP_Sup>>11);
+Fuse_States |= (FRO_Aim_EVO<<0) | (FRO_Shutdown<<1) | (FRO_Brakelight<<2/*>>0b0000000000000010*/) | (FRO_24V>>3) | (FRO_HV_Distri>>4) | (FRO_TSAL>>5) | (FRO_TSAC>>6) | (FRO_INV0>>7) | (FRO_INV1>>8) | (FRO_FAN_PU_Sup>>9) | (FRO_FAN_ACC_Sup>>10) | (FRO_WP_Sup>>11);
+ 3a0:	50 e0       	ldi	r21, 0x00	; 0
+ 3a2:	44 0f       	add	r20, r20
+ 3a4:	55 1f       	adc	r21, r21
+ 3a6:	30 e0       	ldi	r19, 0x00	; 0
+ 3a8:	22 0f       	add	r18, r18
+ 3aa:	33 1f       	adc	r19, r19
+ 3ac:	22 0f       	add	r18, r18
+ 3ae:	33 1f       	adc	r19, r19
+ 3b0:	48 2b       	or	r20, r24
+ 3b2:	84 2f       	mov	r24, r20
+ 3b4:	82 2b       	or	r24, r18
+
 /* all fuses being a logical 1 (fuse is IN) give us the following value : 0b0000011111111111 = 11d , because we shifted fuse bits in the read function, we can just 
 assign those 1s to any bit within our 16 bit integer, just like we do with registers*/
+return Fuse_States;
 
- 24a:	08 95       	ret
+ 3b6:	90 e0       	ldi	r25, 0x00	; 0
+ 3b8:	08 95       	ret
 
-0000024c <main>:
+000003ba <main>:
+uint8_t song[29];
+uint8_t note_next ;
+
 
 
 int main(void){
+ 3ba:	cf 93       	push	r28
+ 3bc:	df 93       	push	r29
+ 3be:	cd b7       	in	r28, 0x3d	; 61
+ 3c0:	de b7       	in	r29, 0x3e	; 62
+ 3c2:	2b 97       	sbiw	r28, 0x0b	; 11
+ 3c4:	0f b6       	in	r0, 0x3f	; 63
+ 3c6:	f8 94       	cli
+ 3c8:	de bf       	out	0x3e, r29	; 62
+ 3ca:	0f be       	out	0x3f, r0	; 63
+ 3cc:	cd bf       	out	0x3d, r28	; 61
 	
-	
+	can_cfg();
+ 3ce:	f6 de       	rcall	.-532    	; 0x1bc <can_cfg>
+	//can_check_free();
+
 	fuse_read_out();
- 24c:	91 df       	rcall	.-222    	; 0x170 <fuse_read_out>
-	port_config(); //   => this function messes up the Interrupts and makes it impossible do perform the ADC conversion , correction, the DDRF is the issue here
- 24e:	42 d0       	rcall	.+132    	; 0x2d4 <port_config>
+ 3d0:	79 df       	rcall	.-270    	; 0x2c4 <fuse_read_out>
+	port_config(); 
+ 3d2:	77 d0       	rcall	.+238    	; 0x4c2 <port_config>
 	sys_timer_config();
- 250:	4a d0       	rcall	.+148    	; 0x2e6 <sys_timer_config>
+ 3d4:	7f d0       	rcall	.+254    	; 0x4d4 <sys_timer_config>
+ 3d6:	7c de       	rcall	.-776    	; 0xd0 <adc_config>
 	adc_config();
- 252:	3e df       	rcall	.-388    	; 0xd0 <adc_config>
- 254:	80 d0       	rcall	.+256    	; 0x356 <timer2_config>
+ 3d8:	b5 d0       	rcall	.+362    	; 0x544 <timer2_config>
+ 3da:	78 94       	sei
 	timer2_config();
- 256:	78 94       	sei
- 258:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 3dc:	19 82       	std	Y+1, r1	; 0x01
+ 3de:	1a 82       	std	Y+2, r1	; 0x02
+	
+	sei();
+ 3e0:	1b 82       	std	Y+3, r1	; 0x03
+
+
+	struct CAN_MOB can_FB_mob;//data to send  FB = fusebox, outgoing fusebox message with its 8 dataBYTES
+	can_FB_mob.mob_id = 0;
+ 3e2:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__data_start>
+	can_FB_mob.mob_idmask = 0;
+	can_FB_mob.mob_number = 0;
+ 3e6:	90 e0       	ldi	r25, 0x00	; 0
 
 	while (1)
 	{
 		
-		
-		if (sys_time >= heart_beat){ 
- 25c:	90 e0       	ldi	r25, 0x00	; 0
- 25e:	a0 e0       	ldi	r26, 0x00	; 0
- 260:	b0 e0       	ldi	r27, 0x00	; 0
- 262:	40 91 2b 01 	lds	r20, 0x012B	; 0x80012b <sys_time>
- 266:	50 91 2c 01 	lds	r21, 0x012C	; 0x80012c <sys_time+0x1>
- 26a:	60 91 2d 01 	lds	r22, 0x012D	; 0x80012d <sys_time+0x2>
- 26e:	70 91 2e 01 	lds	r23, 0x012E	; 0x80012e <sys_time+0x3>
- 272:	48 17       	cp	r20, r24
- 274:	59 07       	cpc	r21, r25
- 276:	6a 07       	cpc	r22, r26
- 278:	7b 07       	cpc	r23, r27
- 27a:	70 f3       	brcs	.-36     	; 0x258 <main+0xc>
- 27c:	42 d0       	rcall	.+132    	; 0x302 <sys_tick_heart>
+		//duty cycle!!!
+		if (sys_time >= heart_beat)		{ 
+ 3e8:	a0 e0       	ldi	r26, 0x00	; 0
+ 3ea:	b0 e0       	ldi	r27, 0x00	; 0
+ 3ec:	40 91 2f 01 	lds	r20, 0x012F	; 0x80012f <sys_time>
+ 3f0:	50 91 30 01 	lds	r21, 0x0130	; 0x800130 <sys_time+0x1>
+ 3f4:	60 91 31 01 	lds	r22, 0x0131	; 0x800131 <sys_time+0x2>
+ 3f8:	70 91 32 01 	lds	r23, 0x0132	; 0x800132 <sys_time+0x3>
+ 3fc:	48 17       	cp	r20, r24
+ 3fe:	59 07       	cpc	r21, r25
+ 400:	6a 07       	cpc	r22, r26
+ 402:	7b 07       	cpc	r23, r27
+ 404:	28 f1       	brcs	.+74     	; 0x450 <__LOCK_REGION_LENGTH__+0x50>
+ 406:	74 d0       	rcall	.+232    	; 0x4f0 <sys_tick_heart>
+ 408:	10 92 2f 01 	sts	0x012F, r1	; 0x80012f <sys_time>
 			sys_tick_heart();
- 27e:	10 92 2b 01 	sts	0x012B, r1	; 0x80012b <sys_time>
-			//PORTB ^= (1<<PB4);
+ 40c:	10 92 30 01 	sts	0x0130, r1	; 0x800130 <sys_time+0x1>
+			//PORTB ^= (1<<PB4); 
 			sys_time = 0;	
- 282:	10 92 2c 01 	sts	0x012C, r1	; 0x80012c <sys_time+0x1>
- 286:	10 92 2d 01 	sts	0x012D, r1	; 0x80012d <sys_time+0x2>
- 28a:	10 92 2e 01 	sts	0x012E, r1	; 0x80012e <sys_time+0x3>
- 28e:	e0 91 2f 01 	lds	r30, 0x012F	; 0x80012f <note_next>
+ 410:	10 92 31 01 	sts	0x0131, r1	; 0x800131 <sys_time+0x2>
+ 414:	10 92 32 01 	sts	0x0132, r1	; 0x800132 <sys_time+0x3>
+ 418:	e0 91 33 01 	lds	r30, 0x0133	; 0x800133 <note_next>
+ 41c:	f0 e0       	ldi	r31, 0x00	; 0
 			OCR2A = song[note_next];
- 292:	f0 e0       	ldi	r31, 0x00	; 0
- 294:	ef 5f       	subi	r30, 0xFF	; 255
- 296:	fe 4f       	sbci	r31, 0xFE	; 254
- 298:	80 81       	ld	r24, Z
- 29a:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <__TEXT_REGION_LENGTH__+0x7e00b3>
- 29e:	80 91 30 01 	lds	r24, 0x0130	; 0x800130 <note_length>
+ 41e:	ef 5f       	subi	r30, 0xFF	; 255
+ 420:	fe 4f       	sbci	r31, 0xFE	; 254
+ 422:	80 81       	ld	r24, Z
+ 424:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <__TEXT_REGION_LENGTH__+0x7e00b3>
+ 428:	80 91 34 01 	lds	r24, 0x0134	; 0x800134 <note_length>
+ 42c:	8f 5f       	subi	r24, 0xFF	; 255
 	
 	note_length++;
- 2a2:	90 91 31 01 	lds	r25, 0x0131	; 0x800131 <note_length+0x1>
- 2a6:	01 96       	adiw	r24, 0x01	; 1
- 2a8:	90 93 31 01 	sts	0x0131, r25	; 0x800131 <note_length+0x1>
- 2ac:	80 93 30 01 	sts	0x0130, r24	; 0x800130 <note_length>
- 2b0:	c3 97       	sbiw	r24, 0x33	; 51
- 2b2:	49 f4       	brne	.+18     	; 0x2c6 <main+0x7a>
+ 42e:	80 93 34 01 	sts	0x0134, r24	; 0x800134 <note_length>
+ 432:	83 33       	cpi	r24, 0x33	; 51
+ 434:	39 f4       	brne	.+14     	; 0x444 <__LOCK_REGION_LENGTH__+0x44>
+ 436:	10 92 34 01 	sts	0x0134, r1	; 0x800134 <note_length>
 
 	if (note_length == 51)
- 2b4:	10 92 31 01 	sts	0x0131, r1	; 0x800131 <note_length+0x1>
+ 43a:	80 91 33 01 	lds	r24, 0x0133	; 0x800133 <note_next>
 	{
 		note_length = 0;
- 2b8:	10 92 30 01 	sts	0x0130, r1	; 0x800130 <note_length>
- 2bc:	80 91 2f 01 	lds	r24, 0x012F	; 0x80012f <note_next>
+ 43e:	8f 5f       	subi	r24, 0xFF	; 255
 		note_next++;	
- 2c0:	8f 5f       	subi	r24, 0xFF	; 255
- 2c2:	80 93 2f 01 	sts	0x012F, r24	; 0x80012f <note_next>
- 2c6:	80 91 2f 01 	lds	r24, 0x012F	; 0x80012f <note_next>
+ 440:	80 93 33 01 	sts	0x0133, r24	; 0x800133 <note_next>
+ 444:	80 91 33 01 	lds	r24, 0x0133	; 0x800133 <note_next>
+ 448:	8d 31       	cpi	r24, 0x1D	; 29
 	}
 		if (note_next == 29)
- 2ca:	8d 31       	cpi	r24, 0x1D	; 29
- 2cc:	29 f6       	brne	.-118    	; 0x258 <main+0xc>
- 2ce:	10 92 2f 01 	sts	0x012F, r1	; 0x80012f <note_next>
-	{
-		note_next = 0;
- 2d2:	c2 cf       	rjmp	.-124    	; 0x258 <main+0xc>
+ 44a:	11 f4       	brne	.+4      	; 0x450 <__LOCK_REGION_LENGTH__+0x50>
+ 44c:	10 92 33 01 	sts	0x0133, r1	; 0x800133 <note_next>
+ 450:	80 91 2f 01 	lds	r24, 0x012F	; 0x80012f <sys_time>
+		{
+			note_next = 0;
+ 454:	90 91 30 01 	lds	r25, 0x0130	; 0x800130 <sys_time+0x1>
+		}
+										}
 
-000002d4 <port_config>:
+	if((sys_time - time_old) >= 10){  //10ms
+ 458:	a0 91 31 01 	lds	r26, 0x0131	; 0x800131 <sys_time+0x2>
+ 45c:	b0 91 32 01 	lds	r27, 0x0132	; 0x800132 <sys_time+0x3>
+ 460:	40 91 2b 01 	lds	r20, 0x012B	; 0x80012b <time_old>
+ 464:	50 91 2c 01 	lds	r21, 0x012C	; 0x80012c <time_old+0x1>
+ 468:	60 91 2d 01 	lds	r22, 0x012D	; 0x80012d <time_old+0x2>
+ 46c:	70 91 2e 01 	lds	r23, 0x012E	; 0x80012e <time_old+0x3>
+ 470:	8c 01       	movw	r16, r24
+ 472:	9d 01       	movw	r18, r26
+ 474:	04 1b       	sub	r16, r20
+ 476:	15 0b       	sbc	r17, r21
+ 478:	26 0b       	sbc	r18, r22
+ 47a:	37 0b       	sbc	r19, r23
+ 47c:	0a 30       	cpi	r16, 0x0A	; 10
+ 47e:	11 05       	cpc	r17, r1
+ 480:	21 05       	cpc	r18, r1
+ 482:	31 05       	cpc	r19, r1
+ 484:	08 f4       	brcc	.+2      	; 0x488 <__LOCK_REGION_LENGTH__+0x88>
+ 486:	ad cf       	rjmp	.-166    	; 0x3e2 <main+0x28>
+ 488:	80 93 2b 01 	sts	0x012B, r24	; 0x80012b <time_old>
+ 48c:	90 93 2c 01 	sts	0x012C, r25	; 0x80012c <time_old+0x1>
+				time_old = sys_time;
+ 490:	a0 93 2d 01 	sts	0x012D, r26	; 0x80012d <time_old+0x2>
+ 494:	b0 93 2e 01 	sts	0x012E, r27	; 0x80012e <time_old+0x3>
+				//time_old_100++; use for a longer loop later
+
+//fuse_read_out()&0xff			// input &0xff gives you the first byte (8bit) (least significant byte)
+//(fuse_read_out()>>8)&0xff		//shifting 1 byte to the right gives us the next 8 bit bundle, now we've read the full 16 bit value
+
+	FB_databytes[0]	= fuse_read_out()&0xff		;			//  lsb
+ 498:	15 df       	rcall	.-470    	; 0x2c4 <fuse_read_out>
+ 49a:	8c 83       	std	Y+4, r24	; 0x04
+	FB_databytes[1]	= (fuse_read_out()>>8)&0xff	;			//  msb
+ 49c:	13 df       	rcall	.-474    	; 0x2c4 <fuse_read_out>
+ 49e:	9d 83       	std	Y+5, r25	; 0x05
+	FB_databytes[2]	= SCI_read_out()			;			// fits in 8 bits
+ 4a0:	71 d0       	rcall	.+226    	; 0x584 <SCI_read_out>
+ 4a2:	8e 83       	std	Y+6, r24	; 0x06
+ 4a4:	80 e0       	ldi	r24, 0x00	; 0
+	FB_databytes[3]	= adc_get(0)				;
+ 4a6:	64 de       	rcall	.-824    	; 0x170 <adc_get>
+ 4a8:	8f 83       	std	Y+7, r24	; 0x07
+ 4aa:	81 e0       	ldi	r24, 0x01	; 1
+	FB_databytes[4]	= adc_get(1)				;  
+ 4ac:	61 de       	rcall	.-830    	; 0x170 <adc_get>
+ 4ae:	88 87       	std	Y+8, r24	; 0x08
+ 4b0:	1a 86       	std	Y+10, r1	; 0x0a
+ 4b2:	1b 86       	std	Y+11, r1	; 0x0b
+	FB_databytes[6]	= 0							;
+ 4b4:	be 01       	movw	r22, r28
+	FB_databytes[7]	= 0							;
+ 4b6:	6c 5f       	subi	r22, 0xFC	; 252
+		
+	
+	can_tx(&can_FB_mob, FB_databytes);  //& is a reference operator 
+ 4b8:	7f 4f       	sbci	r23, 0xFF	; 255
+ 4ba:	ce 01       	movw	r24, r28
+ 4bc:	01 96       	adiw	r24, 0x01	; 1
+ 4be:	be de       	rcall	.-644    	; 0x23c <can_tx>
+ 4c0:	90 cf       	rjmp	.-224    	; 0x3e2 <main+0x28>
+
+000004c2 <port_config>:
 #include <avr/interrupt.h>
 
 volatile unsigned long sys_time = 0;
 
-void port_config(){
+void port_config(){  //0 input, 1 output
 	DDRA = 0;   //Fuse Read Out Inputs
- 2d4:	11 b8       	out	0x01, r1	; 1
-	DDRB = 0 | (1<<PB0) | (1<<PB1) |(1<<PB2) | (1<<PB3) | (1<<PB4); //WP, fan and LED outputs
- 2d6:	8f e1       	ldi	r24, 0x1F	; 31
- 2d8:	84 b9       	out	0x04, r24	; 4
+ 4c2:	11 b8       	out	0x01, r1	; 1
+	DDRB = 0 | (1<<PB0) |(1<<PB2) | (1<<PB3) | (1<<PB4) | (1<<PB5); //WP, fan and LED outputs
+ 4c4:	8d e3       	ldi	r24, 0x3D	; 61
+ 4c6:	84 b9       	out	0x04, r24	; 4
 	DDRC = 0; // Shutdown circuit just like FRO is an input (indicates the state of those pins for debugging purposes)
- 2da:	17 b8       	out	0x07, r1	; 7
+ 4c8:	17 b8       	out	0x07, r1	; 7
 	DDRD = 0 | (1<<PD2) | (1<<PD3) | (1<<PD5) | (1<<PD6); // timer for the buzzer and can outputs
- 2dc:	8c e6       	ldi	r24, 0x6C	; 108
- 2de:	8a b9       	out	0x0a, r24	; 10
+ 4ca:	8c e6       	ldi	r24, 0x6C	; 108
+ 4cc:	8a b9       	out	0x0a, r24	; 10
 	DDRE = 0; //Fuse Read Out Inputs
- 2e0:	1d b8       	out	0x0d, r1	; 13
+ 4ce:	1d b8       	out	0x0d, r1	; 13
 	DDRF = 0; /*| (1<<PF4) | (1<<PF5) | (1<<PF6) | (1<<PF7);*/ // should i set these as output?
- 2e2:	10 ba       	out	0x10, r1	; 16
- 2e4:	08 95       	ret
+ 4d0:	10 ba       	out	0x10, r1	; 16
+ 4d2:	08 95       	ret
 
-000002e6 <sys_timer_config>:
+000004d4 <sys_timer_config>:
 }
 
 void sys_timer_config(){   //all previous software uses a 1ms timer/counter =>CTC with OCR0A=250
 	TCCR0A |= (1<<WGM01);
- 2e6:	84 b5       	in	r24, 0x24	; 36
- 2e8:	88 60       	ori	r24, 0x08	; 8
- 2ea:	84 bd       	out	0x24, r24	; 36
+ 4d4:	84 b5       	in	r24, 0x24	; 36
+ 4d6:	88 60       	ori	r24, 0x08	; 8
+ 4d8:	84 bd       	out	0x24, r24	; 36
 	TCCR0A |= (1<<CS01) | (1<<CS00);
- 2ec:	84 b5       	in	r24, 0x24	; 36
- 2ee:	83 60       	ori	r24, 0x03	; 3
- 2f0:	84 bd       	out	0x24, r24	; 36
+ 4da:	84 b5       	in	r24, 0x24	; 36
+ 4dc:	83 60       	ori	r24, 0x03	; 3
+ 4de:	84 bd       	out	0x24, r24	; 36
 	TIMSK0 |= (1<<OCF0A);  //interrupt flags possible
- 2f2:	ee e6       	ldi	r30, 0x6E	; 110
- 2f4:	f0 e0       	ldi	r31, 0x00	; 0
- 2f6:	80 81       	ld	r24, Z
- 2f8:	82 60       	ori	r24, 0x02	; 2
- 2fa:	80 83       	st	Z, r24
+ 4e0:	ee e6       	ldi	r30, 0x6E	; 110
+ 4e2:	f0 e0       	ldi	r31, 0x00	; 0
+ 4e4:	80 81       	ld	r24, Z
+ 4e6:	82 60       	ori	r24, 0x02	; 2
+ 4e8:	80 83       	st	Z, r24
 	OCR0A = 250; // what timer do we need, btw the compiler doesnt like anything bigger than 300 for some reason (reason is the 2^8 bits = 256)
- 2fc:	8a ef       	ldi	r24, 0xFA	; 250
- 2fe:	87 bd       	out	0x27, r24	; 39
- 300:	08 95       	ret
+ 4ea:	8a ef       	ldi	r24, 0xFA	; 250
+ 4ec:	87 bd       	out	0x27, r24	; 39
+ 4ee:	08 95       	ret
 
-00000302 <sys_tick_heart>:
+000004f0 <sys_tick_heart>:
 }
 
 void sys_tick_heart(){
 	PORTB ^= (1<<PB4); //toggle the Heart led on Pin 4, will be controlled by the super loop in main.c
- 302:	95 b1       	in	r25, 0x05	; 5
- 304:	80 e1       	ldi	r24, 0x10	; 16
- 306:	89 27       	eor	r24, r25
- 308:	85 b9       	out	0x05, r24	; 5
- 30a:	08 95       	ret
+ 4f0:	95 b1       	in	r25, 0x05	; 5
+ 4f2:	80 e1       	ldi	r24, 0x10	; 16
+ 4f4:	89 27       	eor	r24, r25
+ 4f6:	85 b9       	out	0x05, r24	; 5
+ 4f8:	08 95       	ret
 
-0000030c <__vector_16>:
+000004fa <__vector_16>:
 	
 };
 
 ISR(TIMER0_COMP_vect){
- 30c:	1f 92       	push	r1
- 30e:	0f 92       	push	r0
- 310:	0f b6       	in	r0, 0x3f	; 63
- 312:	0f 92       	push	r0
- 314:	11 24       	eor	r1, r1
- 316:	8f 93       	push	r24
- 318:	9f 93       	push	r25
- 31a:	af 93       	push	r26
- 31c:	bf 93       	push	r27
+ 4fa:	1f 92       	push	r1
+ 4fc:	0f 92       	push	r0
+ 4fe:	0f b6       	in	r0, 0x3f	; 63
+ 500:	0f 92       	push	r0
+ 502:	11 24       	eor	r1, r1
+ 504:	8f 93       	push	r24
+ 506:	9f 93       	push	r25
+ 508:	af 93       	push	r26
+ 50a:	bf 93       	push	r27
 	sys_time++;  //system time incremented on each interrupt flag from the CTC compare register => every OCR0A
- 31e:	80 91 2b 01 	lds	r24, 0x012B	; 0x80012b <sys_time>
- 322:	90 91 2c 01 	lds	r25, 0x012C	; 0x80012c <sys_time+0x1>
- 326:	a0 91 2d 01 	lds	r26, 0x012D	; 0x80012d <sys_time+0x2>
- 32a:	b0 91 2e 01 	lds	r27, 0x012E	; 0x80012e <sys_time+0x3>
- 32e:	01 96       	adiw	r24, 0x01	; 1
- 330:	a1 1d       	adc	r26, r1
- 332:	b1 1d       	adc	r27, r1
- 334:	80 93 2b 01 	sts	0x012B, r24	; 0x80012b <sys_time>
- 338:	90 93 2c 01 	sts	0x012C, r25	; 0x80012c <sys_time+0x1>
- 33c:	a0 93 2d 01 	sts	0x012D, r26	; 0x80012d <sys_time+0x2>
- 340:	b0 93 2e 01 	sts	0x012E, r27	; 0x80012e <sys_time+0x3>
- 344:	bf 91       	pop	r27
- 346:	af 91       	pop	r26
- 348:	9f 91       	pop	r25
- 34a:	8f 91       	pop	r24
- 34c:	0f 90       	pop	r0
- 34e:	0f be       	out	0x3f, r0	; 63
- 350:	0f 90       	pop	r0
- 352:	1f 90       	pop	r1
- 354:	18 95       	reti
+ 50c:	80 91 2f 01 	lds	r24, 0x012F	; 0x80012f <sys_time>
+ 510:	90 91 30 01 	lds	r25, 0x0130	; 0x800130 <sys_time+0x1>
+ 514:	a0 91 31 01 	lds	r26, 0x0131	; 0x800131 <sys_time+0x2>
+ 518:	b0 91 32 01 	lds	r27, 0x0132	; 0x800132 <sys_time+0x3>
+ 51c:	01 96       	adiw	r24, 0x01	; 1
+ 51e:	a1 1d       	adc	r26, r1
+ 520:	b1 1d       	adc	r27, r1
+ 522:	80 93 2f 01 	sts	0x012F, r24	; 0x80012f <sys_time>
+ 526:	90 93 30 01 	sts	0x0130, r25	; 0x800130 <sys_time+0x1>
+ 52a:	a0 93 31 01 	sts	0x0131, r26	; 0x800131 <sys_time+0x2>
+ 52e:	b0 93 32 01 	sts	0x0132, r27	; 0x800132 <sys_time+0x3>
+ 532:	bf 91       	pop	r27
+ 534:	af 91       	pop	r26
+ 536:	9f 91       	pop	r25
+ 538:	8f 91       	pop	r24
+ 53a:	0f 90       	pop	r0
+ 53c:	0f be       	out	0x3f, r0	; 63
+ 53e:	0f 90       	pop	r0
+ 540:	1f 90       	pop	r1
+ 542:	18 95       	reti
 
-00000356 <timer2_config>:
+00000544 <timer2_config>:
 	OCR2A =42 ;		//	  16000000/(2*64*42) = 2976 Hz
 	//sei();
 		
 }
 
 void funny_function(){
- 356:	e0 eb       	ldi	r30, 0xB0	; 176
- 358:	f0 e0       	ldi	r31, 0x00	; 0
- 35a:	80 81       	ld	r24, Z
- 35c:	8c 60       	ori	r24, 0x0C	; 12
- 35e:	80 83       	st	Z, r24
- 360:	82 e0       	ldi	r24, 0x02	; 2
- 362:	80 93 70 00 	sts	0x0070, r24	; 0x800070 <__TEXT_REGION_LENGTH__+0x7e0070>
- 366:	8a e2       	ldi	r24, 0x2A	; 42
- 368:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <__TEXT_REGION_LENGTH__+0x7e00b3>
- 36c:	08 95       	ret
+ 544:	e0 eb       	ldi	r30, 0xB0	; 176
+ 546:	f0 e0       	ldi	r31, 0x00	; 0
+ 548:	80 81       	ld	r24, Z
+ 54a:	8c 60       	ori	r24, 0x0C	; 12
+ 54c:	80 83       	st	Z, r24
+ 54e:	82 e0       	ldi	r24, 0x02	; 2
+ 550:	80 93 70 00 	sts	0x0070, r24	; 0x800070 <__TEXT_REGION_LENGTH__+0x7e0070>
+ 554:	8a e2       	ldi	r24, 0x2A	; 42
+ 556:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <__TEXT_REGION_LENGTH__+0x7e00b3>
+ 55a:	08 95       	ret
 
-0000036e <__vector_9>:
+0000055c <__vector_9>:
 	
 }
 
 ISR(TIMER2_COMP_vect){ //isr fur timer2 
- 36e:	1f 92       	push	r1
- 370:	0f 92       	push	r0
- 372:	0f b6       	in	r0, 0x3f	; 63
- 374:	0f 92       	push	r0
- 376:	11 24       	eor	r1, r1
- 378:	8f 93       	push	r24
- 37a:	9f 93       	push	r25
+ 55c:	1f 92       	push	r1
+ 55e:	0f 92       	push	r0
+ 560:	0f b6       	in	r0, 0x3f	; 63
+ 562:	0f 92       	push	r0
+ 564:	11 24       	eor	r1, r1
+ 566:	8f 93       	push	r24
+ 568:	9f 93       	push	r25
 	cli();
- 37c:	f8 94       	cli
+ 56a:	f8 94       	cli
 	PORTD ^= (1<<PD2);
- 37e:	9b b1       	in	r25, 0x0b	; 11
- 380:	84 e0       	ldi	r24, 0x04	; 4
- 382:	89 27       	eor	r24, r25
- 384:	8b b9       	out	0x0b, r24	; 11
+ 56c:	9b b1       	in	r25, 0x0b	; 11
+ 56e:	84 e0       	ldi	r24, 0x04	; 4
+ 570:	89 27       	eor	r24, r25
+ 572:	8b b9       	out	0x0b, r24	; 11
 	sei();
- 386:	78 94       	sei
+ 574:	78 94       	sei
 		if (note_next == 4)
 	{
 		note_next = 0;
 	}
 	*/
- 388:	9f 91       	pop	r25
- 38a:	8f 91       	pop	r24
- 38c:	0f 90       	pop	r0
- 38e:	0f be       	out	0x3f, r0	; 63
- 390:	0f 90       	pop	r0
- 392:	1f 90       	pop	r1
- 394:	18 95       	reti
+ 576:	9f 91       	pop	r25
+ 578:	8f 91       	pop	r24
+ 57a:	0f 90       	pop	r0
+ 57c:	0f be       	out	0x3f, r0	; 63
+ 57e:	0f 90       	pop	r0
+ 580:	1f 90       	pop	r1
+ 582:	18 95       	reti
 
-00000396 <_exit>:
- 396:	f8 94       	cli
+00000584 <SCI_read_out>:
+ uint8_t	SCI_HV_Distri_5V	=	0;
+ uint8_t	SCI_SDB_Right_5V	=	0;
+ uint8_t	SCI_INV1_5V			=	0;
+ 
+uint8_t /* no need for 16*/ SCI_read_out(){
+	SCI_TSMS_5V			=	(PINA & 00000001);
+ 584:	20 b1       	in	r18, 0x00	; 0
+ 586:	62 2f       	mov	r22, r18
+ 588:	61 70       	andi	r22, 0x01	; 1
+ 58a:	60 93 3b 01 	sts	0x013B, r22	; 0x80013b <SCI_TSMS_5V>
+	SCI_INV0_5V			=	(PINA & 00000010)>>1;
+ 58e:	90 b1       	in	r25, 0x00	; 0
+ 590:	98 70       	andi	r25, 0x08	; 8
+ 592:	29 2f       	mov	r18, r25
+ 594:	30 e0       	ldi	r19, 0x00	; 0
+ 596:	35 95       	asr	r19
+ 598:	27 95       	ror	r18
+ 59a:	20 93 3a 01 	sts	0x013A, r18	; 0x80013a <SCI_INV0_5V>
+	SCI_TSAC_5V			=	(PINA & 00000100)>>2;
+ 59e:	40 b1       	in	r20, 0x00	; 0
+ 5a0:	40 74       	andi	r20, 0x40	; 64
+ 5a2:	50 e0       	ldi	r21, 0x00	; 0
+ 5a4:	55 95       	asr	r21
+ 5a6:	47 95       	ror	r20
+ 5a8:	55 95       	asr	r21
+ 5aa:	47 95       	ror	r20
+ 5ac:	40 93 39 01 	sts	0x0139, r20	; 0x800139 <SCI_TSAC_5V>
+	SCI_SDB_Left_5V		=	(PINA & 00001000)>>3;
+ 5b0:	80 b1       	in	r24, 0x00	; 0
+ 5b2:	10 92 38 01 	sts	0x0138, r1	; 0x800138 <SCI_SDB_Left_5V>
+	SCI_HV_Distri_5V	=	(PINA & 00010000)>>4;
+ 5b6:	80 b1       	in	r24, 0x00	; 0
+ 5b8:	10 92 37 01 	sts	0x0137, r1	; 0x800137 <SCI_HV_Distri_5V>
+	SCI_SDB_Right_5V	=	(PINA & 00100000)>>5;
+ 5bc:	80 b1       	in	r24, 0x00	; 0
+ 5be:	10 92 36 01 	sts	0x0136, r1	; 0x800136 <SCI_SDB_Right_5V>
+	SCI_INV1_5V			=	(PINA & 01000000)>>6;
+ 5c2:	80 b1       	in	r24, 0x00	; 0
+ 5c4:	10 92 35 01 	sts	0x0135, r1	; 0x800135 <SCI_INV1_5V>
+	
+	
+uint8_t SCI_States = 0;
+SCI_States |= (SCI_TSMS_5V<<0) | (SCI_INV0_5V<<1) | (SCI_TSAC_5V<<2) | (SCI_SDB_Left_5V<<3) | (SCI_HV_Distri_5V<<4) | (SCI_SDB_Right_5V<<5) | (SCI_INV1_5V);
+ 5c8:	30 e0       	ldi	r19, 0x00	; 0
+ 5ca:	22 0f       	add	r18, r18
+ 5cc:	33 1f       	adc	r19, r19
+ 5ce:	84 2f       	mov	r24, r20
+ 5d0:	90 e0       	ldi	r25, 0x00	; 0
+ 5d2:	88 0f       	add	r24, r24
+ 5d4:	99 1f       	adc	r25, r25
+ 5d6:	88 0f       	add	r24, r24
+ 5d8:	99 1f       	adc	r25, r25
+ 5da:	26 2b       	or	r18, r22
+//data that will be sent through CAN packaged into SCI states variable
+return SCI_States;
 
-00000398 <__stop_program>:
- 398:	ff cf       	rjmp	.-2      	; 0x398 <__stop_program>
+}
+ 5dc:	82 2b       	or	r24, r18
+ 5de:	08 95       	ret
+
+000005e0 <_exit>:
+ 5e0:	f8 94       	cli
+
+000005e2 <__stop_program>:
+ 5e2:	ff cf       	rjmp	.-2      	; 0x5e2 <__stop_program>

@@ -8,12 +8,12 @@
 #include <avr/interrupt.h>
 #include "ready_to_drive_sound_config.h"
 
-uint16_t note_length = 0;
+uint8_t note_length = 0;
 uint8_t hold_note = 0;
 uint8_t current_note = 0;
 uint8_t OCR2A_next = 0;
 uint8_t song[29] =	{160, 142, 95, 80, 80, 80, 95, 95, 95, 120, 95, 120,
-					 160, 160, 142, 95, 80, 80, 80, 80, 95, 120, 160,
+					 160, 160, 142, 95, 80, 80, 80, 80, 95, 120, 160,					//temporary, will change to a simple note progression later
 					 160, 160, 120, 120, 120, 120								};
 // song[0] = 60;
 // song[1] = 70;
