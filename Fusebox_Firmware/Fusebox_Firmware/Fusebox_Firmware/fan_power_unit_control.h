@@ -12,6 +12,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-
+void timer1_config();
+ISR(TIMER1_COMPA_vect);
 
 #endif /* FAN_POWER_UNIT_CONTROL_H_ */

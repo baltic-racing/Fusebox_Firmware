@@ -329,6 +329,7 @@ int main(void)
 #include "shutdown_circuit_indicator.h"
 #include "ready_to_drive_sound_config.h"
 #include "canlib.h"
+#include "fan_power_unit_control.h"
 unsigned long long waste_cpu_time;
 unsigned int loops_completed = 0;
 uint16_t voltage = 0;
@@ -355,6 +356,7 @@ int main(void){
 	sys_timer_config();
 	adc_config();
 	timer2_config();
+	timer1_config();
 	
 	sei();
 
@@ -384,7 +386,7 @@ int main(void){
 		
 		//duty cycle!!!
 		if (sys_time >= heart_beat)		{ 
-			sys_tick_heart();
+			//sys_tick_heart();
 			//PORTB ^= (1<<PB4); 
 			sys_time = 0;	
 			OCR2A = song[note_next];
