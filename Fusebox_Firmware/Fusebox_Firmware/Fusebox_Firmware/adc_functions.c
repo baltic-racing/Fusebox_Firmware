@@ -51,5 +51,6 @@ ISR(ADC_vect){
 
 // getter for each adc var
 uint16_t adc_get(uint8_t adc){
+	
 	return adc_values[adc];
 }
