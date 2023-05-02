@@ -6,7 +6,7 @@ adc_functions.c
 
 canlib.c
 
-fan_power_unit_control.c
+fan_power_unit_PWM_control.c
 
 fuse_read_out_config.c
 

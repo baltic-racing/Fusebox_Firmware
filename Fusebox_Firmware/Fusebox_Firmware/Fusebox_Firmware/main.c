@@ -329,7 +329,11 @@ int main(void)
 #include "shutdown_circuit_indicator.h"
 #include "ready_to_drive_sound_config.h"
 #include "canlib.h"
-#include "fan_power_unit_control.h"
+#include "fan_power_unit_PWM_control.h"
+
+#include <util/delay.h>
+
+
 unsigned long long waste_cpu_time;
 unsigned int loops_completed = 0;
 uint16_t voltage = 0;
@@ -344,7 +348,7 @@ uint8_t OCR2A_next;
 uint8_t song[29];
 uint8_t note_next ;
 
-
+extern volatile fan_duty;
 
 int main(void){
 	
@@ -385,7 +389,7 @@ int main(void){
 	{
 		
 		//duty cycle!!!
-		if (sys_time >= heart_beat)		{ 
+	/*	if (sys_time >= heart_beat)		{ 
 			//sys_tick_heart();
 			//PORTB ^= (1<<PB4); 
 			sys_time = 0;	
@@ -402,11 +406,11 @@ int main(void){
 		{
 			note_next = 0;
 		}
-										}
+										}*/
 
 	if((sys_time - time_old) >= 10){  //10ms
 				time_old = sys_time;
-				//time_old_100++; use for a longer loop later
+				time_old_100ms++;// use for a longer loop later
 
 //fuse_read_out()&0xff			// input &0xff gives you the first byte (8bit) (least significant byte)
 //(fuse_read_out()>>8)&0xff		//shifting 1 byte to the right gives us the next 8 bit bundle, now we've read the full 16 bit value
@@ -422,6 +426,23 @@ int main(void){
 	
 	can_tx(&can_FB_mob, FB_databytes);  //& is a reference operator 
 									}
-
+	if (time_old_100ms >= 100)
+	{
+		
+		time_old_100ms = 0;
+		sys_tick_heart();
+		int16_t x;
+		
+		for (x = 5; x < 90; x++)
+		{
+			int16_t CAN_temperature = x; //from can
+			uint8_t T = (uint8_t) CAN_temperature;
+			_delay_ms(15);
+			fan_power_unit_PWM_control(T, fan_duty);
+		}
+		
+		
+		
+	}
 	}
 }

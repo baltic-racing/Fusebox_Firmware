@@ -39,7 +39,7 @@ SUBDIRS :=
 C_SRCS +=  \
 ../adc_functions.c \
 ../canlib.c \
-../fan_power_unit_control.c \
+../fan_power_unit_PWM_control.c \
 ../fuse_read_out_config.c \
 ../main.c \
 ../Misc_Functions.c \
@@ -57,7 +57,7 @@ ASM_SRCS +=
 OBJS +=  \
 adc_functions.o \
 canlib.o \
-fan_power_unit_control.o \
+fan_power_unit_PWM_control.o \
 fuse_read_out_config.o \
 main.o \
 Misc_Functions.o \
@@ -68,7 +68,7 @@ water_pump_control.o
 OBJS_AS_ARGS +=  \
 adc_functions.o \
 canlib.o \
-fan_power_unit_control.o \
+fan_power_unit_PWM_control.o \
 fuse_read_out_config.o \
 main.o \
 Misc_Functions.o \
@@ -79,7 +79,7 @@ water_pump_control.o
 C_DEPS +=  \
 adc_functions.d \
 canlib.d \
-fan_power_unit_control.d \
+fan_power_unit_PWM_control.d \
 fuse_read_out_config.d \
 main.d \
 Misc_Functions.d \
@@ -90,7 +90,7 @@ water_pump_control.d
 C_DEPS_AS_ARGS +=  \
 adc_functions.d \
 canlib.d \
-fan_power_unit_control.d \
+fan_power_unit_PWM_control.d \
 fuse_read_out_config.d \
 main.d \
 Misc_Functions.d \
@@ -126,7 +126,7 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
-./fan_power_unit_control.o: .././fan_power_unit_control.c
+./fan_power_unit_PWM_control.o: .././fan_power_unit_PWM_control.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=at90can128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

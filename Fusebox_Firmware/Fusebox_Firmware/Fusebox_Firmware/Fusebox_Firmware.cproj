@@ -171,10 +171,10 @@
     <Compile Include="canlib.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="fan_power_unit_control.c">
+    <Compile Include="fan_power_unit_PWM_control.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="fan_power_unit_control.h">
+    <Compile Include="fan_power_unit_PWM_control.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="fuse_read_out_config.c">

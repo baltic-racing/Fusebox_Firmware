@@ -7,8 +7,19 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "fan_power_unit_PWM_control.h"
 
-void fan_power_unit_control(){
+volatile uint8_t fan_duty = 1;
+
+void fan_power_unit_PWM_control(uint8_t temperature, uint8_t fan_rpm){
+	if (temperature > TEMP_MAX)
+	{
+		temperature = TEMP_MAX;
+	}
+	if (temperature >= TEMP_MIN)
+	{
+		fan_duty = (temperature*63)/100;
+	}
 	
 }
 
@@ -21,8 +32,8 @@ TCCR1B = (1<<WGM13) | (1<<WGM12) | (1<<CS11);// | (1<<CS10);  //mode 14, need to
 		
 TIMSK1 = (1<<OCIE1A);		//interrupts on?
 //ICR1 = 250;   //       16000000/(8*(1+64)) = 30769.23077 Hz   //with TOP value 62+1 the resolution is 6 bit
-OCR1A = 31; 
-OCR1B = 30;	//50% duty?, changing this does nothing to the blinky so far
+OCR1A = 63; 
+OCR1B = 24;	//50% duty?, changing this does nothing to the blinky so far
 
   
 //WGMA1
@@ -35,4 +46,7 @@ OCR1B = 30;	//50% duty?, changing this does nothing to the blinky so far
 
 ISR(TIMER1_COMPA_vect){
 PORTB ^= (1<<PB3);
+OCR1B = fan_duty;
+
+
 }
