@@ -323,6 +323,12 @@ int main(void)
 		PORTD ^= (1<<PD3);
 	}*/
 
+//this code is supposed to be the main super loop of the fusebox software, we use it to categorize and 
+//send CAN bus messages over to other uCs in our car, outputting PWM signals to external devices such as
+//a Piezo Buzzer, a Fan for cooling purposes or a Water Pump. Furthermore, this software grants us the 
+//ability to monitor the states of our Fuses (thus the name Fusebox), monitor a vital part of the
+//Shutdown Circuit Indicator 
+
 #include "adc_functions.h"
 #include "fuse_read_out_config.h"
 #include "Misc_Functions.h"
@@ -348,7 +354,7 @@ uint8_t OCR2A_next;
 uint8_t song[29];
 uint8_t note_next ;
 
-extern volatile fan_duty;
+extern volatile uint8_t fan_duty;
 
 int main(void){
 	
@@ -409,7 +415,7 @@ int main(void){
 										}*/
 
 	if((sys_time - time_old) >= 10){  //10ms
-				time_old = sys_time;
+				time_old = sys_time; //
 				time_old_100ms++;// use for a longer loop later
 
 //fuse_read_out()&0xff			// input &0xff gives you the first byte (8bit) (least significant byte)
@@ -433,12 +439,14 @@ int main(void){
 		sys_tick_heart();
 		int16_t x;
 		
-		for (x = 5; x < 90; x++)
+		for (x = 5; x < 90; x++)  //testing the range of values to alter the duty%
 		{
 			int16_t CAN_temperature = x; //from can
 			uint8_t T = (uint8_t) CAN_temperature;
-			_delay_ms(15);
+			_delay_ms(15);   //use sys timer later
 			fan_power_unit_PWM_control(T, fan_duty);
+			
+			
 		}
 		
 		

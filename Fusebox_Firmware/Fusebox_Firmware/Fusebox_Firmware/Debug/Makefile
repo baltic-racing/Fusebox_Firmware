@@ -45,6 +45,7 @@ C_SRCS +=  \
 ../Misc_Functions.c \
 ../ready_to_drive_sound_config.c \
 ../shutdown_circuit_indicator.c \
+../timer_library.c \
 ../water_pump_control.c
 
 
@@ -63,6 +64,7 @@ main.o \
 Misc_Functions.o \
 ready_to_drive_sound_config.o \
 shutdown_circuit_indicator.o \
+timer_library.o \
 water_pump_control.o
 
 OBJS_AS_ARGS +=  \
@@ -74,6 +76,7 @@ main.o \
 Misc_Functions.o \
 ready_to_drive_sound_config.o \
 shutdown_circuit_indicator.o \
+timer_library.o \
 water_pump_control.o
 
 C_DEPS +=  \
@@ -85,6 +88,7 @@ main.d \
 Misc_Functions.d \
 ready_to_drive_sound_config.d \
 shutdown_circuit_indicator.d \
+timer_library.d \
 water_pump_control.d
 
 C_DEPS_AS_ARGS +=  \
@@ -96,6 +100,7 @@ main.d \
 Misc_Functions.d \
 ready_to_drive_sound_config.d \
 shutdown_circuit_indicator.d \
+timer_library.d \
 water_pump_control.d
 
 OUTPUT_FILE_PATH +=Fusebox_Firmware.elf
@@ -162,6 +167,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./shutdown_circuit_indicator.o: .././shutdown_circuit_indicator.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=at90can128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./timer_library.o: .././timer_library.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=at90can128 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

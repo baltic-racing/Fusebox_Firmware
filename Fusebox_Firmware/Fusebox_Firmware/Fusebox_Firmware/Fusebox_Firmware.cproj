@@ -204,6 +204,12 @@
     <Compile Include="shutdown_circuit_indicator.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="timer_library.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="timer_library.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="water_pump_control.c">
       <SubType>compile</SubType>
     </Compile>

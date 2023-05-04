@@ -18,5 +18,7 @@ ready_to_drive_sound_config.c
 
 shutdown_circuit_indicator.c
 
+timer_library.c
+
 water_pump_control.c
 
