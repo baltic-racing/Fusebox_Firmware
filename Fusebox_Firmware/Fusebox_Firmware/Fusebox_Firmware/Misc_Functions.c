@@ -4,6 +4,7 @@
 
 volatile unsigned long sys_time = 0;
 
+
 void port_config(){  //0 input, 1 output
 	DDRA = 0;   //Fuse Read Out Inputs
 	

@@ -12,8 +12,8 @@ uint8_t note_length = 0;
 uint8_t hold_note = 0;
 uint8_t current_note = 0;
 uint8_t OCR2A_next = 0;
-uint8_t song[29] =	{30, 40, 50,40, 30, 40, 50,40,30, 40, 50,40,30, 40, 50,40,30, 40, 50,40,
-	30, 40, 50,40,30, 40, 50,40,};  /*80, 80, 80, 95, 95, 95, 120, 95, 120,
+uint8_t song[29] =	{ 15, 20, 15, 20/*30, 40, 50,40, 30, 40, 50,40,30, 40, 50,40,30, 40, 50,40,30, 40, 50,40,
+	30, 40, 50,40,30, 40, 50,40*/};  /*80, 80, 80, 95, 95, 95, 120, 95, 120,
 					 160, 160, 142, 95, 80, 80, 80, 80, 95, 120, 160,					//temporary, will change to a simple note progression later
 					 160, 160, 120, 120, 120, 120								};*/
 // song[0] = 60;
@@ -34,17 +34,24 @@ void timer2_config() // timer 1 needs to replace timer 0   //NO NEED FOR GLOBAL 
 
 void buzzer_noise(){
 		
-		OCR2A = song[note_next];
-				
-		note_length++;
+	TCCR2A |= (1<<CS22); // starts timer
+			
+			
+	OCR2A = song[note_next];
+			
+	note_length++;
 
 		if (note_length == 2){
 			note_length = 0;
 			note_next++;
 		}
-			if (note_next == 29){
-				note_next = 0;
-			}
+		if (note_next == 29){
+			note_next = 0;
+		}
+		
+// 		else{			//stops the buzzer  hold_r2d_timer() function?
+// 			TCCR2A &= ~(1<<CS22);
+// 		}
 }
 
 ISR(TIMER2_COMP_vect){ //isr fur timer2 

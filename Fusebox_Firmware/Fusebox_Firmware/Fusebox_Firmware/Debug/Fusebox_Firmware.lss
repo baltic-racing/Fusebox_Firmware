@@ -19,15 +19,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 00000f44  00000000  00000000  0000226b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000d23  00000000  00000000  000031af  2**0
+  8 .debug_line   00000d29  00000000  00000000  000031af  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000304  00000000  00000000  00003ed4  2**2
+  9 .debug_frame  00000304  00000000  00000000  00003ed8  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000916  00000000  00000000  000041d8  2**0
+ 10 .debug_str    00000916  00000000  00000000  000041dc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000563  00000000  00000000  00004aee  2**0
+ 11 .debug_loc    00000563  00000000  00000000  00004af2  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000f8  00000000  00000000  00005051  2**0
+ 12 .debug_ranges 000000f8  00000000  00000000  00005055  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1087,7 +1087,7 @@ int main(void){
 				//its values with every 10 ms loop completed => a for loop in the FRO function to fill it out manually, array needed
 				//SOLVED by deploying the function directly into the if statement and declaring Fuse_States locally in the function
 				// a global declaration inside fuse_read_out_config.c prevented Fuse_States from being updated 
-				if (/*FRO_TSAC == 1*/(fuse_read_out() & 0b111111111111) == 0b111111111111){ //fuses in  0b0000111111111111
+				if ((fuse_read_out() & 0b111111111111) == 0b111111111111){ //fuses in,   0b0000111111111111
  660:	9f 70       	andi	r25, 0x0F	; 15
  662:	8f 3f       	cpi	r24, 0xFF	; 255
  664:	9f 40       	sbci	r25, 0x0F	; 15
@@ -1157,67 +1157,69 @@ int main(void){
  6b2:	9f 70       	andi	r25, 0x0F	; 15
  6b4:	8f 3f       	cpi	r24, 0xFF	; 255
  6b6:	9f 40       	sbci	r25, 0x0F	; 15
-//	R2D_pressed = mob_0_data[2];								
-		if (/*(R2D_pressed & 0b100) ==0b100 */(fuse_read_out() & 0b111111111111) < 0b111111111111){ 
+//						//has to ring for 3s upon fulfilling the if-else condition  => nested interrupts? need interrupt to toggle the PD2
+			if (/*(R2D_pressed & 0b100) == 0b100 */(fuse_read_out() & 0b111111111111) < 0b111111111111){ 
  6b8:	10 f5       	brcc	.+68     	; 0x6fe <main+0x14e>
  6ba:	e0 eb       	ldi	r30, 0xB0	; 176
  6bc:	f0 e0       	ldi	r31, 0x00	; 0
  6be:	80 81       	ld	r24, Z
  6c0:	84 60       	ori	r24, 0x04	; 4
  6c2:	80 83       	st	Z, r24
-			TCCR2A |= (1<<CS22); // starts timer
+				//BAD FUNCTION BAD FUNCTION BAD FUNCTION need another way of doing this
+				//this runs from start of while(1) until the if as long as condition is fulfilled
+				//need a custom interrupt that will be called on the button press and last for 3 seconds?
+				//keywords to research: external interrupts, nested interrupt, 
+				
+				TCCR2A |= (1<<CS22); // starts timer
  6c4:	e0 91 38 01 	lds	r30, 0x0138	; 0x800138 <note_next>
  6c8:	f0 e0       	ldi	r31, 0x00	; 0
  6ca:	ef 5f       	subi	r30, 0xFF	; 255
  6cc:	fe 4f       	sbci	r31, 0xFE	; 254
-			
-		
-			OCR2A = song[note_next];
+				
+				OCR2A = song[note_next];
  6ce:	80 81       	ld	r24, Z
  6d0:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <__TEXT_REGION_LENGTH__+0x7e00b3>
  6d4:	80 91 39 01 	lds	r24, 0x0139	; 0x800139 <note_length>
  6d8:	8f 5f       	subi	r24, 0xFF	; 255
  6da:	80 93 39 01 	sts	0x0139, r24	; 0x800139 <note_length>
-			
-			note_length++;
+				
+				note_length++;
  6de:	82 30       	cpi	r24, 0x02	; 2
  6e0:	39 f4       	brne	.+14     	; 0x6f0 <main+0x140>
  6e2:	10 92 39 01 	sts	0x0139, r1	; 0x800139 <note_length>
  6e6:	80 91 38 01 	lds	r24, 0x0138	; 0x800138 <note_next>
 
-			if (note_length == 2)
+				if (note_length == 2){
  6ea:	8f 5f       	subi	r24, 0xFF	; 255
-			{
-				note_length = 0;
+					note_length = 0;
  6ec:	80 93 38 01 	sts	0x0138, r24	; 0x800138 <note_next>
-				note_next++;
+					note_next++;
  6f0:	80 91 38 01 	lds	r24, 0x0138	; 0x800138 <note_next>
  6f4:	8d 31       	cpi	r24, 0x1D	; 29
  6f6:	41 f4       	brne	.+16     	; 0x708 <main+0x158>
  6f8:	10 92 38 01 	sts	0x0138, r1	; 0x800138 <note_next>
-			}
-			if (note_next == 29)
+				}
+				if (note_next == 29){
  6fc:	05 c0       	rjmp	.+10     	; 0x708 <main+0x158>
  6fe:	e0 eb       	ldi	r30, 0xB0	; 176
  700:	f0 e0       	ldi	r31, 0x00	; 0
-			{
-				note_next = 0;
+					note_next = 0;
  702:	80 81       	ld	r24, Z
  704:	8b 7f       	andi	r24, 0xFB	; 251
  706:	80 83       	st	Z, r24
+				}
 			}
-		}
-  		else{			//stops the buzzer  hold_r2d_timer() function?
-  			TCCR2A &= ~(1<<CS22);
+  			
+			else{			//stops the buzzer timer
+  				TCCR2A &= ~(1<<CS22);
  708:	80 91 2c 01 	lds	r24, 0x012C	; 0x80012c <time_old_100ms>
  70c:	90 91 2d 01 	lds	r25, 0x012D	; 0x80012d <time_old_100ms+0x1>
  710:	a0 91 2e 01 	lds	r26, 0x012E	; 0x80012e <time_old_100ms+0x2>
-  		}
+  			}
 	
-	
-	
-	}
- 	if (time_old_100ms >= 100){
+			  
+	}//end of 10 ms cycle
+ 	if (time_old_100ms >= 100){ //100 ms
  714:	b0 91 2f 01 	lds	r27, 0x012F	; 0x80012f <time_old_100ms+0x3>
  718:	84 36       	cpi	r24, 0x64	; 100
  71a:	91 05       	cpc	r25, r1
@@ -1244,9 +1246,9 @@ int main(void){
  73e:	58 cf       	rjmp	.-336    	; 0x5f0 <main+0x40>
 
 00000740 <port_config>:
-#include <avr/interrupt.h>
 
 volatile unsigned long sys_time = 0;
+
 
 void port_config(){  //0 input, 1 output
 	DDRA = 0;   //Fuse Read Out Inputs
@@ -1376,8 +1378,8 @@ void fault_detected(){
 			note_length = 0;
 			note_next++;
 		}
-			if (note_next == 29){
-				note_next = 0;
+		if (note_next == 29){
+			note_next = 0;
  7e4:	e0 eb       	ldi	r30, 0xB0	; 176
  7e6:	f0 e0       	ldi	r31, 0x00	; 0
  7e8:	80 81       	ld	r24, Z
@@ -1390,7 +1392,9 @@ void fault_detected(){
  7fa:	08 95       	ret
 
 000007fc <__vector_9>:
-			}
+// 		else{			//stops the buzzer  hold_r2d_timer() function?
+// 			TCCR2A &= ~(1<<CS22);
+// 		}
 }
 
 ISR(TIMER2_COMP_vect){ //isr fur timer2 

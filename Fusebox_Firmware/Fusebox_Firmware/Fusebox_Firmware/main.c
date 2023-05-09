@@ -16,6 +16,8 @@
 #include "ready_to_drive_sound_config.h"
 #include "canlib.h"
 #include "fan_power_unit_PWM_control.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
 //#include "timer_library.h"
 //#include <util/delay.h>
 
@@ -67,7 +69,8 @@ int main(void){
 	
 
 	sei();
-
+	
+	
 	while (1)
 	{
 		
@@ -82,7 +85,7 @@ int main(void){
 				//its values with every 10 ms loop completed => a for loop in the FRO function to fill it out manually, array needed
 				//SOLVED by deploying the function directly into the if statement and declaring Fuse_States locally in the function
 				// a global declaration inside fuse_read_out_config.c prevented Fuse_States from being updated 
-				if (/*FRO_TSAC == 1*/(fuse_read_out() & 0b111111111111) == 0b111111111111){ //fuses in  0b0000111111111111
+				if ((fuse_read_out() & 0b111111111111) == 0b111111111111){ //fuses in,   0b0000111111111111
 					
 					fault_not_detected();																									
 				}																															
@@ -111,33 +114,39 @@ int main(void){
 
 	
 	R2D_pressed = R2D_databytes[2];// | R2D_databytes[3];
-//	R2D_pressed = mob_0_data[2];								
-		if (/*(R2D_pressed & 0b100) ==0b100 */(fuse_read_out() & 0b111111111111) < 0b111111111111){ 
-			TCCR2A |= (1<<CS22); // starts timer
-			
-		
-			OCR2A = song[note_next];
-			
-			note_length++;
+//						//has to ring for 3s upon fulfilling the if-else condition  => nested interrupts? need interrupt to toggle the PD2
+			if (/*(R2D_pressed & 0b100) == 0b100 */(fuse_read_out() & 0b111111111111) < 0b111111111111){ 
+				//while( sys_time < 3000){}
+				//buzzer_noise();
+					
+					
+				//BAD FUNCTION BAD FUNCTION BAD FUNCTION need another way of doing this
+				//this runs from start of while(1) until the if as long as condition is fulfilled
+				//need a custom interrupt that will be called on the button press and last for 3 seconds?
+				//keywords to research: external interrupts, nested interrupt, 
+				
+				TCCR2A |= (1<<CS22); // starts timer
+				
+				OCR2A = song[note_next];
+				
+				note_length++;
 
-			if (note_length == 2)
-			{
-				note_length = 0;
-				note_next++;
+				if (note_length == 2){
+					note_length = 0;
+					note_next++;
+				}
+				if (note_next == 29){
+					note_next = 0;
+				}
 			}
-			if (note_next == 29)
-			{
-				note_next = 0;
-			}
-		}
-  		else{			//stops the buzzer  hold_r2d_timer() function?
-  			TCCR2A &= ~(1<<CS22);
-  		}
+  			
+			else{			//stops the buzzer timer
+  				TCCR2A &= ~(1<<CS22);
+  			}
 	
-	
-	
-	}
- 	if (time_old_100ms >= 100){
+			  
+	}//end of 10 ms cycle
+ 	if (time_old_100ms >= 100){ //100 ms
  	time_old_100ms = 0;
  		sys_tick_heart();
  		int16_t x = 50;
