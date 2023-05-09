@@ -17,19 +17,16 @@
 #include "canlib.h"
 #include "fan_power_unit_PWM_control.h"
 //#include "timer_library.h"
-
 //#include <util/delay.h>
-uint8_t R2D_databytes[8];
 
 
-unsigned long long waste_cpu_time;
-unsigned int loops_completed = 0;
-uint16_t voltage = 0;
+
+
+
 uint8_t heart_beat = 255;
-unsigned long sys_time; //no need to write =0!!
+unsigned long sys_time;
 unsigned long time_old = 0;
 unsigned long time_old_100ms = 0;
-
 
 uint8_t note_length;
 uint8_t OCR2A_next;
@@ -37,37 +34,29 @@ uint8_t song[29];
 uint8_t note_next ;
 
 extern volatile uint8_t fan_duty;
-
 uint8_t R2D_pressed = 0;
-
-
+extern uint8_t FRO_TSAC;
 
 int main(void){
 	
 	//timer0_config(1000, CTC_Mode , 3, No_Mode );
 	
-	//can_check_free();
-
-//	fuse_read_out();
-	
-	
-	
+	port_config();
+	fuse_read_out();
 	can_cfg();
-//	adc_config();
-	
+	adc_config();
 	timer2_config();
 	sys_timer_config();
-	port_config(); 
-//	timer1_config();
+	timer1_config();
 	
 	
 
 
-	//struct CAN_MOB can_FB_mob;//data to send  FB = fusebox, outgoing fusebox message with its 8 dataBYTES
-	//can_FB_mob.mob_id = 0;
-	//can_FB_mob.mob_idmask = 0;
-	//can_FB_mob.mob_number = 0;
-	//uint8_t FB_databytes[8];  
+ 	struct CAN_MOB can_FB_mob;//data to send  FB = fusebox, outgoing fusebox message with its 8 dataBYTES
+	can_FB_mob.mob_id = 0;
+ 	can_FB_mob.mob_idmask = 0;
+	can_FB_mob.mob_number = 0;
+ 	uint8_t FB_databytes[8];  
 
 	
 	struct CAN_MOB can_R2D_mob;
@@ -76,11 +65,7 @@ int main(void){
 	can_R2D_mob.mob_number = 0;
 	uint8_t R2D_databytes[8];
 	
-//  	struct CAN_MOB mob_to_transmit;
-//  	mob_to_transmit.mob_id = 0x100;
-//  	mob_to_transmit.mob_idmask = 0xffff;
-//  	mob_to_transmit.mob_number = 1;
-//  	uint8_t mob_0_data[8];
+
 	sei();
 
 	while (1)
@@ -89,33 +74,48 @@ int main(void){
 		
 
 	if((sys_time - time_old) > 10){  //10ms
-				time_old = sys_time; //
-				time_old_100ms++;// use for a longer loop later
-				PORTB ^= (1<<PB3);
+				time_old = sys_time; 
+				time_old_100ms++;
 				
-//fuse_read_out()&0xff			// input &0xff gives you the first byte (8bit) (least significant byte)
-//(fuse_read_out()>>8)&0xff		//shifting 1 byte to the right gives us the next 8 bit bundle, now we've read the full 16 bit value
+				//fuse_read_out(); // Fuse_States updates only once for some reason, taking out a fuse makes the fault go on
+				//but putting it back in doesn't turn it off, need a loop within while(0)? need some way to make it update
+				//its values with every 10 ms loop completed => a for loop in the FRO function to fill it out manually, array needed
+				//SOLVED by deploying the function directly into the if statement and declaring Fuse_States locally in the function
+				// a global declaration inside fuse_read_out_config.c prevented Fuse_States from being updated 
+				if (/*FRO_TSAC == 1*/(fuse_read_out() & 0b111111111111) == 0b111111111111){ //fuses in  0b0000111111111111
+					
+					fault_not_detected();																									
+				}																															
+	/*else*/	if((fuse_read_out() & 0b111111111111) < 0b111111111111){						//at least 1 fuse out for example 0000 1111 0111 1111
+					fault_detected();
+					
+				} 
+				
+	//INFO		
+//fuse_read_out()&0xff;			// input &0xff gives you the first byte (8bit) (least significant byte)
+//(fuse_read_out()>>8)&0xff;		//shifting 1 byte to the right gives us the next 8 bit bundle, now we've read the full 16 bit value
 
-	//FB_databytes[0]	= fuse_read_out()&0xff		;			//  lsb
-	//FB_databytes[1]	= (fuse_read_out()>>8)&0xff	;			//  msb
-	//FB_databytes[2]	= SCI_read_out()			;			// fits in 8 bits
-	//FB_databytes[3]	= adc_get(0)				;
-	//FB_databytes[4]	= adc_get(1)				;  
-	//FB_databytes[6]	= 0							;
-	//FB_databytes[7]	= 0							;
-		//
-	//
-	//can_tx(&can_FB_mob, FB_databytes);  //& is a reference operator 
+ 	FB_databytes[0]	= fuse_read_out()&0xff		;			//  lsb
+ 	FB_databytes[1]	= (fuse_read_out()>>8)&0xff	;			//  msb
+ 	FB_databytes[2]	= SCI_read_out()			;			// fits in 8 bits
+ 	FB_databytes[3]	= adc_get(0)				;
+	FB_databytes[4]	= adc_get(1)				;  
+ 	FB_databytes[6]	= 0							;
+ 	FB_databytes[7]	= 0							;
+
+
+ 	can_tx(&can_FB_mob, FB_databytes);  //& is a reference operator 
 	
 	can_rx(&can_R2D_mob, R2D_databytes);
 
-//	can_rx(&mob_to_transmit, mob_0_data);
+
 	
 	R2D_pressed = R2D_databytes[2];// | R2D_databytes[3];
 //	R2D_pressed = mob_0_data[2];								
-		if (R2D_pressed & 1){
+		if (/*(R2D_pressed & 0b100) ==0b100 */(fuse_read_out() & 0b111111111111) < 0b111111111111){ 
+			TCCR2A |= (1<<CS22); // starts timer
 			
-			PORTB ^= (1<<PB3);
+		
 			OCR2A = song[note_next];
 			
 			note_length++;
@@ -130,9 +130,9 @@ int main(void){
 				note_next = 0;
 			}
 		}
-		else{
-			OCR2A = 0;
-		}
+  		else{			//stops the buzzer  hold_r2d_timer() function?
+  			TCCR2A &= ~(1<<CS22);
+  		}
 	
 	
 	
@@ -141,6 +141,7 @@ int main(void){
  	time_old_100ms = 0;
  		sys_tick_heart();
  		int16_t x = 50;
+		 
  		
  		//for (x = 5; x < 90; x++)  //testing the range of values to alter the duty%
  		//{

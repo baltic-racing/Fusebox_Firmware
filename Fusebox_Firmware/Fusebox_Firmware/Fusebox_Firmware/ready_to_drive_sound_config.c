@@ -22,9 +22,9 @@ uint8_t song[29] =	{30, 40, 50,40, 30, 40, 50,40,30, 40, 50,40,30, 40, 50,40,30,
 uint8_t note_next = 0;
 
 
-void timer2_config() // timer 1 needs to replace timer 0
+void timer2_config() // timer 1 needs to replace timer 0   //NO NEED FOR GLOBAL CONFIG, TIMER SHOULD ONLY START WHEN THE SOUND IS REQUIRED
 {
-	TCCR2A |= (1<<WGM21) | (1<<CS22);// | (1<<CS21) | (1<<CS20); //ctc mode 64 pre
+	TCCR2A |= (1<<WGM21);// | (1<<CS22);// | (1<<CS21) | (1<<CS20); //ctc mode 64 pre
 	//TCCR0A |= (1<<COM0A1); //clear ocr0a on match
 	TIMSK2 = (1<<OCIE2A);// Interrupt enabl
 	OCR2A =42 ;		//	  16000000/(2*64*42) = 2976 Hz
@@ -32,8 +32,19 @@ void timer2_config() // timer 1 needs to replace timer 0
 		
 }
 
-void funny_function(){
-	
+void buzzer_noise(){
+		
+		OCR2A = song[note_next];
+				
+		note_length++;
+
+		if (note_length == 2){
+			note_length = 0;
+			note_next++;
+		}
+			if (note_next == 29){
+				note_next = 0;
+			}
 }
 
 ISR(TIMER2_COMP_vect){ //isr fur timer2 

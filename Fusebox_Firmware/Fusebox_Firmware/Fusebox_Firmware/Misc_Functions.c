@@ -32,4 +32,14 @@ void sys_tick_heart(){
 
 ISR(TIMER0_COMP_vect){
 	sys_time++;  //system time incremented on each interrupt flag from the CTC compare register => every OCR0A
+	
+}
+
+void fault_not_detected(){
+	
+	PORTB &= ~(1<<PB3); //turn off red led in case of no fault
+}
+void fault_detected(){
+	
+	PORTB |= (1<<PB3);
 }

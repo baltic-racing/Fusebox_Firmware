@@ -12,6 +12,8 @@
 //
 //int timer_frequency = 0;
 //
+////no need for an array, use just 1 variable and update-compare it with the frequency demanded by the user, moreover
+////if (freq calculated > freq demanded + 100){freq demanded = freq calculated}  <= tolerance, so no need for impossible precision
 //
 //
 ////f[1] = freq with pre of 1

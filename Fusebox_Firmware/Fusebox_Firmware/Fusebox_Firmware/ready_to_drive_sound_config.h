@@ -13,6 +13,8 @@
 #include <avr/interrupt.h>
 
 void timer2_config();
+void buzzer_noise();
+
 ISR(TIMER2_COMP_vect);
 
 #endif /* READY_TO_DRIVE_SOUND_CONFIG_H_ */
