@@ -5,15 +5,18 @@
  *  Author: Ole Hannemann
  */ 
 
-#include "canlib.h"
 #include <avr/io.h>
+
+
+#include "canlib.h"
+
 
 
 uint8_t can_check_free(uint8_t mobnum){
 	
 	uint8_t mob_status = 0;
 	
-	if(mobnum >7){
+	if(mobnum >= 8){
 		
 		mob_status = !((CANEN1 >> (mobnum-8)) &1);
 
@@ -47,22 +50,22 @@ void can_cfg(){
 			CANMSG = 0;
 		}
 	}
-
+					//changed canbt1 from 0x02 to match swc canlib
 	CANBT1 = 0x00;// Set Baudrate
-	CANBT2 = 0x0C;// 500kBaud according
-	CANBT3 = 0x36;// to Datasheet S. 267
-
+	CANBT2 = 0x0C;// 500kBaud according to Datasheet S. 267
+	CANBT3 = 0x36;//
+    //changed canbt from 0x37
 	CANGIE = 0;
 
-	CANGCON |= (1<<ENASTB); // Enable CAN
+	CANGCON |= (1<<ENASTB); // Enable CAN // 0b00000010
 	
 	
 	
 }
 void can_rx(struct CAN_MOB *to_receive, uint8_t *data){
 	
-	CANPAGE = to_receive->mob_number << MOBNB0;
-	if (can_check_free(to_receive->mob_number)){
+	CANPAGE = to_receive->mob_number << MOBNB0;   // equivalent to (*to_recieve).mob_number.  it gets the member called mob.number from the struct that *to_recieve points to.    then we shift it by the value in the MOBN0 register (decimal 4?)
+	if (can_check_free(to_receive->mob_number)){    //can_check_free function ???
 		/* load the id 11 bit */
 		CANIDT1 = to_receive->mob_id >>3;
 		CANIDT2 = (to_receive->mob_id << 5)&0b11100000;

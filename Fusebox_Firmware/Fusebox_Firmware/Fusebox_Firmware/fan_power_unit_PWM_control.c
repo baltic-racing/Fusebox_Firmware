@@ -45,7 +45,7 @@ OCR1B = 24;	//50% duty?, changing this does nothing to the blinky so far
 }
 
 ISR(TIMER1_COMPA_vect){
-PORTB ^= (1<<PB3);
+//PORTB ^= (1<<PB3);
 OCR1B = fan_duty;
 
 
