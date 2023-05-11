@@ -28,12 +28,14 @@
 uint8_t heart_beat = 255;
 unsigned long sys_time;
 unsigned long time_old = 0;
+unsigned long time_old_20 = 0;
 unsigned long time_old_100ms = 0;
 
 uint8_t note_length;
 uint8_t OCR2A_next;
 uint8_t song[29];
 uint8_t note_next ;
+extern volatile unsigned long r2d_length;
 
 extern volatile uint8_t fan_duty;
 uint8_t R2D_pressed = 0;
@@ -71,8 +73,8 @@ int main(void){
 	sei();
 	
 	
-	while (1)
-	{
+while (1){
+ 		
 		
 		
 
@@ -114,38 +116,67 @@ int main(void){
 
 	
 	R2D_pressed = R2D_databytes[2];// | R2D_databytes[3];
-//						//has to ring for 3s upon fulfilling the if-else condition  => nested interrupts? need interrupt to toggle the PD2
-			if (/*(R2D_pressed & 0b100) == 0b100 */(fuse_read_out() & 0b111111111111) < 0b111111111111){ 
-				//while( sys_time < 3000){}
-				//buzzer_noise();
-					
-					
-				//BAD FUNCTION BAD FUNCTION BAD FUNCTION need another way of doing this
-				//this runs from start of while(1) until the if as long as condition is fulfilled
-				//need a custom interrupt that will be called on the button press and last for 3 seconds?
-				//keywords to research: external interrupts, nested interrupt, 
-				
-				TCCR2A |= (1<<CS22); // starts timer
-				
-				OCR2A = song[note_next];
-				
-				note_length++;
-
-				if (note_length == 2){
-					note_length = 0;
-					note_next++;
-				}
-				if (note_next == 29){
-					note_next = 0;
-				}
-			}
-  			
-			else{			//stops the buzzer timer
-  				TCCR2A &= ~(1<<CS22);
-  			}
+//					//has to ring for 3s upon fulfilling the if-else condition  => nested interrupts? need interrupt to toggle the PD2
+			//if ((fuse_read_out() & 0b111111111111) < 0b111111111111){
+					//
+					//
+				//TCCR2A |= (1<<CS22); // starts timer
+				//
+				//OCR2A = song[note_next];
+				//
+				//note_length++;
+//
+				//if (note_length == 2){
+					//note_length = 0;
+					//note_next++;
+				//}
+				//if (note_next == 29){
+					//note_next = 0;
+				//}
+			//}
+  			//
+			//else{			//stops the buzzer timer
+  				//TCCR2A &= ~(1<<CS22);
+  			//}	
 	
 			  
 	}//end of 10 ms cycle
+	
+	
+	//if ((time_old_20) > 20){ //20 ms timer for r2d checks?
+	//	time_old_20 = 0;
+		
+		if ((fuse_read_out() & 0b111111111111) < 0b111111111111){  //debugging purposes fuse acts as my switch
+			r2d_length = 0;
+			
+			if (r2d_length < 30){
+				//buzzer_noise();
+						
+				TCCR2A |= (1<<CS22); // starts timer
+						
+				OCR2A = song[note_next];
+						
+				note_length++;
+						
+					if (note_length == 2){
+					note_length = 0;
+					note_next++;
+					}
+						if (note_next == 29){
+						note_next = 0;
+						TCCR2A &= ~(1<<CS22);
+						}		
+							else{			//stops the buzzer timer
+							TCCR2A &= ~(1<<CS22);
+							}
+			}
+		}
+	//}  // end of 20 ms timer
+	
+	
+	
+	
+	
  	if (time_old_100ms >= 100){ //100 ms
  	time_old_100ms = 0;
  		sys_tick_heart();
