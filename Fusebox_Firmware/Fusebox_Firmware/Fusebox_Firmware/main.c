@@ -33,7 +33,7 @@ unsigned long time_old_100ms = 0;
 
 uint8_t note_length;
 uint8_t OCR2A_next;
-uint8_t song[29];
+uint8_t song[10];
 uint8_t note_next ;
 extern volatile unsigned long r2d_length;
 
@@ -140,41 +140,62 @@ while (1){
   			//}	
 	
 			  
-	}//end of 10 ms cycle
 	
 	
-	//if ((time_old_20) > 20){ //20 ms timer for r2d checks?
-	//	time_old_20 = 0;
+	
+	
 		
-		if ((fuse_read_out() & 0b111111111111) < 0b111111111111){  //debugging purposes fuse acts as my switch
-			r2d_length = 0;
+		if ((fuse_read_out() & 0b111111111111) < 0b111111111111) {  //debugging purposes fuse acts as my switch
+			//r2d_length = 0;
 			
-			if (r2d_length < 30){
+		//	if (r2d_length < 100){
 				//buzzer_noise();
+// 						
+ 				TCCR2A |= (1<<CS22); // starts timer
+// 						
+// 			//	OCR2A = song[note_next];
+// 						
+// 				note_length++;
+// 						
+//  					if (note_length == 2){
+// 					note_length = 0;
+//  					note_next++;
+//  					}
+//  						if (note_next == 29){
+//  						note_next = 0;
+//  						
+//  						}
 						
-				TCCR2A |= (1<<CS22); // starts timer
-						
-				OCR2A = song[note_next];
+								
+			//}
+			
+			}
+			
+		if (r2d_length < 16000){ // under 3 seconds as long as the button is not held longer than a singular press => will lead into a 2nd cycle starting 
+								//setting the length to 16000 leads to a ~2 sec long sound  (tested with a stopwatch)
+			OCR2A = song[note_next];
 						
 				note_length++;
+						//move to isr so 
 						
-					if (note_length == 2){
+						//as of now length is variable and will fall with falling OCR1A values 
+ 					if (note_length == 5){
 					note_length = 0;
-					note_next++;
-					}
-						if (note_next == 29){
-						note_next = 0;
-						TCCR2A &= ~(1<<CS22);
-						}		
-							else{			//stops the buzzer timer
+ 					note_next++;
+ 					}
+ 						if (note_next == 10){
+ 						note_next = 0;
+ 						
+ 						}	
+		}	
+		if (r2d_length >= 16000){
 							TCCR2A &= ~(1<<CS22);
-							}
-			}
-		}
-	//}  // end of 20 ms timer
+							r2d_length = 0;
+							note_next = 0;
+						}
 	
 	
-	
+	}//end of 10 ms cycle
 	
 	
  	if (time_old_100ms >= 100){ //100 ms
