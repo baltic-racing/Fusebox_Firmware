@@ -1,4 +1,27 @@
 
+
+
+/*
+ ***********************************************************************************************************************************************************************************************
+ *																				MISCELLANEOUS FUNCTIONS
+ * Description : A "miscellaneous functions" or "misc_functions" file is typically used to contain general port, timer and rudimentary function configurations.
+ *				 
+ **				 "port_config" is usually the first piece of code written in a project, setting the Data Direction Registers to input/output.  1/0 WHAT IS
+ *				 
+ **				 "sys_timer_config" sets up the general timer for executing code in our main() function. Here it's set to go from BOTTOM to TOP and execute a compare
+ *				 match at OCR0A = 250. GO STEP BY STEP AND EXPLAIN CHOICE
+ *				 
+ **				 "ISR(TIMER0_COMP_vect)" increments the sys_time variable on each compare match, which is 1 ms in our example.
+ *				 
+ **				 "sys_tick_heart" toggles the blue LED whenever it's called. WHAT IS XOR
+ *				 
+ **				 "fault_not_detected" and "fault_detected" control the red LED whenever called. NAND AND OR WHAT DO?
+ * 				 
+ *				 
+ *				 
+ ***********************************************************************************************************************************************************************************************
+*/
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
@@ -8,9 +31,9 @@ volatile unsigned long sys_time = 0;
 void port_config(){  //0 input, 1 output
 	DDRA = 0;   //Fuse Read Out Inputs
 	
-	DDRB &= ~(1<<PB1);
-	PORTB |= (1<<PB1);
-	MCUCR &= ~(1<<PUD);
+	//DDRB &= ~(1<<PB1);
+	//PORTB |= (1<<PB1);
+	//MCUCR &= ~(1<<PUD);
 
 	DDRB = 0 | (1<<PB0) |(1<<PB2) | (1<<PB3) | (1<<PB4) | (1<<PB5); //WP, fan and LED outputs
 	DDRC = 0; // Shutdown circuit just like FRO is an input (indicates the state of those pins for debugging purposes)
@@ -19,11 +42,11 @@ void port_config(){  //0 input, 1 output
 	DDRF = 0;
 }
 
-void sys_timer_config(){   //all previous software uses a 1ms timer/counter =>CTC with OCR0A=250
-	TCCR0A |= (1<<WGM01);
-	TCCR0A |= (1<<CS01) | (1<<CS00);
-	TIMSK0 |= (1<<OCF0A);  //interrupt flags possible
-	OCR0A = 250; // what timer do we need, btw the compiler doesnt like anything bigger than 300 for some reason (reason is the 2^8 bits = 256)
+void sys_timer_config(){  
+	TCCR0A |= (1<<WGM01); //CTC mode
+	TCCR0A |= (1<<CS01) | (1<<CS00); //prescaler 64
+	TIMSK0 |= (1<<OCF0A);  //interrupt flags enable
+	OCR0A = 250;  //TOP for 1ms 
 }
 
 void sys_tick_heart(){
@@ -42,5 +65,5 @@ void fault_not_detected(){
 }
 void fault_detected(){
 	
-	PORTB |= (1<<PB3);
+	PORTB |= (1<<PB3); //turn on red led when called (fault present)
 }

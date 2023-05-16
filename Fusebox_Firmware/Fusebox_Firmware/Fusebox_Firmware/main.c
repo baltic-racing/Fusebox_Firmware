@@ -39,14 +39,14 @@ extern volatile unsigned long r2d_length;
 
 extern volatile uint8_t fan_duty;
 uint8_t R2D_pressed = 0;
-extern uint8_t FRO_TSAC;
+//extern uint8_t FRO_TSAC;
 
 int main(void){
 	
 	//timer0_config(1000, CTC_Mode , 3, No_Mode );
 	
 	port_config();
-	fuse_read_out();
+	//fuse_read_out();
 	can_cfg();
 	adc_config();
 	timer2_config();
@@ -81,7 +81,15 @@ while (1){
 	if((sys_time - time_old) > 10){  //10ms
 				time_old = sys_time; 
 				time_old_100ms++;
+// 				if((sys_time - sys_time_old) >= 1){
+// 					sys_time_old = sys_time;
+// 					time_X_ms++;
+// 				}
+// after this add any timers time_10_ms, time_20_ms ...
 				
+				
+			
+					
 				//fuse_read_out(); // Fuse_States updates only once for some reason, taking out a fuse makes the fault go on
 				//but putting it back in doesn't turn it off, need a loop within while(0)? need some way to make it update
 				//its values with every 10 ms loop completed => a for loop in the FRO function to fill it out manually, array needed
@@ -176,9 +184,9 @@ while (1){
 			OCR2A = song[note_next];
 						
 				note_length++;
-						//move to isr so 
-						
-						//as of now length is variable and will fall with falling OCR1A values 
+						//move to ISR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+						// to avoid timing issues!!!!!!!!!!!!!!!!!!!!!!!!!!
+						//as of now length is variable and will decrease with decrementing OCR1A values 
  					if (note_length == 5){
 					note_length = 0;
  					note_next++;
