@@ -7,7 +7,7 @@
 
 //IMPORTANT TO KNOW BUZZER IS A CAPACITOR, NEEDS A RESISTOR TO COMPENSATE
 // 220 OHM RESISTOR BETWEEN THE CAN WIRES( stehende welle vermeiden)
-
+ 
 
 #include "adc_functions.h"
 #include "fuse_read_out_config.h"
@@ -65,11 +65,11 @@ sei();
 // 			time_X_ms++;
 // 		}
 // after this add any timers time_10_ms, time_20_ms ...
-			if ((fuse_read_out() & 0b111111111111) == 0b111111111111){ //fuses in,   0b0000111111111111	
-					fault_not_detected();																									
+			if (/*fuse_read_out() != 0xFFF*/(fuse_read_out() & 0xFFF) == 0xFFF){ //fuses in,   0b0000111111111111  	
+				fault_not_detected();				//fuse_read_out() == 0b0000111111111111																					
 			}																															
-			if((fuse_read_out() & 0b111111111111) < 0b111111111111){//make into if(fuse broken) with a define fuse broken = condition no need for dumbass comments that way	//at least 1 fuse out for example 0000 1111 0111 1111
-					fault_detected();	
+			else{
+				fault_detected();	
 			} 
 						
 //fuse_read_out()&0xff;			// input &0xff gives you the first byte (8bit) (least significant byte)
@@ -78,9 +78,10 @@ sei();
  			FB_databytes[0]	= fuse_read_out()&0xff		;			//  lsb
 			FB_databytes[1]	= (fuse_read_out()>>8)&0xff	;			//  msb
  			FB_databytes[2]	= SCI_read_out()			;			// fits in 8 bits
- 			FB_databytes[3]	= adc_get(0)				;
-			FB_databytes[4]	= adc_get(1)				;  
- 			FB_databytes[6]	= 0							;
+ 			FB_databytes[3]	= /*adc_get(0)*/ adc_get(0)&0xff;//this is more than 8 bit (around 575) 
+			FB_databytes[4]	= /*adc_get(1)*/ (adc_get(0)>>8)&0xff;  //this is more than 8 bit (around 770) both estimates for 21.0V supply ONLY
+			FB_databytes[5] = adc_get(1)&0xff			;
+ 			FB_databytes[6]	= (adc_get(1)>>8)&0xff		;
 			FB_databytes[7]	= 0							;
 
  			can_tx(&can_FB_mob, FB_databytes);  //& is a reference operator 
@@ -88,7 +89,7 @@ sei();
 		
 			R2D_pressed = R2D_databytes[2];// | R2D_databytes[3];
 	
-			if ((fuse_read_out() & 0b111111111111) < 0b111111111111){  //debugging purposes fuse acts as my switch
+			if ((fuse_read_out() & 0xFFF) < 0xFFF){  //debugging purposes fuse acts as my switch
  					TCCR2A |= (1<<CS22); // starts timer //use defines to just have a START TIMER thingy => no commenting needed						
 			}
 

@@ -31,4 +31,9 @@
 #define FRO_FAN_PU_Sup	(uint8_t) ((PINE >> 5) & 1)
 #define FRO_FAN_ACC_Sup	(uint8_t) ((PINE >> 6) & 1)
 #define FRO_WP_Sup		(uint8_t) ((PINE >> 7) & 1)
+
+
+#define FUSES_ALL_IN (uint16_t) fuse_read_out() == 0b0000111111111111)//wrong
+
+
 #endif /* FUSE_READ_OUT_CONFIG_H_ */
