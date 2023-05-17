@@ -11,10 +11,10 @@
 unsigned long r2d_length = 0;
 
 uint8_t note_length = 0;
-uint8_t hold_note = 0;
+//uint8_t hold_note = 0;  useless
 uint8_t current_note = 0;
 uint8_t OCR2A_next = 0;
-uint8_t song[10] =	{ /*30,25,30,25,30,25,30,25,30,25*/32 ,31 ,30 ,29 ,28 ,27 ,28 ,29 ,30 ,31/*30, 40, 50,40, 30, 40, 50,40,30, 40, 50,40,30, 40, 50,40,30, 40, 50,40,
+uint8_t song[10] =	{ 20, 15,30,  50, 15,70, 15, 15,30,60 /*160, 200,160, 200,160, 200,160, 200,160, 200*//*32 ,31 ,30 ,29 ,28 ,27 ,28 ,29 ,30 ,31*//*30, 40, 50,40, 30, 40, 50,40,30, 40, 50,40,30, 40, 50,40,30, 40, 50,40,
 	30, 40, 50,40,30, 40, 50,40*/};  /*80, 80, 80, 95, 95, 95, 120, 95, 120,
 					 160, 160, 142, 95, 80, 80, 80, 80, 95, 120, 160,					//temporary, will change to a simple note progression later
 					 160, 160, 120, 120, 120, 120								};*/
@@ -34,7 +34,7 @@ void timer2_config() // timer 1 needs to replace timer 0   //NO NEED FOR GLOBAL 
 		
 }
 
-void buzzer_noise(){
+void buzzer_noise(){   //useless as of now (17.05.2023)
 		
 	TCCR2A |= (1<<CS22); // starts timer
 			
@@ -57,39 +57,9 @@ void buzzer_noise(){
 }
 
 ISR(TIMER2_COMP_vect){ //isr fur timer2 
-	//cli();
+	//cli(); // if cli() and sei() at the end are deployed, the code slows down immensly (longer sounds etc, but the overall r2d length does not get affected at all since its inside the ISR)
 	PORTD ^= (1<<PD2);
+	OCR2A = song[note_next];
 	r2d_length++;
-	//OCR2A = song[note_next];
-	//
-	//note_length++;
-//note_next++;
-	//if (note_length == 2){
-		//note_length = 0;
-		//note_next++;
-	//}
-	//if (note_next == 29){
-		//note_next = 0;
-	//}
-	//sei();
-	/*current_note ++;
-	
-	if (current_note >= note_length){
-		OCR2A = 70-1;
-		current_note = 0;
-	}*/
-	/*OCR2A = song[note_next];
-	
-	note_length++;
-
-	if (note_length == 1000)
-	{
-		note_length = 0;
-		note_next++;	
-	}
-		if (note_next == 4)
-	{
-		note_next = 0;
-	}
-	*/
+	//sei(); //magic?
 }

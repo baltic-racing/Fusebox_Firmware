@@ -25,10 +25,10 @@
  *				in the OCR1A register. In this case the generated Output Compare Interrupt is utilized to update the BOTTOM value (OCR1B) and either widen or narrow the duty cycle.
  *
  * Notes       : 1) Something that i was not used to is the need to  utilize 2 Control registers of the Timer1. To access its extended list of operation modes, the user needs to
- *                  make use of TCCR1A and TCCR1B so that the full initialization is complete. Always make yourself familiar with "X-bit Timer/Counter Register Description"
+ *                  make use of both TCCR1A and TCCR1B so that the full initialization is complete. Always make yourself familiar with "X-bit Timer/Counter Register Description"
  *					section of the documentation to avoid any confusion that may lead to writing values to wrong registers. For example the Clock Select Bit CS11 is located
- *					in the B register of our timer, naturally i set the bits of the register A first and like any other timer i chose my frequency Clock Select value straight away
- *					unaware of the fact that the TCR1A register does not contain it. Only after a few hours i realized where the Clock Select bits are supposed to be set (in the TCR1B register)
+ *					in the B register of our timer but out of habit I set the bits of the register TCCR1A first and like any other timer i chose my frequency Clock Select value straight away
+ *					unaware of the fact that the TCR1A register does not contain it. Only after a few hours i realized where the Clock Select bits are supposed to be set (in the TCR1B register).
  *				 2) As of now the Fan timer is always running with the base duty cycle of close to 1% before TEMP_MIN is reached, the code does not include an functionality of the fan powering 
  *					on and off yet. Additionally no case for temperature < TEMP_MIN is defined. This will lead to fan always running on its lowest duty cycle as long as TEMP_MIN stays below the
  *					threshold level. (weiss noch nicht ob der fan ein case fuer aussalten haben soll)
