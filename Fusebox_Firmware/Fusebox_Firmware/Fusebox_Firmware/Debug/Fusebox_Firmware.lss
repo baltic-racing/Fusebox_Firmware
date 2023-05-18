@@ -756,7 +756,7 @@ sei();
  414:	90 91 17 01 	lds	r25, 0x0117	; 0x800117 <sys_time+0x1>
 	
 	while (1){
-		if((sys_time - time_old) > 10){  //10ms
+		if(/*(sys_time - time_old) > 10*/TIME_PASSED_10_MS){  //10ms  //define 10_MS_PASSED ((sys_time - time_old) > 10)
  418:	a0 91 18 01 	lds	r26, 0x0118	; 0x800118 <sys_time+0x2>
  41c:	b0 91 19 01 	lds	r27, 0x0119	; 0x800119 <sys_time+0x3>
  420:	40 91 12 01 	lds	r20, 0x0112	; 0x800112 <time_old>
@@ -782,7 +782,7 @@ sei();
  454:	b0 93 15 01 	sts	0x0115, r27	; 0x800115 <time_old+0x3>
  458:	80 91 0e 01 	lds	r24, 0x010E	; 0x80010e <time_old_100ms>
  45c:	90 91 0f 01 	lds	r25, 0x010F	; 0x80010f <time_old_100ms+0x1>
-			time_old_100ms++;
+			time_old_100ms++;   //FIND BETTER NAME, WHY OLD??
  460:	a0 91 10 01 	lds	r26, 0x0110	; 0x800110 <time_old_100ms+0x2>
  464:	b0 91 11 01 	lds	r27, 0x0111	; 0x800111 <time_old_100ms+0x3>
  468:	01 96       	adiw	r24, 0x01	; 1
@@ -796,11 +796,11 @@ sei();
  480:	80 b1       	in	r24, 0x00	; 0
  482:	90 e0       	ldi	r25, 0x00	; 0
 // 		if((sys_time - sys_time_old) >= 1){
-// 			sys_time_old = sys_time;
+// 			sys_time_old = sys_time;   //MAYBE USE THIS AS FIRST TIMER AND THE BUILD THE 10 and 100 ONES ON TOP OF IT?
 // 			time_X_ms++;
 // 		}
 // after this add any timers time_10_ms, time_20_ms ...
-			if (/*fuse_read_out() != 0xFFF*/(fuse_read_out() & 0xFFF) == 0xFFF){ //fuses in,   0b0000111111111111  	
+			if (FUSES_ALL_IN){ //fuses in,   0b0000111111111111  	
  484:	98 2f       	mov	r25, r24
  486:	88 27       	eor	r24, r24
  488:	9f 70       	andi	r25, 0x0F	; 15
@@ -809,7 +809,7 @@ sei();
  48e:	9f 40       	sbci	r25, 0x0F	; 15
  490:	11 f4       	brne	.+4      	; 0x496 <__LOCK_REGION_LENGTH__+0x96>
  492:	d0 d0       	rcall	.+416    	; 0x634 <fault_not_detected>
-				fault_not_detected();				//fuse_read_out() == 0b0000111111111111																					
+				fault_not_detected();																					
  494:	01 c0       	rjmp	.+2      	; 0x498 <__LOCK_REGION_LENGTH__+0x98>
  496:	d2 d0       	rcall	.+420    	; 0x63c <fault_detected>
  498:	80 b1       	in	r24, 0x00	; 0
@@ -823,20 +823,20 @@ sei();
 //fuse_read_out()&0xff;			// input &0xff gives you the first byte (8bit) (least significant byte)
 //(fuse_read_out()>>8)&0xff;		//shifting 1 byte to the right gives us the next 8 bit bundle, now we've read the full 16 bit value
 
- 			FB_databytes[0]	= fuse_read_out()&0xff		;			//  lsb
+ 			FB_databytes[0]	= fuse_read_out()&0xff		;			//  lsb  //define FUSES_LEAST_SIGNIFICANT_BITS
  49e:	9c b1       	in	r25, 0x0c	; 12
  4a0:	80 b1       	in	r24, 0x00	; 0
-			FB_databytes[1]	= (fuse_read_out()>>8)&0xff	;			//  msb
+			FB_databytes[1]	= (fuse_read_out()>>8)&0xff	;			//  msb		//define FUSES_MOST_SIGNIFICANT_BITS
  4a2:	89 2b       	or	r24, r25
  4a4:	8f 83       	std	Y+7, r24	; 0x07
  4a6:	86 b1       	in	r24, 0x06	; 6
- 			FB_databytes[2]	= SCI_read_out()			;			// fits in 8 bits
+ 			FB_databytes[2]	= SCI_read_out()			;			// fits in 8 bits  //MAYBE NO DEFINE MACROS NEEDED?
  4a8:	88 87       	std	Y+8, r24	; 0x08
- 			FB_databytes[3]	= /*adc_get(0)*/ adc_get(0)&0xff;//this is more than 8 bit (around 575)
+ 			FB_databytes[3]	= /*adc_get(0)*/ adc_get(0)&0xff;//this is more than 8 bit (around 575) 
  4aa:	80 e0       	ldi	r24, 0x00	; 0
  4ac:	61 de       	rcall	.-830    	; 0x170 <adc_get>
  4ae:	89 87       	std	Y+9, r24	; 0x09
-			FB_databytes[4]	= /*adc_get(1)*/ (adc_get(0)>>8)&0xff;  //this is more than 8 bit (around 800)
+			FB_databytes[4]	= /*adc_get(1)*/ (adc_get(0)>>8)&0xff;  //this is more than 8 bit (around 770) both estimates for 21.0V supply ONLY
  4b0:	80 e0       	ldi	r24, 0x00	; 0
  4b2:	5e de       	rcall	.-836    	; 0x170 <adc_get>
  4b4:	9a 87       	std	Y+10, r25	; 0x0a
@@ -873,7 +873,7 @@ sei();
  4e4:	80 b1       	in	r24, 0x00	; 0
  4e6:	90 e0       	ldi	r25, 0x00	; 0
 	
-			if ((fuse_read_out() & 0xFFF) < 0xFFF){  //debugging purposes fuse acts as my switch
+			if ((fuse_read_out() & 0xFFF) < 0xFFF){  //debugging purposes fuse acts as my switch, NO MACRO NOW THE 3 CONDITIONS COME HERE: READY TO DRIVE, POWER ON and BUTTON PRESSED?
  4e8:	98 2f       	mov	r25, r24
  4ea:	88 27       	eor	r24, r24
  4ec:	9f 70       	andi	r25, 0x0F	; 15
@@ -884,12 +884,12 @@ sei();
  4f6:	e0 eb       	ldi	r30, 0xB0	; 176
  4f8:	f0 e0       	ldi	r31, 0x00	; 0
  4fa:	80 81       	ld	r24, Z
- 					TCCR2A |= (1<<CS22); // starts timer //use defines to just have a START TIMER thingy => no commenting needed						
+ 					START_TIMER_2; /*TCCR2A |= (1<<CS22);*/ // starts timer //use defines to just have a START TIMER thingy => no commenting needed						
  4fc:	84 60       	ori	r24, 0x04	; 4
  4fe:	80 83       	st	Z, r24
  500:	80 91 1c 01 	lds	r24, 0x011C	; 0x80011c <r2d_length>
  504:	90 91 1d 01 	lds	r25, 0x011D	; 0x80011d <r2d_length+0x1>
-			}
+			}    //define START_TIMER_2
 
 	
 			if (r2d_length < 23000){ // under 3 seconds as long as the button is not held longer than a singular press => will lead into a 2nd cycle starting 
@@ -957,7 +957,7 @@ sei();
 	
 		}	//end of 10 ms cycle
 	
-		if (time_old_100ms >= 100){ //100 ms
+		if (/*time_old_100ms >= 100*/TIME_PASSED_100_MS){ //100 ms
  582:	a0 91 10 01 	lds	r26, 0x0110	; 0x800110 <time_old_100ms+0x2>
  586:	b0 91 11 01 	lds	r27, 0x0111	; 0x800111 <time_old_100ms+0x3>
  58a:	84 36       	cpi	r24, 0x64	; 100

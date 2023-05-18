@@ -17,4 +17,8 @@ void buzzer_noise();
 
 ISR(TIMER2_COMP_vect);
 
+//macros
+
+#define START_TIMER_2 (TCCR2A |= (1<<CS22))
+
 #endif /* READY_TO_DRIVE_SOUND_CONFIG_H_ */

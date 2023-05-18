@@ -33,7 +33,7 @@
 #define FRO_WP_Sup		(uint8_t) ((PINE >> 7) & 1)
 
 
-#define FUSES_ALL_IN (uint16_t) fuse_read_out() == 0b0000111111111111)//wrong
+#define FUSES_ALL_IN ((fuse_read_out() & 0xFFF) == 0xFFF)
 
 
 #endif /* FUSE_READ_OUT_CONFIG_H_ */

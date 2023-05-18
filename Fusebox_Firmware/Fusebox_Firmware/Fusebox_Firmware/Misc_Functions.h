@@ -18,4 +18,7 @@ void fault_not_detected();
 void fault_detected();
 ISR(TIMER0_COMP_vect);
 
+//macros
+#define TIME_PASSED_10_MS	((sys_time - time_old) > 10)
+#define TIME_PASSED_100_MS	(time_old_100ms >= 100)
 #endif /* MISC_FUNCTIONS_H_ */
