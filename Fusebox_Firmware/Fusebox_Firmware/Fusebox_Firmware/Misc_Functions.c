@@ -59,3 +59,11 @@ void fault_not_detected(){
 void fault_detected(){
 	PORTB |= (1<<PB3); //turn on red led when called (fault present)
 }
+
+
+//setting up sys timer
+// 		if((sys_time - sys_time_old) >= 1){
+// 			sys_time_old = sys_time;   //MAYBE USE THIS AS FIRST TIMER AND THE BUILD THE 10 and 100 ONES ON TOP OF IT?
+// 			time_X_ms++;
+// 		}
+// after this add any timers time_10_ms, time_20_ms ...

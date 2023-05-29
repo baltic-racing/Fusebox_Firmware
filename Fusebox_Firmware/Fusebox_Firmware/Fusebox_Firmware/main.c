@@ -24,6 +24,7 @@
 unsigned long sys_time;
 unsigned long time_old = 0;
 unsigned long time_old_100ms = 0;
+unsigned long time_200ms = 0;
 
 uint8_t note_length;
 uint8_t OCR2A_next;
@@ -42,66 +43,87 @@ adc_config();
 timer2_config();
 timer1_config();
 	
-struct CAN_MOB can_FB_mob;//data to send  FB = fusebox, outgoing fusebox message with its 8 dataBYTES
-can_FB_mob.mob_id = 0;
-can_FB_mob.mob_idmask = 0;
-can_FB_mob.mob_number = 0;
-uint8_t FB_databytes[8];  
 
-struct CAN_MOB can_R2D_mob;
-can_R2D_mob.mob_id = 0b100000000;
-can_R2D_mob.mob_idmask = 0b11111111111;
-can_R2D_mob.mob_number = 0;
-uint8_t R2D_databytes[8];
+
+struct CAN_MOB can_Fusebox0_mob;
+can_Fusebox0_mob.mob_id = 0x600;
+can_Fusebox0_mob.mob_idmask = 0; //sent
+can_Fusebox0_mob.mob_number = 1;
+uint8_t Fusebox0_databytes[8];
+
+struct CAN_MOB can_Fusebox1_mob;
+can_Fusebox0_mob.mob_id = 0x601;
+can_Fusebox0_mob.mob_idmask = 0; //sent
+can_Fusebox0_mob.mob_number = 2;
+uint8_t Fusebox1_databytes[8];
+
+
+struct CAN_MOB can_SHR0_mob;
+can_SHR0_mob.mob_id = 0x400;
+can_SHR0_mob.mob_idmask = 0b11111111111; //receive with no filer?
+can_SHR0_mob.mob_number = 3;  //IDs might be wrong
+uint8_t SHR0_databytes[8];
+
+struct CAN_MOB can_SHB0_mob;
+can_SHB0_mob.mob_id = 0x420;
+can_SHB0_mob.mob_idmask = 0b11111111111; //receive with no filter?
+can_SHB0_mob.mob_number = 5;
+uint8_t SHB0_databytes[8];
+
+struct CAN_MOB can_DIC0_mob;	
+can_DIC0_mob.mob_id = 0x500;
+can_DIC0_mob.mob_idmask = 0xffff;
+can_DIC0_mob.mob_number = 11;
+uint8_t DIC0_databytes[8];
 	
 sei();
 	
 	while (1){
-		if(/*(sys_time - time_old) > 10*/TIME_PASSED_10_MS){  //10ms  //define 10_MS_PASSED ((sys_time - time_old) > 10)
+		if(TIME_PASSED_10_MS){ 
 			time_old = sys_time; 
 			time_old_100ms++;   //FIND BETTER NAME, WHY OLD??
-// 		if((sys_time - sys_time_old) >= 1){
-// 			sys_time_old = sys_time;   //MAYBE USE THIS AS FIRST TIMER AND THE BUILD THE 10 and 100 ONES ON TOP OF IT?
-// 			time_X_ms++;
-// 		}
-// after this add any timers time_10_ms, time_20_ms ...
-			if (FUSES_ALL_IN){ //fuses in,   0b0000111111111111  	
+			time_200ms++;
+			
+			if (FUSES_ALL_IN){	
 				fault_not_detected();																					
 			}																															
 			else{
 				fault_detected();	
 			} 
-						
-//fuse_read_out()&0xff;			// input &0xff gives you the first byte (8bit) (least significant byte)
+	//MOVE THESE NOTES TO THE MAIN DESCRIPTION THAT WILL COME ON TOP OF THE C FILE JUST LIKE IN THE FAN POWER UNIT 					
+//fuse_read_out()&0xff;			// input &0xff gives you the first byte (8bit) (least significant byte)  
 //(fuse_read_out()>>8)&0xff;		//shifting 1 byte to the right gives us the next 8 bit bundle, now we've read the full 16 bit value
 
- 			FB_databytes[0]	= fuse_read_out()&0xff		;			//  lsb  //define FUSES_LEAST_SIGNIFICANT_BITS
-			FB_databytes[1]	= (fuse_read_out()>>8)&0xff	;			//  msb		//define FUSES_MOST_SIGNIFICANT_BITS
- 			FB_databytes[2]	= SCI_read_out()			;			// fits in 8 bits  //MAYBE NO DEFINE MACROS NEEDED?
- 			FB_databytes[3]	= /*adc_get(0)*/ adc_get(0)&0xff;//this is more than 8 bit (around 575) 
-			FB_databytes[4]	= /*adc_get(1)*/ (adc_get(0)>>8)&0xff;  //this is more than 8 bit (around 770) both estimates for 21.0V supply ONLY
-			FB_databytes[5] = adc_get(1)&0xff			;
- 			FB_databytes[6]	= (adc_get(1)>>8)&0xff		;
-			FB_databytes[7]	= 0							;
-
- 			can_tx(&can_FB_mob, FB_databytes);  //& is a reference operator 
-			can_rx(&can_R2D_mob, R2D_databytes);
-		
-			R2D_pressed = R2D_databytes[2];// | R2D_databytes[3];
-	
+ 			Fusebox0_databytes[0]	=	adc_get(0)&0xff			;
+			Fusebox0_databytes[1]	=	(adc_get(0)>>8)&0xff	;	
+ 			Fusebox0_databytes[2]	=	adc_get(1)&0xff			;	
+ 			Fusebox0_databytes[3]	=	(adc_get(1)>>8)&0xff	; 
+			Fusebox0_databytes[4]	=	0						;
+			Fusebox0_databytes[5]	=	0						;
+ 			Fusebox0_databytes[6]	=	0						;
+			Fusebox0_databytes[7]	=	0						;
+			
+			
+			
+ 			
+			can_tx(&can_Fusebox0_mob, Fusebox0_databytes); 
+			 
+			//can_rx(&can_R2D_mob, R2D_databytes);
+			can_rx(&can_SHB0_mob, SHB0_databytes);
+			can_rx(&can_SHR0_mob, SHR0_databytes); //recieve at same freq as sender right?
+			can_rx(&can_DIC0_mob, DIC0_databytes);
+			
+		//	R2D_pressed = R2D_databytes[2];
+											// define CAR_IS_READY_TO_DRIVE [combines the 3 conditions]
 			if ((fuse_read_out() & 0xFFF) < 0xFFF){  //debugging purposes fuse acts as my switch, NO MACRO NOW THE 3 CONDITIONS COME HERE: READY TO DRIVE, POWER ON and BUTTON PRESSED?
- 					START_TIMER_2; /*TCCR2A |= (1<<CS22);*/ // starts timer //use defines to just have a START TIMER thingy => no commenting needed						
-			}    //define START_TIMER_2
+ 					START_TIMER_2; 				
+			}  
 
-	
-			if (r2d_length < 23000){ // under 3 seconds as long as the button is not held longer than a singular press => will lead into a 2nd cycle starting 
-									//setting the length to 16000 leads to a ~2 sec long sound  (tested with a stopwatch)
-				/*OCR2A = song[note_next];*/
+				//define SOUND_STILL_GOING? r2dl < xxx  // <= make that macro and a function that caclulates the time or soemthing, input time in seconds (1-3s) and it will calculate the value for the condition 2,5 seconds = 23000 or something (need to measure it better)
+			if (r2d_length < 23000/*<noise_length (change r2dlength to something like r2d_ticks*/){ // under 3 seconds (tested with a stopwatch) as long as the button is not held longer than a singular press => will lead into a 2nd cycle starting 
+									
 				note_length++;
-						//move to ISR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-						// to avoid timing issues!!!!!!!!!!!!!!!!!!!!!!!!!!
-						//as of now length is variable and will decrease with decrementing OCR1A values
-						//[SOLVED] moved increments to ISR like a normal person 
+
  				if (note_length == 5){
 				note_length = 0;
  				note_next++;
@@ -110,7 +132,7 @@ sei();
  				note_next = 0;
  				}	
 			}	
-			if (r2d_length >= 23000){
+			if (r2d_length >= 23000){   //turn into an else{}
 				TCCR2A &= ~(1<<CS22);
 				r2d_length = 0;
 				note_next = 0;
@@ -120,15 +142,29 @@ sei();
 	
 		if (/*time_old_100ms >= 100*/TIME_PASSED_100_MS){ //100 ms
  			time_old_100ms = 0;
- 			sys_tick_heart();
- 			int16_t x = 50;
+ 			sys_tick_heart();  //remove the sys_, tick_heart obvious by itself
+ 			int16_t x = 50; //test code, x = SHB_databytes[temp we need];
  			//for (x = 5; x < 90; x++){  //testing the range of values to alter the duty%
  				int16_t CAN_temperature = x; //from can
  				uint8_t T = (uint8_t) CAN_temperature;
  				//_delay_ms(1);   //use sys timer later
- 				fan_power_unit_PWM_control(T, fan_duty);	
+ 				fan_power_unit_PWM_control(T, fan_duty); 	
  			//} //end of for
  		}  //end of 100ms
+		if (time_200ms >= 200){
+			time_200ms = 0
+			
+			Fusebox1_databytes[0]	=	SCI_read_out()			;
+			Fusebox1_databytes[1]	= 0;
+			Fusebox1_databytes[2]	=	fuse_read_out()&0xff		;
+			Fusebox1_databytes[3]	=	(fuse_read_out()>>8)&0xff	;
+			Fusebox1_databytes[4]	= 0;
+			Fusebox1_databytes[5]	= 0;
+			Fusebox1_databytes[6]	= 0;
+			Fusebox1_databytes[7]	= 0;
+			
+			can_tx(&can_Fusebox1_mob, Fusebox1_databytes);
+		} //end of 200ms
 	}  //end of while
 } //end of main
 //end of the world

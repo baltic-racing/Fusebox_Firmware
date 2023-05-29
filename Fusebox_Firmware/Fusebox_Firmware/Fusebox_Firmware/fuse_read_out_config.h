@@ -32,8 +32,9 @@
 #define FRO_FAN_ACC_Sup	(uint8_t) ((PINE >> 6) & 1)
 #define FRO_WP_Sup		(uint8_t) ((PINE >> 7) & 1)
 
-
-#define FUSES_ALL_IN ((fuse_read_out() & 0xFFF) == 0xFFF)
-
+//macros
+#define FUSES_ALL_IN					(fuse_read_out() & 0xFFF) == 0xFFF
+#define FUSES_LEAST_SIGNIFICANT_BITS	(fuse_read_out()&0xff
+#define FUSES_MOST_SIGNIFICANT_BITS		(fuse_read_out()>>8)&0xff
 
 #endif /* FUSE_READ_OUT_CONFIG_H_ */
