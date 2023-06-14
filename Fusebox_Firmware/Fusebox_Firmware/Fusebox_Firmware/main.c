@@ -85,7 +85,7 @@ uint8_t DIC0_databytes[8];
 
 
 sei();
-	
+	//function: give freq in cfg, wait a bit, increase duty cycle to like 30%, go back to 0%, fan is armed and ready
 	while (sys_time < 5000){ //3s to let fan arm
 			if ((sys_time-useless_variable) > 200 ){			//every 200ms increment duty up to 15/63				//nesting only for testing purposes
 				useless_variable = sys_time;					//edit: 100ms intervals up to 15 and back to 0
@@ -97,6 +97,7 @@ sei();
 // 				}
 			}
 		//}
+		
 	}
 	while (1){
 		if(TIME_PASSED_10_MS){			// (sys_time - time_old) > 10

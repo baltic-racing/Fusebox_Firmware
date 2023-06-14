@@ -839,9 +839,9 @@ sei();
  49c:	70 f2       	brcs	.-100    	; 0x43a <__LOCK_REGION_LENGTH__+0x3a>
  49e:	80 91 20 01 	lds	r24, 0x0120	; 0x800120 <sys_time>
  4a2:	90 91 21 01 	lds	r25, 0x0121	; 0x800121 <sys_time+0x1>
-// 				}
 			}
 		//}
+		
 	}
 	while (1){
 		if(TIME_PASSED_10_MS){			// (sys_time - time_old) > 10
