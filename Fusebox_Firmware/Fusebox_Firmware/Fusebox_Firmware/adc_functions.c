@@ -46,7 +46,7 @@ ISR(ADC_vect){
 	ADMUX = (1<<REFS0) | adc_next;
 
 	adc_start_conversion();
-	
+	//sei();
 }
 
 // getter for each adc var

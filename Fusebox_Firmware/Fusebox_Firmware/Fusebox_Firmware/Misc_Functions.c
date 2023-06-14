@@ -50,7 +50,9 @@ void sys_tick_heart(){
 };
 
 ISR(TIMER0_COMP_vect){
+//	cli();
 	sys_time++;  //system time incremented on each interrupt flag from the CTC mode compare register => every OCR0A
+//	sei();
 }
 
 void fault_not_detected(){	

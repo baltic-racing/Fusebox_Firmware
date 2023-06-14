@@ -14,7 +14,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-void fan_power_unit_PWM_control(uint8_t temperature, uint8_t fan_rpm);
+void fan_power_unit_PWM_control(uint8_t temperature, uint8_t fan_duty);
 void timer1_config();
 ISR(TIMER1_COMPA_vect);
 
