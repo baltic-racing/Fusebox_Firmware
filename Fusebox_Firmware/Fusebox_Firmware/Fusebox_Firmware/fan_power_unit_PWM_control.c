@@ -40,7 +40,7 @@
 #include <util/delay.h>
 #include "fan_power_unit_PWM_control.h"
 
-volatile uint8_t fan_duty = 0;		
+volatile uint8_t fan_duty;		
 extern volatile uint8_t temperature;
 void fan_power_unit_PWM_control(uint8_t temperature, uint8_t fan_duty){	  //FIX THIS FUNCTION LATER, RN CALCULATION WITHIN THE SUPER LOOP
 	if (temperature > TEMP_MAX){		// defining a maximum for the temperature, duty cycle 100% past that maximum
@@ -57,7 +57,7 @@ TCCR1A = (1<<WGM11) | (1<<WGM10) | (0<<COM1A1) | (1<<COM1A0) | (1<<COM1B1);	//mo
 TCCR1B = (1<<WGM13) | (1<<WGM12) | (1<<CS11);								// Fast PWM description => page 128
 TIMSK1 = (1<<OCIE1A);														//Output Compare interrupt flag will be set whenever OCR1A is reached
 OCR1A = 63;													// TOP  16000000/(8*(1+64)) = 30769.23077 Hz = ~30kHz => page 130   with TOP value 62+1 the resolution is 6 bit => page 128
-OCR1B = 0;													// BOTTOM
+OCR1B = 10;                         	// BOTTOM
 }
 
 ISR(TIMER1_COMPA_vect){									//ISR for the timer 1, updating the duty cycle
