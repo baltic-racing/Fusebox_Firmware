@@ -76,9 +76,9 @@ can_Fusebox0_mob.mob_idmask = 0; //sent
 can_Fusebox0_mob.mob_number = 2;
 uint8_t Fusebox1_databytes[8];
 
-//serial Numbers of Inverters
-uint8_t INV0_SN = 0x0; 
-uint8_t INV1_SN = 0x0;
+//Serial Numbers of Inverters, 0x1F for Broadcasting
+uint8_t INV0_SN = 0x1F; 
+uint8_t INV1_SN = 0x1F;
 
 struct CAN_MOB can_Fusebox2_mob; //to INV0 (Drive Enable)
 can_Fusebox0_mob.mob_id = (0x0C << 5) + (INV0_SN);
@@ -243,8 +243,8 @@ sei();
 			Fusebox5_databytes[1] = (ac_current >> 8);
 			Fusebox6_databytes[0] = current_limit;
 			Fusebox6_databytes[1] = (current_limit >> 8);
-			Fusebox7_databytes[0] = current_limit;
-			Fusebox7_databytes[1] = (current_limit >> 8);
+			Fusebox7_databytes[0] = (current_limit * 10);
+			Fusebox7_databytes[1] = ((current_limit * 10) >> 8);
 			
 			tractive_system_activate(DIC0_databytes);
  			
