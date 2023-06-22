@@ -29,6 +29,8 @@
 
 volatile unsigned long sys_time = 0;
 
+volatile unsigned char DRV_EN = 0;
+
 void port_config(){  //0 input, 1 output
 	DDRA = 0;   //Fuse Read Out Inputs
 	DDRB = 0 | (1<<PB0) |(1<<PB2) | (1<<PB3) | (1<<PB4) | (1<<PB5); //WP, fan and LED outputs
@@ -58,8 +60,22 @@ ISR(TIMER0_COMP_vect){
 void fault_not_detected(){	
 	PORTB &= ~(1<<PB3); //turn off red led in case of no fault
 }
+
 void fault_detected(){
 	PORTB |= (1<<PB3); //turn on red led when called (fault present)
+}
+
+void tractive_system_activate(uint8_t *data){
+	if (data[1]){
+		DRV_EN = 1;
+	}else{
+		DRV_EN = 0;
+	}
+}
+
+int16_t calculate_ac_current(uint16_t limit, uint16_t value){
+		
+	return ((int16_t)limit * ((int16_t)value/100) * 10);
 }
 
 

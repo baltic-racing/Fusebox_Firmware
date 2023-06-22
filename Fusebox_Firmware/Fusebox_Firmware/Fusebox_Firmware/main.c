@@ -47,6 +47,11 @@ volatile uint8_t x = 0;
 extern volatile uint8_t fan_duty;
 uint8_t R2D_pressed = 0;
 
+extern volatile unsigned char DRV_EN;
+uint16_t apps = 0;
+int16_t ac_current = 0;
+uint16_t current_limit = 15; //in Ampere
+
 int main(void){
 
 sys_timer_config();
@@ -71,17 +76,56 @@ can_Fusebox0_mob.mob_idmask = 0; //sent
 can_Fusebox0_mob.mob_number = 2;
 uint8_t Fusebox1_databytes[8];
 
+//serial Numbers of Inverters
+uint8_t INV0_SN = 0x0; 
+uint8_t INV1_SN = 0x0;
+
+struct CAN_MOB can_Fusebox2_mob; //to INV0 (Drive Enable)
+can_Fusebox0_mob.mob_id = (0x0C << 5) + (INV0_SN);
+can_Fusebox0_mob.mob_idmask = 0; //sent
+can_Fusebox0_mob.mob_number = 3;
+uint8_t Fusebox2_databytes[8] = {0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
+struct CAN_MOB can_Fusebox3_mob; //to INV1 (Drive Enable)
+can_Fusebox0_mob.mob_id = (0x0C << 5) + (INV1_SN);
+can_Fusebox0_mob.mob_idmask = 0; //sent
+can_Fusebox0_mob.mob_number = 4;
+uint8_t Fusebox3_databytes[8] = {0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
+struct CAN_MOB can_Fusebox4_mob; //to INV0 (AC Peak Current)
+can_Fusebox0_mob.mob_id = (0x01 << 5) + (INV0_SN);
+can_Fusebox0_mob.mob_idmask = 0; //sent
+can_Fusebox0_mob.mob_number = 5;
+uint8_t Fusebox4_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
+struct CAN_MOB can_Fusebox5_mob; //to INV1 (AC Peak Current)
+can_Fusebox0_mob.mob_id = (0x01 << 5) + (INV1_SN);
+can_Fusebox0_mob.mob_idmask = 0; //sent
+can_Fusebox0_mob.mob_number = 6;
+uint8_t Fusebox5_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+	
+struct CAN_MOB can_Fusebox6_mob; //to INV0 (AC Peak Current Limit)
+can_Fusebox0_mob.mob_id = (0x08 << 5) + (INV0_SN);
+can_Fusebox0_mob.mob_idmask = 0; //sent
+can_Fusebox0_mob.mob_number = 7;
+uint8_t Fusebox6_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
+struct CAN_MOB can_Fusebox7_mob; //to INV1 (AC Peak Current Limit)
+can_Fusebox0_mob.mob_id = (0x08 << 5) + (INV1_SN);
+can_Fusebox0_mob.mob_idmask = 0; //sent
+can_Fusebox0_mob.mob_number = 8;
+uint8_t Fusebox7_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 struct CAN_MOB can_SHR0_mob;
 can_SHR0_mob.mob_id = 0x400;
 can_SHR0_mob.mob_idmask = 0b11111111111; //receive with no filer?
-can_SHR0_mob.mob_number = 3;  //IDs might be wrong
+can_SHR0_mob.mob_number = 9;  //IDs might be wrong
 uint8_t SHR0_databytes[8];
 
 struct CAN_MOB can_SHB0_mob;
 can_SHB0_mob.mob_id = 0x420;
 can_SHB0_mob.mob_idmask = 0b11111111111; //receive with no filter?
-can_SHB0_mob.mob_number = 5;
+can_SHB0_mob.mob_number = 10;
 uint8_t SHB0_databytes[8];
 
 struct CAN_MOB can_DIC0_mob;	
@@ -175,6 +219,15 @@ sei();
 //fuse_read_out()&0xff;			// input &0xff gives you the first byte (8bit) (least significant byte)  
 //(fuse_read_out()>>8)&0xff;		//shifting 1 byte to the right gives us the next 8 bit bundle, now we've read the full 16 bit value
 
+			//can_rx(&can_R2D_mob, R2D_databytes);
+			can_rx(&can_SHB0_mob, SHB0_databytes);
+			can_rx(&can_SHR0_mob, SHR0_databytes); //receive at same freq as sender right?
+			can_rx(&can_DIC0_mob, DIC0_databytes);
+			
+			apps = (SHR0_databytes[0]) + (SHR0_databytes[1] << 8)/2;
+			
+			ac_current = calculate_ac_current(current_limit, apps);
+			
  			Fusebox0_databytes[0]	=	adc_get(0)&0xff			;
 			Fusebox0_databytes[1]	=	(adc_get(0)>>8)&0xff	;	
  			Fusebox0_databytes[2]	=	adc_get(1)&0xff			;	
@@ -184,15 +237,25 @@ sei();
  			Fusebox0_databytes[6]	=	0						;
 			Fusebox0_databytes[7]	=	0						;
 			
+			Fusebox4_databytes[0] = ac_current;
+			Fusebox4_databytes[1] = (ac_current >> 8);
+			Fusebox5_databytes[0] = ac_current;
+			Fusebox5_databytes[1] = (ac_current >> 8);
+			Fusebox6_databytes[0] = current_limit;
+			Fusebox6_databytes[1] = (current_limit >> 8);
+			Fusebox7_databytes[0] = current_limit;
+			Fusebox7_databytes[1] = (current_limit >> 8);
 			
-			
+			tractive_system_activate(DIC0_databytes);
  			
-			can_tx(&can_Fusebox0_mob, Fusebox0_databytes); 
-			 
-			//can_rx(&can_R2D_mob, R2D_databytes);
-			can_rx(&can_SHB0_mob, SHB0_databytes);
-			can_rx(&can_SHR0_mob, SHR0_databytes); //recieve at same freq as sender right?
-			can_rx(&can_DIC0_mob, DIC0_databytes);
+			can_tx(&can_Fusebox0_mob, Fusebox0_databytes);
+			can_tx(&can_Fusebox1_mob, Fusebox1_databytes);
+			can_tx(&can_Fusebox2_mob, Fusebox2_databytes); 
+			can_tx(&can_Fusebox3_mob, Fusebox3_databytes); 
+			can_tx(&can_Fusebox4_mob, Fusebox4_databytes); 
+			can_tx(&can_Fusebox5_mob, Fusebox5_databytes);  
+			can_tx(&can_Fusebox6_mob, Fusebox6_databytes);
+			can_tx(&can_Fusebox7_mob, Fusebox7_databytes);
 			
 		//	R2D_pressed = R2D_databytes[2];
 											// define CAR_IS_READY_TO_DRIVE [combines the 3 conditions]
