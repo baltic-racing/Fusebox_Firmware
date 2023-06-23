@@ -26,6 +26,7 @@
 */
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "ready_to_drive_sound_config.h"
 
 volatile unsigned long sys_time = 0;
 
@@ -40,11 +41,14 @@ void port_config(){  //0 input, 1 output
 	DDRF = 0; //JTAG and 2 ADC readings inputs
 }
 
-void sys_timer_config(){  
-	TCCR0A |= (1<<WGM01); //CTC mode
-	TCCR0A |= (1<<CS01) | (1<<CS00); //prescaler 64 => page 111
-	TIMSK0 |= (1<<OCF0A);  //interrupt flags enable
-	OCR0A = 124;  //TOP for 1ms   => 16000000/2*64*(1+124) = 1000 Hz
+void sys_timer_config(void)
+{
+	//CTC-Mode, /64
+	TCCR0A = 0 | (1<<WGM01) | (1<<CS01) | (1<<CS00);
+	//Compare value for 1ms (Formula in Datasheet)
+	OCR0A = 249;
+	//Compare Interrupt Enable
+	TIMSK0 = 0 | (1<<OCIE0A);
 }
 
 void sys_tick_heart(){
@@ -66,6 +70,7 @@ void fault_detected(){
 }
 
 void tractive_system_activate(uint8_t *data){
+	START_TIMER_2;
 	if (data[1]){
 		DRV_EN = 1;
 	}else{

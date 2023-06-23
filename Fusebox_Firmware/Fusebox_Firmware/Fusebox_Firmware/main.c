@@ -67,71 +67,54 @@ _delay_ms(50);  //temporary band aid (uC needed time between setup and arming
 struct CAN_MOB can_Fusebox0_mob;
 can_Fusebox0_mob.mob_id = 0x600;
 can_Fusebox0_mob.mob_idmask = 0; //sent
-can_Fusebox0_mob.mob_number = 1;
+can_Fusebox0_mob.mob_number = 0;
 uint8_t Fusebox0_databytes[8];
 
 struct CAN_MOB can_Fusebox1_mob;
-can_Fusebox0_mob.mob_id = 0x601;
-can_Fusebox0_mob.mob_idmask = 0; //sent
-can_Fusebox0_mob.mob_number = 2;
+can_Fusebox1_mob.mob_id = 0x601;
+can_Fusebox1_mob.mob_idmask = 0xFF; //sent
+can_Fusebox1_mob.mob_number = 1;
 uint8_t Fusebox1_databytes[8];
 
 //Serial Numbers of Inverters, 0x1F for Broadcasting
 uint8_t INV0_SN = 0x1F; 
 uint8_t INV1_SN = 0x1F;
+uint8_t INVX_SN = 0x1F; //(Broadcast)
 
-struct CAN_MOB can_Fusebox2_mob; //to INV0 (Drive Enable)
-can_Fusebox0_mob.mob_id = (0x0C << 5) + (INV0_SN);
-can_Fusebox0_mob.mob_idmask = 0; //sent
-can_Fusebox0_mob.mob_number = 3;
+struct CAN_MOB can_Fusebox2_mob; //to INVX (Drive Enable)
+can_Fusebox2_mob.mob_id = (0x0C << 5) + (INVX_SN);
+can_Fusebox2_mob.mob_idmask = 0xFF; //sent
+can_Fusebox2_mob.mob_number = 2;
 uint8_t Fusebox2_databytes[8] = {0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
-struct CAN_MOB can_Fusebox3_mob; //to INV1 (Drive Enable)
-can_Fusebox0_mob.mob_id = (0x0C << 5) + (INV1_SN);
-can_Fusebox0_mob.mob_idmask = 0; //sent
-can_Fusebox0_mob.mob_number = 4;
-uint8_t Fusebox3_databytes[8] = {0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+struct CAN_MOB can_Fusebox3_mob; //to INVX (AC Peak Current)
+can_Fusebox3_mob.mob_id = (0x01 << 5) + (INVX_SN);
+can_Fusebox3_mob.mob_idmask = 0xFF; //sent
+can_Fusebox3_mob.mob_number = 3;
+uint8_t Fusebox3_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
-struct CAN_MOB can_Fusebox4_mob; //to INV0 (AC Peak Current)
-can_Fusebox0_mob.mob_id = (0x01 << 5) + (INV0_SN);
-can_Fusebox0_mob.mob_idmask = 0; //sent
-can_Fusebox0_mob.mob_number = 5;
+struct CAN_MOB can_Fusebox4_mob; //to INVX (AC Peak Current Limit)
+can_Fusebox4_mob.mob_id = (0x08 << 5) + (INVX_SN);
+can_Fusebox4_mob.mob_idmask = 0xFF; //sent
+can_Fusebox4_mob.mob_number = 4;
 uint8_t Fusebox4_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-
-struct CAN_MOB can_Fusebox5_mob; //to INV1 (AC Peak Current)
-can_Fusebox0_mob.mob_id = (0x01 << 5) + (INV1_SN);
-can_Fusebox0_mob.mob_idmask = 0; //sent
-can_Fusebox0_mob.mob_number = 6;
-uint8_t Fusebox5_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-	
-struct CAN_MOB can_Fusebox6_mob; //to INV0 (AC Peak Current Limit)
-can_Fusebox0_mob.mob_id = (0x08 << 5) + (INV0_SN);
-can_Fusebox0_mob.mob_idmask = 0; //sent
-can_Fusebox0_mob.mob_number = 7;
-uint8_t Fusebox6_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-
-struct CAN_MOB can_Fusebox7_mob; //to INV1 (AC Peak Current Limit)
-can_Fusebox0_mob.mob_id = (0x08 << 5) + (INV1_SN);
-can_Fusebox0_mob.mob_idmask = 0; //sent
-can_Fusebox0_mob.mob_number = 8;
-uint8_t Fusebox7_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 struct CAN_MOB can_SHR0_mob;
 can_SHR0_mob.mob_id = 0x400;
 can_SHR0_mob.mob_idmask = 0b11111111111; //receive with no filer?
-can_SHR0_mob.mob_number = 9;  //IDs might be wrong
+can_SHR0_mob.mob_number = 5;  //IDs might be wrong
 uint8_t SHR0_databytes[8];
 
 struct CAN_MOB can_SHB0_mob;
 can_SHB0_mob.mob_id = 0x420;
 can_SHB0_mob.mob_idmask = 0b11111111111; //receive with no filter?
-can_SHB0_mob.mob_number = 10;
+can_SHB0_mob.mob_number = 6;
 uint8_t SHB0_databytes[8];
 
 struct CAN_MOB can_DIC0_mob;	
 can_DIC0_mob.mob_id = 0x500;
 can_DIC0_mob.mob_idmask = 0xffff;
-can_DIC0_mob.mob_number = 11;
+can_DIC0_mob.mob_number = 7;
 uint8_t DIC0_databytes[8];
 
 //timer1_config();
@@ -237,25 +220,18 @@ sei();
  			Fusebox0_databytes[6]	=	0						;
 			Fusebox0_databytes[7]	=	0						;
 			
-			Fusebox4_databytes[0] = ac_current;
-			Fusebox4_databytes[1] = (ac_current >> 8);
-			Fusebox5_databytes[0] = ac_current;
-			Fusebox5_databytes[1] = (ac_current >> 8);
-			Fusebox6_databytes[0] = current_limit;
-			Fusebox6_databytes[1] = (current_limit >> 8);
-			Fusebox7_databytes[0] = (current_limit * 10);
-			Fusebox7_databytes[1] = ((current_limit * 10) >> 8);
+			Fusebox3_databytes[0] = ac_current;
+			Fusebox3_databytes[1] = (ac_current >> 8);
+			Fusebox4_databytes[0] = current_limit;
+			Fusebox4_databytes[1] = (current_limit >> 8);
 			
 			tractive_system_activate(DIC0_databytes);
  			
-			can_tx(&can_Fusebox0_mob, Fusebox0_databytes);
-			can_tx(&can_Fusebox1_mob, Fusebox1_databytes);
-			can_tx(&can_Fusebox2_mob, Fusebox2_databytes); 
-			can_tx(&can_Fusebox3_mob, Fusebox3_databytes); 
-			can_tx(&can_Fusebox4_mob, Fusebox4_databytes); 
-			can_tx(&can_Fusebox5_mob, Fusebox5_databytes);  
-			can_tx(&can_Fusebox6_mob, Fusebox6_databytes);
-			can_tx(&can_Fusebox7_mob, Fusebox7_databytes);
+			//can_tx(&can_Fusebox0_mob, Fusebox0_databytes);	//(0x600 --> Board Voltages)
+			//can_tx(&can_Fusebox1_mob, Fusebox1_databytes);	//(0x601 --> SDC Indicator)
+			//can_tx(&can_Fusebox2_mob, Fusebox2_databytes);	//(DRV Enable)
+			//can_tx(&can_Fusebox3_mob, Fusebox3_databytes);	//(AC Current)
+			//can_tx(&can_Fusebox4_mob, Fusebox4_databytes);	//(AC Current Limit)
 			
 		//	R2D_pressed = R2D_databytes[2];
 											// define CAR_IS_READY_TO_DRIVE [combines the 3 conditions]
@@ -319,7 +295,7 @@ sei();
 			Fusebox1_databytes[6]	= 0;
 			Fusebox1_databytes[7]	= 0;
 			
-			can_tx(&can_Fusebox1_mob, Fusebox1_databytes);
+			//can_tx(&can_Fusebox1_mob, Fusebox1_databytes);
 		} //end of 200ms
 // 		if (test_timer1 >= 3000){
 // 			test_timer1 = 0;
