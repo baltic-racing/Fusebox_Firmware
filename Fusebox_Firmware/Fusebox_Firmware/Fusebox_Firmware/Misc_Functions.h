@@ -17,7 +17,6 @@ void sys_tick_heart();
 void fault_not_detected();
 void fault_detected();
 
-void tractive_system_activate(uint8_t *data);
 int16_t calculate_ac_current(uint16_t limit, uint16_t value);
 
 ISR(TIMER0_COMP_vect);

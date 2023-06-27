@@ -14,6 +14,7 @@
 
 void timer2_config();
 void buzzer_noise();
+void R2D(void);
 
 ISR(TIMER2_COMP_vect);
 

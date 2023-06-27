@@ -36,7 +36,7 @@ void port_config(){  //0 input, 1 output
 	DDRA = 0;   //Fuse Read Out Inputs
 	DDRB = 0 | (1<<PB0) |(1<<PB2) | (1<<PB3) | (1<<PB4) | (1<<PB5); //WP, fan and LED outputs
 	DDRC = 0; // Shutdown circuit just like FRO is an input 
-	DDRD = 0 | (1<<PD2) | (1<<PD3) | (1<<PD5); /*| (1<<PD6);SET TO 0?*/ // timer for the buzzer and can outputs, PD5 transmits to CAN, PD6 is a receiver
+	DDRD = 0 | (1<<PD2) | (1<<PD3);	// timer for the buzzer and can outputs, PD5 transmits to CAN, PD6 is a receiver
 	DDRE = 0; //Fuse Read Out Inputs
 	DDRF = 0; //JTAG and 2 ADC readings inputs
 }
@@ -51,14 +51,14 @@ void sys_timer_config(void)
 	TIMSK0 = 0 | (1<<OCIE0A);
 }
 
-void sys_tick_heart(){
+void sys_tick_heart()
+{
 	PORTB ^= (1<<PB4); //toggle the Heart led on Pin 4, will be used in the super loop in main.c to indicade that the loop is running correctly	
 };
 
-ISR(TIMER0_COMP_vect){
-//	cli();
+ISR(TIMER0_COMP_vect)
+{
 	sys_time++;  //system time incremented on each interrupt flag from the CTC mode compare register => every OCR0A
-	//sei();
 }
 
 void fault_not_detected(){	
@@ -69,24 +69,7 @@ void fault_detected(){
 	PORTB |= (1<<PB3); //turn on red led when called (fault present)
 }
 
-void tractive_system_activate(uint8_t *data){
-	START_TIMER_2;
-	if (data[1]){
-		DRV_EN = 1;
-	}else{
-		DRV_EN = 0;
-	}
-}
-
 int16_t calculate_ac_current(uint16_t limit, uint16_t value){
 		
-	return ((int16_t)limit * ((int16_t)value/100) * 10);
+	return (int16_t)((float)limit * ((float)value/100) * 10);
 }
-
-
-//setting up sys timer
-// 		if((sys_time - sys_time_old) >= 1){
-// 			sys_time_old = sys_time;   //MAYBE USE THIS AS FIRST TIMER AND THE BUILD THE 10 and 100 ONES ON TOP OF IT?
-// 			time_X_ms++;
-// 		}
-// after this add any timers time_10_ms, time_20_ms ...

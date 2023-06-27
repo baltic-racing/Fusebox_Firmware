@@ -42,10 +42,19 @@ note_length++;
 		}
 }
 
+void R2D(void)
+{
+	for (uint16_t i = 0; i <= 0xFFF; i++)
+	{
+		for (uint16_t j = 0; j <= 0x1AF; j++) {}
+		PORTD ^= (1 << PD3);	
+	}
+}
+
 ISR(TIMER2_COMP_vect){ //isr for timer2 
-	//cli(); // if cli() and sei() at the end are deployed, the code slows down immensly (longer sounds etc, but the overall r2d length does not get affected at all since its inside the ISR)
-	PORTD ^= (1<<PD2);
+	cli();
+	PORTD ^= (1<<PD3);
 	OCR2A = song[note_next];
 	r2d_length++;
-	//sei(); //magic?
+	sei();
 }
