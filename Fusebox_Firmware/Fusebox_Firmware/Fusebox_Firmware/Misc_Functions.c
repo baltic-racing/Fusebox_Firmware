@@ -33,12 +33,13 @@ volatile unsigned long sys_time = 0;
 volatile unsigned char DRV_EN = 0;
 
 void port_config(){  //0 input, 1 output
-	DDRA = 0;   //Fuse Read Out Inputs
-	DDRB = 0 | (1<<PB0) |(1<<PB2) | (1<<PB3) | (1<<PB4) | (1<<PB5); //WP, fan and LED outputs
-	DDRC = 0; // Shutdown circuit just like FRO is an input 
-	DDRD = 0 | (1<<PD2) | (1<<PD3);	// timer for the buzzer and can outputs, PD5 transmits to CAN, PD6 is a receiver
-	DDRE = 0; //Fuse Read Out Inputs
-	DDRF = 0; //JTAG and 2 ADC readings inputs
+	DDRA = 0;
+	DDRB = 0 | (1<<PB0) | (1<<PB1) | (1<<PB2) | (1<<PB4) | (1<<PB6); // WP, fan and LED outputs
+	DDRC = 0;	// Fuse Read Out Inputs
+	DDRD = 0 | (1<<PD4);	// timer for the buzzer and can outputs, PD5 transmits to CAN, PD6 is a receiver
+	DDRE = 0 | (1<<PE4);	// Shutdown circuit just like FRO is an input, Servo PWM
+	DDRF = 0;	// JTAG and 2 ADC readings inputs
+	DDRG = 0 | (1<<PG1);	// Fuse Read Out Status
 }
 
 void sys_timer_config(void)
