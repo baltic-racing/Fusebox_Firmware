@@ -29,7 +29,7 @@ uint8_t R2D_pressed = 0;
 extern volatile unsigned char DRV_EN;
 uint16_t apps = 0;
 int16_t ac_current = 0;
-uint16_t current_limit = 50; //in Ampere
+uint16_t current_limit = 25; //in Ampere
 
 int main(void){
 
@@ -142,7 +142,7 @@ sei();
  			Fusebox0_databytes[6]	=	0						;
 			Fusebox0_databytes[7]	=	0						;
 			
-			Fusebox3_databytes[0] = (ac_current*10 >> 8);
+			Fusebox3_databytes[0] = (ac_current*10>> 8);
 			Fusebox3_databytes[1] = ac_current*10;
 			//Fusebox3_1_databytes[0] = (ac_current*10 >> 8);
 			//Fusebox3_1_databytes[1] = ac_current*10;
@@ -151,11 +151,11 @@ sei();
 			
 			//	TS ACTIVATE PROCEDURE
 			
-			TS_RDY = 1;
+			//TS_RDY = 1;
 			
 			if (TS_RDY == 1)
 			{
-				if ((TS_ACT == 2) && (R2D_bit == 0))
+				if ((TS_ACT == 1) && (R2D_bit == 0))
 				{
 					R2D();
 					R2D_bit = 1;
