@@ -1,8 +1,8 @@
  #include <avr/io.h>
  #include <avr/interrupt.h>
  
-uint8_t SDCI_read_out(char mux_select)
+uint8_t SDCI_read_out()
 {
-	PORTC = mux_select;	
-	return PING1;
+	char SDCI = 0;
+	return SDCI;
 }

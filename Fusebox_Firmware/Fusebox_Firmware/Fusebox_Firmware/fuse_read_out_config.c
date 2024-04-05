@@ -8,6 +8,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-uint16_t fuse_read_out(){
-	return PINE | PINA << 8;
+uint8_t Fuse_Read_Out(char mux_select)
+{
+	PORTC = mux_select;
+	return PING1;
 }
