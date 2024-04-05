@@ -45,7 +45,7 @@ void port_config(){  //0 input, 1 output
 	// JTAG and 2 ADC readings inputs
 	DDRF = 0;
 	// Fuse Read Out Status
-	DDRG = 0 | (1<<PG1);
+	DDRG = 0;
 }
 
 void sys_timer_config(void)
