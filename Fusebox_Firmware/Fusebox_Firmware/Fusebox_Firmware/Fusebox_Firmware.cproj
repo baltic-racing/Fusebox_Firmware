@@ -171,16 +171,16 @@
     <Compile Include="canlib.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="fan_power_unit_PWM_control.c">
+    <Compile Include="FAN_CTRL.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="fan_power_unit_PWM_control.h">
+    <Compile Include="FAN_CTRL.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="fuse_read_out_config.c">
+    <Compile Include="Fuse_Read_Out.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="fuse_read_out_config.h">
+    <Compile Include="Fuse_Read_Out.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
@@ -192,28 +192,28 @@
     <Compile Include="Misc_Functions.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="ready_to_drive_sound_config.c">
+    <Compile Include="R2D.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="ready_to_drive_sound_config.h">
+    <Compile Include="R2D.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="shutdown_circuit_indicator.c">
+    <Compile Include="SERVO.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="shutdown_circuit_indicator.h">
+    <Compile Include="SERVO.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="timer_library.c">
+    <Compile Include="ShutDown_Circuit_Indicator.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="timer_library.h">
+    <Compile Include="ShutDown_Circuit_Indicator.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="water_pump_control.c">
+    <Compile Include="Waterpump_CTRL.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="water_pump_control.h">
+    <Compile Include="Waterpump_CTRL.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

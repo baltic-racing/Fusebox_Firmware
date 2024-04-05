@@ -1,30 +1,4 @@
-/*
- ***********************************************************************************************************************************************************************************************
- *																				MISCELLANEOUS FUNCTIONS
- * Description : A "miscellaneous functions" or "misc_functions" file is typically used to contain general port, timer and rudimentary function configurations.
- *				 
- **				 "port_config" is usually the first piece of code written in a project, setting the Data Direction Registers to input/output. As described in the I/O 
- *				 section on page 68 of the AVR documentation, setting DDRx to 1, means that the x Pin is set to output => your uC will give you data (for example PWM signals or logic states),
- *				 writing DDRx to 0 changes it to input => you are the one providing data for your uC (for example sensors or CAN data). Note that the Data Direction needs to be set to output
- *				 to drive the logic levels of the pins (0 - low, 1 - high).
- *
- **				 "sys_timer_config" sets up the general timer for executing code in our main() function. Here it's set to go from BOTTOM to TOP and execute a compare
- *				 match at OCR0A = 124. Here we are using the CTC mode, described on page 104, to generate a 1kHz waveform.
- *				 
- **				 "ISR(TIMER0_COMP_vect)" increments the sys_time variable on each compare match, which is 1 ms in our example.
- *				 
- **				 "sys_tick_heart" toggles the blue LED whenever it's called. WHAT IS XOR
- *				 
- **				 "fault_not_detected" and "fault_detected" control the red LED whenever called. NAND AND OR WHAT DO?
- * Notes       : 1) The basis for calculating frequencies of various timers is the CLKio oscillator which runs at 16 MHz (16 000 000)				 
- *				 
- *				 
- ***********************************************************************************************************************************************************************************************
-*/
-
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include "ready_to_drive_sound_config.h"
+#include "Misc_Functions.h"
 
 volatile unsigned long sys_time = 0;
 

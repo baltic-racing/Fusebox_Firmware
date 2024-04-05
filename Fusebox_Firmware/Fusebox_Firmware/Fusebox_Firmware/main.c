@@ -1,16 +1,15 @@
 //IMPORTANT TO KNOW BUZZER IS A CAPACITOR, NEEDS A RESISTOR TO COMPENSATE
 //DONT FORGET THE 120 OHM TERMINATION RESISTOR BETWEEN THE CAN WIRES WHEN TESTING PCBs (stehende welle vermeiden)
  
-
-#include "adc_functions.h"
-#include "fuse_read_out_config.h"
-#include "Misc_Functions.h"
-#include "shutdown_circuit_indicator.h"
-#include "ready_to_drive_sound_config.h"
-#include "canlib.h"
-#include "fan_power_unit_PWM_control.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "adc_functions.h"
+#include "Fuse_Read_Out.h"
+#include "Misc_Functions.h"
+#include "ShutDown_Circuit_Indicator.h"
+#include "R2D.h"
+#include "canlib.h"
+#include "FAN_CTRL.h"
 
 unsigned long sys_time;
 unsigned long time_old = 0;
@@ -30,7 +29,6 @@ sys_timer_config();
 port_config();
 can_cfg();
 adc_config();
-timer2_config();
 
 struct CAN_MOB can_Fusebox0_mob;
 can_Fusebox0_mob.mob_id = 0x600;
@@ -102,6 +100,7 @@ uint8_t BMS3_databytes[8];
 uint8_t TS_RDY = 0;
 
 uint8_t R2D_bit = 0;
+uint16_t FRO_Byte = 0;
 
 sei();
 
@@ -150,7 +149,7 @@ sei();
 			{
 				if ((TS_ACT == 1) && (R2D_bit == 0))
 				{
-					R2D();
+					//R2D();
 					R2D_bit = 1;
 					DRV_EN = 1;
 				}
@@ -182,10 +181,12 @@ sei();
 		{
 			time_200ms = 0;
 			
-			Fusebox1_databytes[0]	=	SCI_read_out()			;
+			FRO_Byte = Fuse_Read_Out();
+			
+			Fusebox1_databytes[0]	=	SDCI_read_out();
 			Fusebox1_databytes[1]	= 0;
-			Fusebox1_databytes[2]	=	fuse_read_out()&0xff		;
-			Fusebox1_databytes[3]	=	(fuse_read_out()>>8)&0xff	;
+			Fusebox1_databytes[2]	=	FRO_Byte & 0xFF;
+			Fusebox1_databytes[3]	=	(FRO_Byte >> 8) & 0xFF;
 			Fusebox1_databytes[4]	= 0;
 			Fusebox1_databytes[5]	= 0;
 			Fusebox1_databytes[6]	= 0;

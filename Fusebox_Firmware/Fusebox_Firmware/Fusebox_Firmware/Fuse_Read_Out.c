@@ -1,7 +1,15 @@
 #include "Fuse_Read_Out.h"
 
-uint8_t Fuse_Read_Out(char mux_select)
+uint16_t Fuse_Read_Out()
 {
-	PORTC = mux_select;
-	return PING1;
+	// KOMMENTAR LÖSCHEN WENN FUNKTION ÜBERPRÜFT WURDE !!!
+	uint16_t FRO = 0;
+	
+	for (uint8_t i = 0; i < 14; i++)
+	{
+		PORTC = i;
+		FRO += (PING1 << i);
+	}
+
+	return FRO;
 }
