@@ -12,7 +12,7 @@ extern struct CAN_MOB can_DIC0_mob;
 extern struct CAN_MOB can_BMS3_mob;
 */
 
-uint8_t Fusebox1_databytes[8];
+// uint8_t Fusebox1_databytes[8];
 
 //uint8_t R2D_pressed = 0;
 
@@ -21,12 +21,14 @@ uint8_t Fusebox1_databytes[8];
 //int16_t ac_current = 0;
 //uint16_t current_limit = 25; //in Ampere
 
+uint16_t Motor_Temp;
+extern volatile uint8_t fan_dc;
+
 int main(void)
 {
-	
-
 	sys_timer_config();
 	port_config();
+	timer1_config();
 	//can_cfg();
 	//adc_config();
 	//CAN_Init_Messages();
@@ -127,6 +129,10 @@ int main(void)
 			time_100ms = sys_time;
 			sys_tick_heart();
 			
+			Motor_Temp = 60;
+			
+			fan_dc = FAN_PU_SET_PWM( Motor_Temp );
+			
 			 
  		}  //end of 100ms
 		 
@@ -134,6 +140,7 @@ int main(void)
 		{
 			time_200ms = sys_time;
 			
+			/*
 			FRO_Byte = Fuse_Read_Out();
 			
 			Fusebox1_databytes[0]	=	SDCI_read_out();
@@ -144,6 +151,7 @@ int main(void)
 			Fusebox1_databytes[5]	= 0;
 			Fusebox1_databytes[6]	= 0;
 			Fusebox1_databytes[7]	= 0;
+			*/
 			
 			/*
 			can_tx(&can_Fusebox1_mob, Fusebox1_databytes);

@@ -3,7 +3,7 @@
 volatile uint8_t fan_dc;
 extern volatile uint8_t temperature;
 
-uint16_t OCM_PU = ( 16000000 / (f_PWM * 8) ) - 1;
+uint16_t OCM_PU = ( (float)16000000 / ((float)f_PWM * (float)8) ) - 1;
 
 uint16_t FAN_PU_SET_PWM(uint16_t temp)
 {
@@ -23,7 +23,7 @@ uint16_t FAN_PU_SET_PWM(uint16_t temp)
 		DR = (temp * DR_MAX) / TEMP_MAX;
 	}
 	
-	DC = (DR / 100) * OCM_PU;
+	DC = ((float)DR / (float)100) * (float)OCM_PU;
 	
 	return DC;
 }
@@ -35,8 +35,8 @@ void timer1_config()
 	TCCR1B = (1<<WGM13) | (1<<WGM12) | (1<<CS11);
 	// Output Compare interrupt flag will be set whenever OCR1A is reached
 	TIMSK1 = (1<<OCIE1A);
-	OCR1A = OCM_PU;											
-	OCR1B = (uint16_t) (OCM_PU / 2);
+	OCR1A = OCM_PU;									
+	OCR1B = 1;
 }
 
 // ISR for the timer 1, updating the duty cycle
