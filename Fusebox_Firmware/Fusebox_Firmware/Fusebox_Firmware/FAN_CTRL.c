@@ -1,7 +1,6 @@
 #include "FAN_CTRL.h"
 
-volatile uint8_t fan_dc;
-extern volatile uint8_t temperature;
+volatile uint16_t fan_dc;
 
 uint16_t OCM_PU = ( (float)16000000 / ((float)f_PWM * (float)8) ) - 1;
 

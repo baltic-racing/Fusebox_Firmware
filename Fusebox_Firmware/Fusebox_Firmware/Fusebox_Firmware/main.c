@@ -22,7 +22,7 @@ extern struct CAN_MOB can_BMS3_mob;
 //uint16_t current_limit = 25; //in Ampere
 
 uint16_t Motor_Temp;
-extern volatile uint8_t fan_dc;
+extern volatile uint16_t fan_dc;
 
 int main(void)
 {
