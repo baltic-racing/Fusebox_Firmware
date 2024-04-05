@@ -1,11 +1,4 @@
 /*
- * fan_power_unit_control.c
- *
- * Created: 10.04.2023 15:52:18
- *  Author: adaam
- */ 
-
-/*
  ***********************************************************************************************************************************************************************************************
  *															  SETUP AND CALCULATION OF THE FAN POWER UNIT PWM SIGNAL
  *
@@ -35,10 +28,7 @@
  ***********************************************************************************************************************************************************************************************
  */
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
-#include "fan_power_unit_PWM_control.h"
+#include "FAN_CTRL.h"
 
 volatile uint8_t fan_duty;		
 extern volatile uint8_t temperature;
