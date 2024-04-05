@@ -17,12 +17,12 @@ uint16_t FAN_PU_SET_PWM(uint16_t temp)
 	{
 		DR = 0;
 	}
-	if ((temp > TEMP_MIN) && (temp > TEMP_MAX))
+	if ((temp > TEMP_MIN) && (temp < TEMP_MAX))
 	{
 		DR = (temp * DR_MAX) / TEMP_MAX;
 	}
 	
-	DC = ((float)DR / (float)100) * (float)OCM_PU;
+	DC = ((float)DR / 100) * (float)OCM_PU;
 	
 	return DC;
 }

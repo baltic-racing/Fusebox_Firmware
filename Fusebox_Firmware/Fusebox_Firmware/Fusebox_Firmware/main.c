@@ -12,7 +12,7 @@ extern struct CAN_MOB can_DIC0_mob;
 extern struct CAN_MOB can_BMS3_mob;
 */
 
-// uint8_t Fusebox1_databytes[8];
+uint8_t Fusebox1_databytes[8];
 
 //uint8_t R2D_pressed = 0;
 
@@ -129,7 +129,7 @@ int main(void)
 			time_100ms = sys_time;
 			sys_tick_heart();
 			
-			Motor_Temp = 60;
+			Motor_Temp = 30;
 			
 			fan_dc = FAN_PU_SET_PWM( Motor_Temp );
 			
@@ -140,10 +140,10 @@ int main(void)
 		{
 			time_200ms = sys_time;
 			
-			/*
 			FRO_Byte = Fuse_Read_Out();
 			
-			Fusebox1_databytes[0]	=	SDCI_read_out();
+			
+			Fusebox1_databytes[0]	= 0;
 			Fusebox1_databytes[1]	= 0;
 			Fusebox1_databytes[2]	=	FRO_Byte & 0xFF;
 			Fusebox1_databytes[3]	=	(FRO_Byte >> 8) & 0xFF;
@@ -151,7 +151,7 @@ int main(void)
 			Fusebox1_databytes[5]	= 0;
 			Fusebox1_databytes[6]	= 0;
 			Fusebox1_databytes[7]	= 0;
-			*/
+			
 			
 			/*
 			can_tx(&can_Fusebox1_mob, Fusebox1_databytes);
