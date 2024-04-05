@@ -6,6 +6,8 @@ adc_functions.c
 
 canlib.c
 
+CAN_DATA.c
+
 FAN_CTRL.c
 
 Fuse_Read_Out.c
