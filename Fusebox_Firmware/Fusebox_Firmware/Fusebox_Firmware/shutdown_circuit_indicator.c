@@ -1,12 +1,8 @@
-/*
- * shutdown_circuit_indicator.c
- *
- * Created: 10.04.2023 15:34:19
- *  Author: adaam
- */ 
  #include <avr/io.h>
  #include <avr/interrupt.h>
-uint8_t SCI_read_out(){
-	
-	return PINC;
+ 
+uint8_t SDCI_read_out(char mux_select)
+{
+	PORTC = mux_select;	
+	return PING1;
 }

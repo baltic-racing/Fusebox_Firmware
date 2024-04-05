@@ -1,6 +1,3 @@
-
-
-
 /*
  ***********************************************************************************************************************************************************************************************
  *																				MISCELLANEOUS FUNCTIONS
@@ -24,6 +21,7 @@
  *				 
  ***********************************************************************************************************************************************************************************************
 */
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "ready_to_drive_sound_config.h"
@@ -68,11 +66,13 @@ ISR(TIMER0_COMP_vect)
 	sys_time++;  //system time incremented on each interrupt flag from the CTC mode compare register => every OCR0A
 }
 
-void fault_not_detected(){	
+void fault_not_detected()
+{	
 	PORTB &= ~(1<<PB3); //turn off red led in case of no fault
 }
 
-void fault_detected(){
+void fault_detected()
+{
 	PORTB |= (1<<PB3); //turn on red led when called (fault present)
 }
 
