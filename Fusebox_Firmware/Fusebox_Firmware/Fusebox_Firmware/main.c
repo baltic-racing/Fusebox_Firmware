@@ -23,6 +23,7 @@ uint8_t Fusebox1_databytes[8];
 
 uint16_t Motor_Temp;
 extern volatile uint16_t fan_dc;
+extern volatile uint16_t wp_dc;
 
 int main(void)
 {
