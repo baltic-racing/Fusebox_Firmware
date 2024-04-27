@@ -4,6 +4,14 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#define FAN1_DDR		DDRB
+#define FAN1_PORT		PORTB
+#define FAN1_PIN		PB6
+
+#define FAN2_DDR		DDRE
+#define FAN2_PORT		PORTE   
+#define FAN2_PIN		PE4  //Servo pin
+
 #define TEMP_MAX 100
 #define TEMP_MIN 5
 

@@ -2,6 +2,7 @@
 
 volatile uint16_t fan_dc;
 
+
 uint16_t OCM_PU = ( (float)16000000 / ((float)f_PWM * (float)8) ) - 1;
 
 uint16_t FAN_PU_SET_PWM(uint16_t temp)
@@ -40,6 +41,16 @@ void timer1_config()
 
 // ISR for the timer 1, updating the duty cycle
 ISR(TIMER1_COMPA_vect)
-{									
-	OCR1B = fan_dc;
+{	cli();				
+	
+	switch (fan_dc)
+	{
+	case 0:
+		FAN1_PORT &= ~(1<<FAN1_PIN);
+		FAN2_PORT |= (1<<FAN2_PIN);
+		OCR1B = fan_dc;
+		break;
+	}
+				
+	
 }
