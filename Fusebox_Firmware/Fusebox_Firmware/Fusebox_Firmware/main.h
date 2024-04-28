@@ -11,6 +11,7 @@
 #include "canlib.h"
 #include "FAN_CTRL.h"
 #include "CAN_DATA.h"
+#include "Waterpump_CTRL.h"
 
 //	Variables
 extern volatile unsigned long sys_time;

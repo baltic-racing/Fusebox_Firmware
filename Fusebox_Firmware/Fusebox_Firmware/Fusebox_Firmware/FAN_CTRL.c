@@ -7,8 +7,8 @@ uint16_t OCM_PU = ( (float)16000000 / ((float)f_PWM * (float)8) ) - 1;
 
 uint16_t FAN_PU_SET_PWM(uint16_t temp)
 {
-	uint16_t DR = 0;		//DR = Dutyratio
-	uint16_t DC = 0;		//DC = Dutycycle
+	uint16_t DR = 50;		//DR = Dutyratio
+	uint16_t DC = 100;		//DC = Dutycycle
 	
 	if (temp >= TEMP_MAX)
 	{

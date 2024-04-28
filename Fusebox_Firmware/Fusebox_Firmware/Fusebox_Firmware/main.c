@@ -30,6 +30,7 @@ int main(void)
 	sys_timer_config();
 	port_config();
 	timer1_config();
+	timer3_config();
 	//can_cfg();
 	//adc_config();
 	//CAN_Init_Messages();
@@ -133,6 +134,7 @@ int main(void)
 			Motor_Temp = 30;
 			
 			fan_dc = FAN_PU_SET_PWM( Motor_Temp );
+			wp_dc = WP_SET_PWM( Motor_Temp );
 			
 			 
  		}  //end of 100ms
