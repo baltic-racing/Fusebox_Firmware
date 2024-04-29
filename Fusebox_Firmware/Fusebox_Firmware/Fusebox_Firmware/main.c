@@ -12,8 +12,7 @@ extern struct CAN_MOB can_DIC0_mob;
 extern struct CAN_MOB can_BMS3_mob;
 */
 
-uint8_t Fusebox1_databytes[8];
-
+//uint8_t Fusebox1_databytes[8];
 //uint8_t R2D_pressed = 0;
 
 //extern volatile unsigned char DRV_EN;
@@ -21,9 +20,11 @@ uint8_t Fusebox1_databytes[8];
 //int16_t ac_current = 0;
 //uint16_t current_limit = 25; //in Ampere
 
-uint16_t Motor_Temp;
+volatile uint16_t Motor_Temp = 30;
 extern volatile uint16_t fan_dc;
 extern volatile uint16_t wp_dc;
+
+uint8_t pfusch = 0;
 
 int main(void)
 {
@@ -31,15 +32,17 @@ int main(void)
 	port_config();
 	timer1_config();
 	timer3_config();
-	//can_cfg();
-	//adc_config();
+	can_cfg();
+	adc_config();
+	R2D_activation();
+
 	//CAN_Init_Messages();
-
+//
 	//uint8_t BMS3_databytes[8];
-	//uint8_t TS_RDY = 0;
-
+	//int8_t TS_RDY = 0;
+//
 	//uint8_t R2D_bit = 0;
-	uint16_t FRO_Byte = 0;
+	//uint16_t FRO_Byte = 0;
 
 	sei();
 
@@ -50,7 +53,12 @@ int main(void)
 		if(TIME_PASSED_1_MS)
 		{
 			time_1ms = sys_time;
-			
+			fan_dc = 1800;
+			if (pfusch > 50){
+				pfusch = 51;
+				fan_dc = 3750;  // min. 2300
+			}
+
 		}
 		
 		if(TIME_PASSED_10_MS)
@@ -95,22 +103,22 @@ int main(void)
 			//	TS ACTIVATE PROCEDURE
 			
 			//TS_RDY = 1;
-			/*
-			if (TS_RDY == 1)
-			{
-				if ((TS_ACT == 1) && (R2D_bit == 0))
-				{
-					//R2D();
-					R2D_bit = 1;
-					DRV_EN = 1;
-				}
-			}
-			else
-			{
-				R2D_bit = 0;
-				DRV_EN = 0;
-			}
-			*/
+			//
+			//if (TS_RDY == 1)
+			//{
+				//if ((TS_ACT == 1) && (R2D_bit == 0))
+				//{
+					////R2D();
+					//R2D_bit = 1;
+					//DRV_EN = 1;
+				//}
+			//}
+			//else
+			//{
+				//R2D_bit = 0;
+				//DRV_EN = 0;
+			//}
+			
 			/*
 			Fusebox2_databytes[0] = DRV_EN;
 			 
@@ -131,9 +139,9 @@ int main(void)
 			time_100ms = sys_time;
 			sys_tick_heart();
 			
-			Motor_Temp = 30;
 			
-			fan_dc = FAN_PU_SET_PWM( Motor_Temp );
+			
+			//fan_dc = FAN_PU_SET_PWM( Motor_Temp );
 			wp_dc = WP_SET_PWM( Motor_Temp );
 			
 			 
@@ -143,22 +151,23 @@ int main(void)
 		{
 			time_200ms = sys_time;
 			
-			FRO_Byte = Fuse_Read_Out();
-			
-			
-			Fusebox1_databytes[0]	= 0;
-			Fusebox1_databytes[1]	= 0;
-			Fusebox1_databytes[2]	=	FRO_Byte & 0xFF;
-			Fusebox1_databytes[3]	=	(FRO_Byte >> 8) & 0xFF;
-			Fusebox1_databytes[4]	= 0;
-			Fusebox1_databytes[5]	= 0;
-			Fusebox1_databytes[6]	= 0;
-			Fusebox1_databytes[7]	= 0;
-			
-			
+			//FRO_Byte = Fuse_Read_Out();
+			//
+			//
+			//Fusebox1_databytes[0]	= 0;
+			//Fusebox1_databytes[1]	= 0;
+			//Fusebox1_databytes[2]	=	FRO_Byte & 0xFF;
+			//Fusebox1_databytes[3]	=	(FRO_Byte >> 8) & 0xFF;
+			//Fusebox1_databytes[4]	= 0;
+			//Fusebox1_databytes[5]	= 0;
+			//Fusebox1_databytes[6]	= 0;
+			//Fusebox1_databytes[7]	= 0;
+			//
+			//
 			/*
 			can_tx(&can_Fusebox1_mob, Fusebox1_databytes);
 			*/
+			pfusch++;
 		} //end of 200ms
 
 	}  //end of while

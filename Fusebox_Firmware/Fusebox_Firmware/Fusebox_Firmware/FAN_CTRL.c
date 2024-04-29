@@ -1,14 +1,15 @@
 #include "FAN_CTRL.h"
 
 volatile uint16_t fan_dc;
-
+volatile uint8_t case_counter = 0;
 
 uint16_t OCM_PU = ( (float)16000000 / ((float)f_PWM * (float)8) ) - 1;
 
+
 uint16_t FAN_PU_SET_PWM(uint16_t temp)
 {
-	uint16_t DR = 50;		//DR = Dutyratio
-	uint16_t DC = 100;		//DC = Dutycycle
+	uint16_t DR = 0;		//DR = Dutyratio
+	uint16_t DC = 0;		//DC = Dutycycle
 	
 	if (temp >= TEMP_MAX)
 	{
@@ -27,30 +28,49 @@ uint16_t FAN_PU_SET_PWM(uint16_t temp)
 	
 	return DC;
 }
-
-void timer1_config()
-{											
-	// Fast PWM, Mode 15, Prescaler 8, Inverted Output Mode
-	TCCR1A = (1<<WGM11) | (1<<WGM10) | (0<<COM1A1) | (1<<COM1B1);  
-	TCCR1B = (1<<WGM13) | (1<<WGM12) | (1<<CS11);
-	// Output Compare interrupt flag will be set whenever OCR1A is reached
-	TIMSK1 = (1<<OCIE1A);
-	OCR1A = OCM_PU;									
-	OCR1B = 1;
+//old code from CMC servo control
+void timer1_config(){
+	
+	//CONFIG FOR THE SERVO CONTROL
+	//USING TIMER 1 COMPARE A INTERRUPT
+	//16 bit Timer 1 config
+	//CTC mode and a prescaler of 8
+	TCCR1B |= (1<<CS11) | (1<<WGM12);
+	TIMSK1 |= (1<<OCIE1A);
+	OCR1A = 4200; 
+	
 }
+	
+//newer code
+//void timer1_config()
+//{											
+	//// Fast PWM, Mode 15, Prescaler 8, Inverted Output Mode
+	//TCCR1A = (1<<WGM11) | (1<<WGM10) | (0<<COM1A1) | (1<<COM1B1);  
+	//TCCR1B = (1<<WGM13) | (1<<WGM12) | (1<<CS11);
+	//// Output Compare interrupt flag will be set whenever OCR1A is reached
+	//TIMSK1 = (1<<OCIE1A);
+	//OCR1A = OCM_PU;									
+	//OCR1B = 1;
+//}
 
 // ISR for the timer 1, updating the duty cycle
-ISR(TIMER1_COMPA_vect)
-{	cli();				
-	
-	switch (fan_dc)
-	{
-	case 0:
-		FAN1_PORT &= ~(1<<FAN1_PIN);
-		FAN2_PORT |= (1<<FAN2_PIN);
-		OCR1B = fan_dc;
-		break;
+ISR(TIMER1_COMPA_vect){
+	//cli();
+	uint16_t timer_max = 4300;
+	switch (case_counter){
+		case 0:
+			FAN1_PORT |= (1<<FAN1_PIN);
+			FAN2_PORT |= (1<<FAN2_PIN);
+			case_counter=1;
+			OCR1A = fan_dc;
+			break;
+		case 1:
+			FAN1_PORT &= ~(1<<FAN1_PIN);
+			FAN2_PORT &= ~(1<<FAN2_PIN);
+			OCR1A = timer_max-fan_dc;
+			case_counter=0;
+			break;
+		
 	}
-				
 	
 }
