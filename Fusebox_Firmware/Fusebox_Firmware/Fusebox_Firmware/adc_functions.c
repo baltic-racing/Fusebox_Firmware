@@ -12,8 +12,6 @@ uint16_t adc_values[ADCVALUES]; //Defined in the Header file (2 right now)
 // index var to know which adc will come next
 uint8_t adc_next = 0;
 
-
-
 void adc_config()
 {
 	//AREF = AVCC, PF0

@@ -3,32 +3,19 @@
 volatile uint16_t fan_dc;
 volatile uint8_t case_counter = 0;
 
-uint16_t OCM_PU = ( (float)16000000 / ((float)f_PWM * (float)8) ) - 1;
-
-
-uint16_t FAN_PU_SET_PWM(uint16_t temp)
-{
-	uint16_t DR = 0;		//DR = Dutyratio
-	uint16_t DC = 0;		//DC = Dutycycle
+uint16_t getfanspeed(uint8_t temp){
 	
-	if (temp >= TEMP_MAX)
-	{
-		DR = DR_MAX;
+	if (temp < TEMPMIN){
+		temp = TEMPMIN;
 	}
-	if (temp <= TEMP_MIN)
-	{
-		DR = 0;
-	}
-	if ((temp > TEMP_MIN) && (temp < TEMP_MAX))
-	{
-		DR = (temp * DR_MAX) / TEMP_MAX;
+	if (temp > TEMPMAX){
+		temp = TEMPMAX;
 	}
 	
-	DC = ((float)DR / 100) * (float)OCM_PU;
-	
-	return DC;
+	uint16_t speed = (((FANSPEEDMAX-FANSPEEDMIN)/(TEMPMAX-TEMPMIN))*(temp-TEMPMIN))+FANSPEEDMIN;
+	return speed;
+	 
 }
-//old code from CMC servo control
 void timer1_config(){
 	
 	//CONFIG FOR THE SERVO CONTROL
@@ -41,18 +28,6 @@ void timer1_config(){
 	
 }
 	
-//newer code
-//void timer1_config()
-//{											
-	//// Fast PWM, Mode 15, Prescaler 8, Inverted Output Mode
-	//TCCR1A = (1<<WGM11) | (1<<WGM10) | (0<<COM1A1) | (1<<COM1B1);  
-	//TCCR1B = (1<<WGM13) | (1<<WGM12) | (1<<CS11);
-	//// Output Compare interrupt flag will be set whenever OCR1A is reached
-	//TIMSK1 = (1<<OCIE1A);
-	//OCR1A = OCM_PU;									
-	//OCR1B = 1;
-//}
-
 // ISR for the timer 1, updating the duty cycle
 ISR(TIMER1_COMPA_vect){
 	//cli();

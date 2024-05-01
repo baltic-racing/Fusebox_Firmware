@@ -1,30 +1,41 @@
 #include "main.h"
 
-/*
+
 extern struct CAN_MOB can_Fusebox0_mob;
 extern struct CAN_MOB can_Fusebox1_mob;
 extern struct CAN_MOB can_Fusebox2_mob;
 extern struct CAN_MOB can_Fusebox3_mob;
+extern struct CAN_MOB can_Fusebox4_mob;
 
 extern struct CAN_MOB can_SHR0_mob;
 extern struct CAN_MOB can_SHB0_mob;
 extern struct CAN_MOB can_DIC0_mob;
 extern struct CAN_MOB can_BMS3_mob;
-*/
+extern uint8_t Fusebox0_databytes[8];
+extern uint8_t Fusebox1_databytes[8];
+extern uint8_t Fusebox2_databytes[8];
+extern uint8_t Fusebox3_databytes[8];
+extern uint8_t Fusebox4_databytes[8];
+extern uint8_t SHR0_databytes[8];
+extern uint8_t SHB0_databytes[8];
+extern uint8_t DIC0_databytes[8];
 
-//uint8_t Fusebox1_databytes[8];
-//uint8_t R2D_pressed = 0;
+#define TSACT DIC0_databytes[1]
+#define APPS (uint16_t)(((SHR0_databytes[0]) | (SHR0_databytes[1] << 8))/10)
+#define TSRDY BMS3_databytes[0]
 
-//extern volatile unsigned char DRV_EN;
-//uint16_t apps = 0;
-//int16_t ac_current = 0;
-//uint16_t current_limit = 25; //in Ampere
 
-volatile uint16_t Motor_Temp = 30;
+
+extern volatile unsigned char DRV_EN;
+uint8_t R2D_pressed = 0;
+int16_t ac_current = 0;
+uint16_t current_limit = 20;	//in Ampere
+
+volatile uint16_t Motor_Temp;
 extern volatile uint16_t fan_dc;
 extern volatile uint16_t wp_dc;
 
-uint8_t pfusch = 0;
+uint8_t cooling_fan_offset = 0;
 
 int main(void)
 {
@@ -35,14 +46,12 @@ int main(void)
 	can_cfg();
 	adc_config();
 	R2D_activation();
+	CAN_Init_Messages();
 
-	//CAN_Init_Messages();
-//
-	//uint8_t BMS3_databytes[8];
-	//int8_t TS_RDY = 0;
-//
-	//uint8_t R2D_bit = 0;
-	//uint16_t FRO_Byte = 0;
+	uint8_t BMS3_databytes[8];
+	int8_t TS_RDY = 0;
+	uint8_t R2D_bit = 0;
+	uint16_t FRO_Byte = 0;
 
 	sei();
 
@@ -53,36 +62,28 @@ int main(void)
 		if(TIME_PASSED_1_MS)
 		{
 			time_1ms = sys_time;
-			fan_dc = 1800;
-			if (pfusch > 50){
-				pfusch = 51;
-				fan_dc = 3750;  // min. 2300
-			}
-
 		}
 		
 		if(TIME_PASSED_10_MS)
 		{
 			time_10ms = sys_time;
 			
+			fan_dc = 1800;
+			if (cooling_fan_offset > 50){
+				cooling_fan_offset = 51;
+				fan_dc = getfanspeed(35);  // min. 2300
+			}
 
-			/*
 			can_rx(&can_SHR0_mob, SHR0_databytes);
 			can_rx(&can_SHB0_mob, SHB0_databytes);
 			can_rx(&can_DIC0_mob, DIC0_databytes);
 			can_rx(&can_BMS3_mob, BMS3_databytes);
-			*/
-			/*
-			TS_ACT = DIC0_databytes[1];
-			TS_RDY = BMS3_databytes[0];
-			*/
-			/*
-			apps = ((SHR0_databytes[0]) | (SHR0_databytes[1] << 8))/10;	//APPS values from 0 to 1000 --> /10
-			*/
-			/*
-			ac_current = calculate_ac_current(current_limit, apps);
-			*/
-			/*
+			
+			
+			
+			ac_current = calculate_ac_current(current_limit, APPS);
+			
+			
  			Fusebox0_databytes[0]	=	adc_get(0)&0xff			;
 			Fusebox0_databytes[1]	=	(adc_get(0)>>8)&0xff	;	
  			Fusebox0_databytes[2]	=	adc_get(1)&0xff			;	
@@ -98,28 +99,28 @@ int main(void)
 			//Fusebox3_1_databytes[1] = ac_current*10;
 			Fusebox4_databytes[0] = (current_limit*10 >> 8);
 			Fusebox4_databytes[1] = current_limit*10;
-			*/
+			
 			
 			//	TS ACTIVATE PROCEDURE
 			
-			//TS_RDY = 1;
-			//
-			//if (TS_RDY == 1)
-			//{
-				//if ((TS_ACT == 1) && (R2D_bit == 0))
-				//{
-					////R2D();
-					//R2D_bit = 1;
-					//DRV_EN = 1;
-				//}
-			//}
-			//else
-			//{
-				//R2D_bit = 0;
-				//DRV_EN = 0;
-			//}
+			TS_RDY = 1;
 			
-			/*
+			if (TS_RDY == 1)
+			{
+				if ((TSACT == 1) && (R2D_bit == 0))
+				{
+					//R2D();
+					R2D_bit = 1;
+					DRV_EN = 1;
+				}
+			}
+			else
+			{
+				R2D_bit = 0;
+				DRV_EN = 0;
+			}
+			
+			
 			Fusebox2_databytes[0] = DRV_EN;
 			 
 			can_tx(&can_Fusebox0_mob, Fusebox0_databytes);	//(0x600 --> Board Voltages)
@@ -128,7 +129,7 @@ int main(void)
 			can_tx(&can_Fusebox3_mob, Fusebox3_databytes);	//(AC Current)
 			//can_tx(&can_Fusebox3_1_mob, Fusebox3_databytes);	//(AC Current)
 			can_tx(&can_Fusebox4_mob, Fusebox4_databytes);	//(AC Current Limit)
-			*/
+			
 			
 			
 			
@@ -151,23 +152,23 @@ int main(void)
 		{
 			time_200ms = sys_time;
 			
-			//FRO_Byte = Fuse_Read_Out();
-			//
-			//
-			//Fusebox1_databytes[0]	= 0;
-			//Fusebox1_databytes[1]	= 0;
-			//Fusebox1_databytes[2]	=	FRO_Byte & 0xFF;
-			//Fusebox1_databytes[3]	=	(FRO_Byte >> 8) & 0xFF;
-			//Fusebox1_databytes[4]	= 0;
-			//Fusebox1_databytes[5]	= 0;
-			//Fusebox1_databytes[6]	= 0;
-			//Fusebox1_databytes[7]	= 0;
-			//
-			//
+			FRO_Byte = Fuse_Read_Out();
+			
+			
+			Fusebox1_databytes[0]	= 0;
+			Fusebox1_databytes[1]	= 0;
+			Fusebox1_databytes[2]	=	FRO_Byte & 0xFF;
+			Fusebox1_databytes[3]	=	(FRO_Byte >> 8) & 0xFF;
+			Fusebox1_databytes[4]	= 0;
+			Fusebox1_databytes[5]	= 0;
+			Fusebox1_databytes[6]	= 0;
+			Fusebox1_databytes[7]	= 0;
+			
+			
 			/*
 			can_tx(&can_Fusebox1_mob, Fusebox1_databytes);
 			*/
-			pfusch++;
+			cooling_fan_offset++;
 		} //end of 200ms
 
 	}  //end of while

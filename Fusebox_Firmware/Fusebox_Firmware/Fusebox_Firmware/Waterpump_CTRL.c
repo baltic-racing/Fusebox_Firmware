@@ -1,18 +1,14 @@
 #include "Waterpump_CTRL.h"
-
-
 volatile uint16_t wp_dc;
 
-uint16_t OCM_WP = ( (float)16000000 / ((float)wp_PWM * (float)8) ) - 1;
+uint16_t OCM_WP = ( (float)16000000 / ((float)WP_PWM * (float)8) ) - 1;
 
 uint16_t WP_SET_PWM(uint16_t temp)
 {
+	uint16_t DR_WP;		//DR = Dutyratio
+	uint16_t DC_WP;		//DC = Dutycycle
 	
-
-	uint16_t DR_WP = 60;		//DR = Dutyratio
-	uint16_t DC_WP = 100;		//DC = Dutycycle
-	
-	/*if (temp >= TEMP_WP_MAX)
+	if (temp >= TEMP_WP_MIN)
 	{
 		DR_WP = DR_WP_MAX;
 	}
@@ -20,9 +16,6 @@ uint16_t WP_SET_PWM(uint16_t temp)
 	{
 		DR_WP = 50;
 	}
-	if ((temp > TEMP_WP_MIN) && (temp < TEMP_WP_MAX))
-	*/
-	DC_WP = ((float)DR_WP / 100) * (float)OCM_WP;
 	
 	return DC_WP;
 }

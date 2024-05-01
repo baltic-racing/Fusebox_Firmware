@@ -12,18 +12,16 @@
 #define FAN2_PORT		PORTE   
 #define FAN2_PIN		PE4  //Servo pin
 
-#define TEMP_MAX 100
-#define TEMP_MIN 5
-
-#define DR_MAX 99
+#define FANSPEEDMIN 2300
+#define FANSPEEDMAX 3500
+#define TEMPMAX 90
+#define TEMPMIN 30
 
 // Calculating the Output Compare Match Value for Power Unit f_PWM
 // Formula on Page 129 in Datasheet for 30kHz, 16 MHz and Prescaler = 8
 // Edit Prescaler in timer1_config if needed
 
-#define f_PWM 30000
-
-uint16_t FAN_PU_SET_PWM(uint16_t temp);
+uint16_t getfanspeed(uint8_t temp);
 void timer1_config();
 
 
