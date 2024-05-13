@@ -143,7 +143,7 @@ int main(void)
 			
 			
 			//fan_dc = FAN_PU_SET_PWM( Motor_Temp );
-			wp_dc = WP_SET_PWM( Motor_Temp );
+			//wp_dc = WP_SET_PWM( Motor_Temp );
 			
 			 
  		}  //end of 100ms
