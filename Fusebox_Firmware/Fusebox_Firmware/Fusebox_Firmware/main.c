@@ -45,7 +45,6 @@ int main(void)
 	timer3_config();
 	can_cfg();
 	adc_config();
-	R2D_activation();
 	CAN_Init_Messages();
 
 	uint8_t BMS3_databytes[8];
@@ -102,9 +101,6 @@ int main(void)
 			
 			
 			//	TS ACTIVATE PROCEDURE
-			
-			TS_RDY = 1;
-			
 			if (TS_RDY == 1)
 			{
 				if ((TSACT == 1) && (R2D_bit == 0))
