@@ -101,11 +101,14 @@ int main(void)
 			
 			
 			//	TS ACTIVATE PROCEDURE
-			if (TS_RDY == 1)
+			
+			//TSRDY = 1;
+			
+			if (TSRDY == 1)
 			{
 				if ((TSACT == 1) && (R2D_bit == 0))
 				{
-					//R2D();
+					R2D_activation();
 					R2D_bit = 1;
 					DRV_EN = 1;
 				}
