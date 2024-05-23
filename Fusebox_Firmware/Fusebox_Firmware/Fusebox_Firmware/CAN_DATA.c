@@ -70,7 +70,7 @@ void CAN_Init_Messages()
 	can_DIC0_mob.mob_idmask = 0xffff;
 	can_DIC0_mob.mob_number = 8;
 
-	can_BMS3_mob.mob_id = 0x203;
+	can_BMS3_mob.mob_id = 0x200;
 	can_BMS3_mob.mob_idmask = 0xffff;
 	can_BMS3_mob.mob_number = 9;
 }
