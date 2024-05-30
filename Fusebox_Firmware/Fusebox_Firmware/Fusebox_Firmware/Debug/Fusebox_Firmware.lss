@@ -1400,7 +1400,7 @@ int16_t calculate_ac_current(uint16_t limit, uint16_t value){
  824:	df 93       	push	r29
  826:	eb 01       	movw	r28, r22
 	
-	return (int16_t)((float)limit * ((float)value/100));
+	return (int16_t)((float)limit * ((float)value/10));
  828:	bc 01       	movw	r22, r24
  82a:	80 e0       	ldi	r24, 0x00	; 0
  82c:	90 e0       	ldi	r25, 0x00	; 0
@@ -1413,8 +1413,8 @@ int16_t calculate_ac_current(uint16_t limit, uint16_t value){
  83a:	15 d1       	rcall	.+554    	; 0xa66 <__floatunsisf>
  83c:	20 e0       	ldi	r18, 0x00	; 0
  83e:	30 e0       	ldi	r19, 0x00	; 0
- 840:	48 ec       	ldi	r20, 0xC8	; 200
- 842:	52 e4       	ldi	r21, 0x42	; 66
+ 840:	40 e2       	ldi	r20, 0x20	; 32
+ 842:	51 e4       	ldi	r21, 0x41	; 65
  844:	77 d0       	rcall	.+238    	; 0x934 <__divsf3>
  846:	9b 01       	movw	r18, r22
  848:	ac 01       	movw	r20, r24

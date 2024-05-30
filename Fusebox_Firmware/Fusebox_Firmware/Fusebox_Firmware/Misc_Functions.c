@@ -47,7 +47,7 @@ void fault_detected()
 
 int16_t calculate_ac_current(uint16_t limit, uint16_t value){
 	
-	return (int16_t)((float)limit * ((float)value/100));
+	return (int16_t)((float)limit * ((float)value/10));
 }
 
 ISR(TIMER0_COMP_vect)

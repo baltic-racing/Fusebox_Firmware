@@ -22,14 +22,14 @@ extern uint8_t DIC0_databytes[8];
 
 #define TSACT DIC0_databytes[1]
 #define APPS (uint16_t)(((SHR0_databytes[0]) | (SHR0_databytes[1] << 8))/10)
-#define TSRDY (BMS3_databytes[6]>>3)&1
+#define TSRDY ((BMS3_databytes[6]>>3) & 1)
 
 
 
 extern volatile unsigned char DRV_EN;
 uint8_t R2D_pressed = 0;
 int16_t ac_current = 0;
-uint16_t current_limit = 20;	//in Ampere
+uint16_t current_limit = 60;	//in Ampere
 
 volatile uint16_t Motor_Temp;
 extern volatile uint16_t fan_dc;
