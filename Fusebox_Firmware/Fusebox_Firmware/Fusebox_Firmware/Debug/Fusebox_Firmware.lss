@@ -1076,8 +1076,8 @@ int main(void)
 			
 			
 			ac_current = calculate_ac_current(current_limit, APPS);
- 610:	20 81       	ld	r18, Z
- 612:	81 81       	ldd	r24, Z+1	; 0x01
+ 610:	22 81       	ldd	r18, Z+2	; 0x02
+ 612:	83 81       	ldd	r24, Z+3	; 0x03
  614:	90 e0       	ldi	r25, 0x00	; 0
  616:	98 2f       	mov	r25, r24
  618:	88 27       	eor	r24, r24

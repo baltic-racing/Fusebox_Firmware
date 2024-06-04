@@ -21,7 +21,7 @@ extern uint8_t SHB0_databytes[8];
 extern uint8_t DIC0_databytes[8];
 
 #define TSACT DIC0_databytes[1]
-#define APPS (uint16_t)(((SHR0_databytes[0]) | (SHR0_databytes[1] << 8))/10)
+#define APPS (uint16_t)(((SHR0_databytes[2]) | (SHR0_databytes[3] << 8))/10)
 #define TSRDY ((BMS3_databytes[6]>>3) & 1)
 
 
