@@ -34,15 +34,15 @@ void CAN_Init_Messages()
 	
 
 	//CAN IDs of Inverters, 0x1F for Broadcasting
-	uint8_t INV0_SN = 20;
-	uint8_t INV1_SN = 10;
+	uint8_t INV0_SN = 10;
+	uint8_t INV1_SN = 20;
 	uint8_t INVX_SN = 0x1F; //(Broadcast)
 
-	can_Fusebox2_mob.mob_id = (0x0c << 5) | (INVX_SN); //ID 0x481	Drive Enable
+	can_Fusebox2_mob.mob_id = (0x24 << 5) | (INVX_SN); //ID 0x481	Drive Enable
 	can_Fusebox2_mob.mob_idmask = 0xFFFF; //sent
 	can_Fusebox2_mob.mob_number = 2;
 
-	can_Fusebox3_mob.mob_id = (0x01 << 5) | (INVX_SN); //ID 0x342	Set AC current
+	can_Fusebox3_mob.mob_id = (0x1A << 5) | (INVX_SN); //ID 0x342	Set AC current
 	can_Fusebox3_mob.mob_idmask = 0xFFFF; //sent
 	can_Fusebox3_mob.mob_number = 3;
 
@@ -54,7 +54,7 @@ void CAN_Init_Messages()
 	uint8_t Fusebox3_1_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 	*/
 
-	can_Fusebox4_mob.mob_id = (0x08 << 5) | (INVX_SN);	// set AC current limit
+	can_Fusebox4_mob.mob_id = (0x20 << 5) | (INVX_SN);	// set AC current limit
 	can_Fusebox4_mob.mob_idmask = 0xFFFF; //sent
 	can_Fusebox4_mob.mob_number = 5;
 

@@ -23,6 +23,7 @@ extern uint8_t DIC0_databytes[8];
 #define TSACT DIC0_databytes[1]
 #define APPS (uint16_t)(((SHR0_databytes[2]) | (SHR0_databytes[3] << 8))/10)
 #define TSRDY ((BMS3_databytes[6]>>3) & 1)
+#define APPSOK (uint8_t) SHR0_databytes[6]
 
 
 
@@ -101,12 +102,9 @@ int main(void)
 			
 			
 			//	TS ACTIVATE PROCEDURE
-			
-			//TSRDY = 1;
-			
 			if (TSRDY == 1)
 			{
-				if ((TSACT == 1) && (R2D_bit == 0))
+				if ((TSACT == 1) && (R2D_bit == 0) && (APPSOK == 0))
 				{
 					R2D_activation();
 					R2D_bit = 1;
@@ -138,12 +136,6 @@ int main(void)
 		{
 			time_100ms = sys_time;
 			sys_tick_heart();
-			
-			
-			
-			//fan_dc = FAN_PU_SET_PWM( Motor_Temp );
-			//wp_dc = WP_SET_PWM( Motor_Temp );
-			
 			 
  		}  //end of 100ms
 		 
