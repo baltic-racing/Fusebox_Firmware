@@ -21,6 +21,7 @@ extern uint8_t SHB0_databytes[8];
 extern uint8_t DIC0_databytes[8];
 
 #define TSACT DIC0_databytes[1]
+#define TSON DIC0_databytes[0]
 #define APPS (uint16_t)(((SHR0_databytes[2]) | (SHR0_databytes[3] << 8))/10)
 #define TSRDY ((BMS3_databytes[6]>>3) & 1)
 #define APPSOK (uint8_t) SHR0_databytes[6]
@@ -30,7 +31,9 @@ extern uint8_t DIC0_databytes[8];
 extern volatile unsigned char DRV_EN;
 uint8_t R2D_pressed = 0;
 int16_t ac_current = 0;
-uint16_t current_limit = 60;	//in Ampere
+uint16_t current_limit = 150;	//in Ampere
+uint16_t R2D_counter;
+uint8_t R2D_active;
 
 volatile uint16_t Motor_Temp;
 extern volatile uint16_t fan_dc;
@@ -81,9 +84,11 @@ int main(void)
 			
 			
 			
-			ac_current = calculate_ac_current(current_limit, APPS);
-			
-			
+			if (DRV_EN==1)
+			{
+				ac_current = calculate_ac_current(current_limit, APPS);
+			}
+
  			Fusebox0_databytes[0]	=	adc_get(0)&0xff			;
 			Fusebox0_databytes[1]	=	(adc_get(0)>>8)&0xff	;	
  			Fusebox0_databytes[2]	=	adc_get(1)&0xff			;	
@@ -110,13 +115,17 @@ int main(void)
 					R2D_bit = 1;
 					DRV_EN = 1;
 				}
+				if (APPSOK==1)
+				{
+					DRV_EN = 0;
+					R2D_bit = 0;
+				}
 			}
 			else
 			{
 				R2D_bit = 0;
 				DRV_EN = 0;
 			}
-			
 			
 			Fusebox2_databytes[0] = DRV_EN;
 			 
@@ -126,11 +135,40 @@ int main(void)
 			can_tx(&can_Fusebox3_mob, Fusebox3_databytes);	//(AC Current)
 			//can_tx(&can_Fusebox3_1_mob, Fusebox3_databytes);	//(AC Current)
 			can_tx(&can_Fusebox4_mob, Fusebox4_databytes);	//(AC Current Limit)
-			
-			
-			
-			
+				
 		}	//end of 10 ms cycle
+	
+		//if (TSON == 1)
+		//{
+			//R2D_active = 1;
+			//R2D_counter++;
+			//
+			//
+		//}
+		//if (R2D_active == 1 )
+		//{
+			//if (R2D_counter <= 0xFFF)
+			//{
+				//
+			//R2D_counter++;
+			//PORTD |= (1 << PD4);
+			//}
+			//else
+			//{
+				//R2D_counter = 0;
+				//R2D_active = 0;
+				//PORTD &= (0 << PD4);
+			//}
+		//}
+		
+		//
+				//if (TSON == 1)
+				//{
+					//R2D_activation();
+					//
+				//}
+		
+	
 	
 		if (TIME_PASSED_100_MS)
 		{
@@ -155,10 +193,6 @@ int main(void)
 			Fusebox1_databytes[6]	= 0;
 			Fusebox1_databytes[7]	= 0;
 			
-			
-			/*
-			can_tx(&can_Fusebox1_mob, Fusebox1_databytes);
-			*/
 			cooling_fan_offset++;
 		} //end of 200ms
 

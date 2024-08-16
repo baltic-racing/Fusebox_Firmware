@@ -10,9 +10,16 @@
 
 void R2D_activation ()
 {
-	for (uint16_t i = 0; i <= 0xFFF; i++)
-	{
-		for (uint16_t j = 0; j <= 0x1AF; j++) {}
-		PORTD ^= (1 << PD4);
-	}
+	PORTD |= (1 << PD4);
+	//for (uint16_t i = 0; i >= 0xffff; i++)
+	//{}
+	 //PORTD &= (0 << PD4);
+	 
+	 	for (uint16_t i = 0; i <= 0xFFF; i++)
+	 	{
+		 	for (uint16_t j = 0; j <= 0x1AF; j++) {}
+	 	}
+		 
+		 PORTD &= (0 << PD4);
+	
 }
