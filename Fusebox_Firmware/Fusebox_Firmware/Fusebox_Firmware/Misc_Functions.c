@@ -2,7 +2,7 @@
 
 volatile unsigned long sys_time = 0;
 
-volatile unsigned char DRV_EN = 0;
+
 
 void port_config(){  //0 input, 1 output
 	DDRA = 0;

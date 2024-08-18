@@ -28,10 +28,10 @@ extern uint8_t DIC0_databytes[8];
 
 
 
-extern volatile unsigned char DRV_EN;
+uint8_t DRV_EN = 0;
 uint8_t R2D_pressed = 0;
 int16_t ac_current = 0;
-uint16_t current_limit = 150;	//in Ampere
+uint16_t current_limit = 300;	//in Ampere
 uint16_t R2D_counter;
 uint8_t R2D_active;
 
@@ -71,7 +71,7 @@ int main(void)
 		{
 			time_10ms = sys_time;
 			
-			fan_dc = 1800;
+			fan_dc = 2200;
 			if (cooling_fan_offset > 50){
 				cooling_fan_offset = 51;
 				fan_dc = getfanspeed(35);  // min. 2300
@@ -83,12 +83,11 @@ int main(void)
 			can_rx(&can_BMS3_mob, BMS3_databytes);
 			
 			
-			
 			if (DRV_EN==1)
 			{
 				ac_current = calculate_ac_current(current_limit, APPS);
 			}
-
+			
  			Fusebox0_databytes[0]	=	adc_get(0)&0xff			;
 			Fusebox0_databytes[1]	=	(adc_get(0)>>8)&0xff	;	
  			Fusebox0_databytes[2]	=	adc_get(1)&0xff			;	
@@ -100,11 +99,9 @@ int main(void)
 			
 			Fusebox3_databytes[0] = (ac_current*10>> 8);
 			Fusebox3_databytes[1] = ac_current*10;
-			//Fusebox3_1_databytes[0] = (ac_current*10 >> 8);
-			//Fusebox3_1_databytes[1] = ac_current*10;
+			
 			Fusebox4_databytes[0] = (current_limit*10 >> 8);
 			Fusebox4_databytes[1] = current_limit*10;
-			
 			
 			//	TS ACTIVATE PROCEDURE
 			if (TSRDY == 1)
@@ -119,6 +116,7 @@ int main(void)
 				{
 					DRV_EN = 0;
 					R2D_bit = 0;
+					
 				}
 			}
 			else
@@ -133,7 +131,6 @@ int main(void)
 			can_tx(&can_Fusebox1_mob, Fusebox1_databytes);	//(0x601 --> SDC Indicator)
 			can_tx(&can_Fusebox2_mob, Fusebox2_databytes);	//(DRV Enable)
 			can_tx(&can_Fusebox3_mob, Fusebox3_databytes);	//(AC Current)
-			//can_tx(&can_Fusebox3_1_mob, Fusebox3_databytes);	//(AC Current)
 			can_tx(&can_Fusebox4_mob, Fusebox4_databytes);	//(AC Current Limit)
 				
 		}	//end of 10 ms cycle

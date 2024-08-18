@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000001a0  00000000  00000000  00000ddc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000198e  00000000  00000000  00000f7c  2**0
+  6 .debug_info   00001977  00000000  00000000  00000f7c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00001043  00000000  00000000  0000290a  2**0
+  7 .debug_abbrev 00001043  00000000  00000000  000028f3  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000ea8  00000000  00000000  0000394d  2**0
+  8 .debug_line   00000ea8  00000000  00000000  00003936  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000030c  00000000  00000000  000047f8  2**2
+  9 .debug_frame  0000030c  00000000  00000000  000047e0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000972  00000000  00000000  00004b04  2**0
+ 10 .debug_str    00000972  00000000  00000000  00004aec  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000063e  00000000  00000000  00005476  2**0
+ 11 .debug_loc    0000063e  00000000  00000000  0000545e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000140  00000000  00000000  00005ab4  2**0
+ 12 .debug_ranges 00000140  00000000  00000000  00005a9c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -978,10 +978,10 @@ int main(void)
 		if(TIME_PASSED_1_MS)
  52a:	60 91 34 01 	lds	r22, 0x0134	; 0x800134 <sys_time+0x2>
  52e:	70 91 35 01 	lds	r23, 0x0135	; 0x800135 <sys_time+0x3>
- 532:	80 91 2d 01 	lds	r24, 0x012D	; 0x80012d <time_1ms>
- 536:	90 91 2e 01 	lds	r25, 0x012E	; 0x80012e <time_1ms+0x1>
- 53a:	a0 91 2f 01 	lds	r26, 0x012F	; 0x80012f <time_1ms+0x2>
- 53e:	b0 91 30 01 	lds	r27, 0x0130	; 0x800130 <time_1ms+0x3>
+ 532:	80 91 2e 01 	lds	r24, 0x012E	; 0x80012e <time_1ms>
+ 536:	90 91 2f 01 	lds	r25, 0x012F	; 0x80012f <time_1ms+0x1>
+ 53a:	a0 91 30 01 	lds	r26, 0x0130	; 0x800130 <time_1ms+0x2>
+ 53e:	b0 91 31 01 	lds	r27, 0x0131	; 0x800131 <time_1ms+0x3>
  542:	48 17       	cp	r20, r24
  544:	59 07       	cpc	r21, r25
  546:	6a 07       	cpc	r22, r26
@@ -993,10 +993,10 @@ int main(void)
 			time_1ms = sys_time;
  554:	a0 91 34 01 	lds	r26, 0x0134	; 0x800134 <sys_time+0x2>
  558:	b0 91 35 01 	lds	r27, 0x0135	; 0x800135 <sys_time+0x3>
- 55c:	80 93 2d 01 	sts	0x012D, r24	; 0x80012d <time_1ms>
- 560:	90 93 2e 01 	sts	0x012E, r25	; 0x80012e <time_1ms+0x1>
- 564:	a0 93 2f 01 	sts	0x012F, r26	; 0x80012f <time_1ms+0x2>
- 568:	b0 93 30 01 	sts	0x0130, r27	; 0x800130 <time_1ms+0x3>
+ 55c:	80 93 2e 01 	sts	0x012E, r24	; 0x80012e <time_1ms>
+ 560:	90 93 2f 01 	sts	0x012F, r25	; 0x80012f <time_1ms+0x1>
+ 564:	a0 93 30 01 	sts	0x0130, r26	; 0x800130 <time_1ms+0x2>
+ 568:	b0 93 31 01 	sts	0x0131, r27	; 0x800131 <time_1ms+0x3>
  56c:	80 91 32 01 	lds	r24, 0x0132	; 0x800132 <sys_time>
  570:	90 91 33 01 	lds	r25, 0x0133	; 0x800133 <sys_time+0x1>
 		}
@@ -1004,10 +1004,10 @@ int main(void)
 		if(TIME_PASSED_10_MS)
  574:	a0 91 34 01 	lds	r26, 0x0134	; 0x800134 <sys_time+0x2>
  578:	b0 91 35 01 	lds	r27, 0x0135	; 0x800135 <sys_time+0x3>
- 57c:	40 91 29 01 	lds	r20, 0x0129	; 0x800129 <time_10ms>
- 580:	50 91 2a 01 	lds	r21, 0x012A	; 0x80012a <time_10ms+0x1>
- 584:	60 91 2b 01 	lds	r22, 0x012B	; 0x80012b <time_10ms+0x2>
- 588:	70 91 2c 01 	lds	r23, 0x012C	; 0x80012c <time_10ms+0x3>
+ 57c:	40 91 2a 01 	lds	r20, 0x012A	; 0x80012a <time_10ms>
+ 580:	50 91 2b 01 	lds	r21, 0x012B	; 0x80012b <time_10ms+0x1>
+ 584:	60 91 2c 01 	lds	r22, 0x012C	; 0x80012c <time_10ms+0x2>
+ 588:	70 91 2d 01 	lds	r23, 0x012D	; 0x80012d <time_10ms+0x3>
  58c:	84 1b       	sub	r24, r20
  58e:	95 0b       	sbc	r25, r21
  590:	a6 0b       	sbc	r26, r22
@@ -1023,15 +1023,15 @@ int main(void)
 			time_10ms = sys_time;
  5a6:	a0 91 34 01 	lds	r26, 0x0134	; 0x800134 <sys_time+0x2>
  5aa:	b0 91 35 01 	lds	r27, 0x0135	; 0x800135 <sys_time+0x3>
- 5ae:	80 93 29 01 	sts	0x0129, r24	; 0x800129 <time_10ms>
- 5b2:	90 93 2a 01 	sts	0x012A, r25	; 0x80012a <time_10ms+0x1>
- 5b6:	a0 93 2b 01 	sts	0x012B, r26	; 0x80012b <time_10ms+0x2>
- 5ba:	b0 93 2c 01 	sts	0x012C, r27	; 0x80012c <time_10ms+0x3>
- 5be:	88 e0       	ldi	r24, 0x08	; 8
- 5c0:	97 e0       	ldi	r25, 0x07	; 7
+ 5ae:	80 93 2a 01 	sts	0x012A, r24	; 0x80012a <time_10ms>
+ 5b2:	90 93 2b 01 	sts	0x012B, r25	; 0x80012b <time_10ms+0x1>
+ 5b6:	a0 93 2c 01 	sts	0x012C, r26	; 0x80012c <time_10ms+0x2>
+ 5ba:	b0 93 2d 01 	sts	0x012D, r27	; 0x80012d <time_10ms+0x3>
+ 5be:	88 e9       	ldi	r24, 0x98	; 152
+ 5c0:	98 e0       	ldi	r25, 0x08	; 8
  5c2:	90 93 90 01 	sts	0x0190, r25	; 0x800190 <fan_dc+0x1>
 			
-			fan_dc = 1800;
+			fan_dc = 2200;
  5c6:	80 93 8f 01 	sts	0x018F, r24	; 0x80018f <fan_dc>
  5ca:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <cooling_fan_offset>
  5ce:	83 33       	cpi	r24, 0x33	; 51
@@ -1072,9 +1072,8 @@ int main(void)
  608:	8b e7       	ldi	r24, 0x7B	; 123
  60a:	91 e0       	ldi	r25, 0x01	; 1
  60c:	04 de       	rcall	.-1016   	; 0x216 <can_rx>
- 60e:	80 91 31 01 	lds	r24, 0x0131	; 0x800131 <DRV_EN>
+ 60e:	80 91 21 01 	lds	r24, 0x0121	; 0x800121 <DRV_EN>
  612:	81 30       	cpi	r24, 0x01	; 1
-			
 			
 			
 			if (DRV_EN==1)
@@ -1099,7 +1098,7 @@ int main(void)
  63a:	80 93 1f 01 	sts	0x011F, r24	; 0x80011f <ac_current>
  63e:	80 e0       	ldi	r24, 0x00	; 0
 			}
-
+			
  			Fusebox0_databytes[0]	=	adc_get(0)&0xff			;
  640:	84 dd       	rcall	.-1272   	; 0x14a <adc_get>
  642:	03 e7       	ldi	r16, 0x73	; 115
@@ -1157,8 +1156,7 @@ int main(void)
  69a:	20 91 18 01 	lds	r18, 0x0118	; 0x800118 <current_limit>
  69e:	82 2f       	mov	r24, r18
  6a0:	90 91 19 01 	lds	r25, 0x0119	; 0x800119 <current_limit+0x1>
-			//Fusebox3_1_databytes[0] = (ac_current*10 >> 8);
-			//Fusebox3_1_databytes[1] = ac_current*10;
+			
 			Fusebox4_databytes[0] = (current_limit*10 >> 8);
  6a4:	88 0f       	add	r24, r24
  6a6:	99 1f       	adc	r25, r25
@@ -1184,7 +1182,6 @@ int main(void)
  6cc:	83 ff       	sbrs	r24, 3
  6ce:	18 c0       	rjmp	.+48     	; 0x700 <main+0x204>
 			
-			
 			//	TS ACTIVATE PROCEDURE
 			if (TSRDY == 1)
  6d0:	80 91 3b 01 	lds	r24, 0x013B	; 0x80013b <DIC0_databytes+0x1>
@@ -1199,7 +1196,7 @@ int main(void)
  6e2:	06 c0       	rjmp	.+12     	; 0x6f0 <main+0x1f4>
  6e4:	f3 d0       	rcall	.+486    	; 0x8cc <R2D_activation>
  6e6:	81 e0       	ldi	r24, 0x01	; 1
- 6e8:	80 93 31 01 	sts	0x0131, r24	; 0x800131 <DRV_EN>
+ 6e8:	80 93 21 01 	sts	0x0121, r24	; 0x800121 <DRV_EN>
 				{
 					R2D_activation();
  6ec:	ff 24       	eor	r15, r15
@@ -1218,13 +1215,13 @@ int main(void)
 					DRV_EN = 1;
 				}
 				if (APPSOK==1)
- 6f8:	10 92 31 01 	sts	0x0131, r1	; 0x800131 <DRV_EN>
+ 6f8:	10 92 21 01 	sts	0x0121, r1	; 0x800121 <DRV_EN>
  6fc:	f1 2c       	mov	r15, r1
 				{
 					DRV_EN = 0;
  6fe:	03 c0       	rjmp	.+6      	; 0x706 <main+0x20a>
 					R2D_bit = 0;
- 700:	10 92 31 01 	sts	0x0131, r1	; 0x800131 <DRV_EN>
+ 700:	10 92 21 01 	sts	0x0121, r1	; 0x800121 <DRV_EN>
 				}
 			}
 			else
@@ -1232,7 +1229,7 @@ int main(void)
 				R2D_bit = 0;
 				DRV_EN = 0;
  704:	f1 2c       	mov	r15, r1
- 706:	80 91 31 01 	lds	r24, 0x0131	; 0x800131 <DRV_EN>
+ 706:	80 91 21 01 	lds	r24, 0x0121	; 0x800121 <DRV_EN>
 			}
 			
 			Fusebox2_databytes[0] = DRV_EN;
@@ -1266,7 +1263,6 @@ int main(void)
  738:	71 e0       	ldi	r23, 0x01	; 1
  73a:	82 e4       	ldi	r24, 0x42	; 66
  73c:	91 e0       	ldi	r25, 0x01	; 1
-			//can_tx(&can_Fusebox3_1_mob, Fusebox3_databytes);	//(AC Current)
 			can_tx(&can_Fusebox4_mob, Fusebox4_databytes);	//(AC Current Limit)
  73e:	c1 dd       	rcall	.-1150   	; 0x2c2 <can_tx>
  740:	80 91 32 01 	lds	r24, 0x0132	; 0x800132 <sys_time>
@@ -1279,10 +1275,10 @@ int main(void)
 	
 		if (TIME_PASSED_100_MS)
  74c:	b0 91 35 01 	lds	r27, 0x0135	; 0x800135 <sys_time+0x3>
- 750:	40 91 25 01 	lds	r20, 0x0125	; 0x800125 <time_100ms>
- 754:	50 91 26 01 	lds	r21, 0x0126	; 0x800126 <time_100ms+0x1>
- 758:	60 91 27 01 	lds	r22, 0x0127	; 0x800127 <time_100ms+0x2>
- 75c:	70 91 28 01 	lds	r23, 0x0128	; 0x800128 <time_100ms+0x3>
+ 750:	40 91 26 01 	lds	r20, 0x0126	; 0x800126 <time_100ms>
+ 754:	50 91 27 01 	lds	r21, 0x0127	; 0x800127 <time_100ms+0x1>
+ 758:	60 91 28 01 	lds	r22, 0x0128	; 0x800128 <time_100ms+0x2>
+ 75c:	70 91 29 01 	lds	r23, 0x0129	; 0x800129 <time_100ms+0x3>
  760:	84 1b       	sub	r24, r20
  762:	95 0b       	sbc	r25, r21
  764:	a6 0b       	sbc	r26, r22
@@ -1298,10 +1294,10 @@ int main(void)
 			time_100ms = sys_time;
  77a:	a0 91 34 01 	lds	r26, 0x0134	; 0x800134 <sys_time+0x2>
  77e:	b0 91 35 01 	lds	r27, 0x0135	; 0x800135 <sys_time+0x3>
- 782:	80 93 25 01 	sts	0x0125, r24	; 0x800125 <time_100ms>
- 786:	90 93 26 01 	sts	0x0126, r25	; 0x800126 <time_100ms+0x1>
- 78a:	a0 93 27 01 	sts	0x0127, r26	; 0x800127 <time_100ms+0x2>
- 78e:	b0 93 28 01 	sts	0x0128, r27	; 0x800128 <time_100ms+0x3>
+ 782:	80 93 26 01 	sts	0x0126, r24	; 0x800126 <time_100ms>
+ 786:	90 93 27 01 	sts	0x0127, r25	; 0x800127 <time_100ms+0x1>
+ 78a:	a0 93 28 01 	sts	0x0128, r26	; 0x800128 <time_100ms+0x2>
+ 78e:	b0 93 29 01 	sts	0x0129, r27	; 0x800129 <time_100ms+0x3>
  792:	4e d0       	rcall	.+156    	; 0x830 <sys_tick_heart>
  794:	80 91 32 01 	lds	r24, 0x0132	; 0x800132 <sys_time>
  798:	90 91 33 01 	lds	r25, 0x0133	; 0x800133 <sys_time+0x1>
@@ -1312,10 +1308,10 @@ int main(void)
 		 
 		if (TIME_PASSED_200_MS)
  7a0:	b0 91 35 01 	lds	r27, 0x0135	; 0x800135 <sys_time+0x3>
- 7a4:	40 91 21 01 	lds	r20, 0x0121	; 0x800121 <time_200ms>
- 7a8:	50 91 22 01 	lds	r21, 0x0122	; 0x800122 <time_200ms+0x1>
- 7ac:	60 91 23 01 	lds	r22, 0x0123	; 0x800123 <time_200ms+0x2>
- 7b0:	70 91 24 01 	lds	r23, 0x0124	; 0x800124 <time_200ms+0x3>
+ 7a4:	40 91 22 01 	lds	r20, 0x0122	; 0x800122 <time_200ms>
+ 7a8:	50 91 23 01 	lds	r21, 0x0123	; 0x800123 <time_200ms+0x1>
+ 7ac:	60 91 24 01 	lds	r22, 0x0124	; 0x800124 <time_200ms+0x2>
+ 7b0:	70 91 25 01 	lds	r23, 0x0125	; 0x800125 <time_200ms+0x3>
  7b4:	84 1b       	sub	r24, r20
  7b6:	95 0b       	sbc	r25, r21
  7b8:	a6 0b       	sbc	r26, r22
@@ -1332,10 +1328,10 @@ int main(void)
 			time_200ms = sys_time;
  7d0:	a0 91 34 01 	lds	r26, 0x0134	; 0x800134 <sys_time+0x2>
  7d4:	b0 91 35 01 	lds	r27, 0x0135	; 0x800135 <sys_time+0x3>
- 7d8:	80 93 21 01 	sts	0x0121, r24	; 0x800121 <time_200ms>
- 7dc:	90 93 22 01 	sts	0x0122, r25	; 0x800122 <time_200ms+0x1>
- 7e0:	a0 93 23 01 	sts	0x0123, r26	; 0x800123 <time_200ms+0x2>
- 7e4:	b0 93 24 01 	sts	0x0124, r27	; 0x800124 <time_200ms+0x3>
+ 7d8:	80 93 22 01 	sts	0x0122, r24	; 0x800122 <time_200ms>
+ 7dc:	90 93 23 01 	sts	0x0123, r25	; 0x800123 <time_200ms+0x1>
+ 7e0:	a0 93 24 01 	sts	0x0124, r26	; 0x800124 <time_200ms+0x2>
+ 7e4:	b0 93 25 01 	sts	0x0125, r27	; 0x800125 <time_200ms+0x3>
  7e8:	74 de       	rcall	.-792    	; 0x4d2 <Fuse_Read_Out>
  7ea:	eb e6       	ldi	r30, 0x6B	; 107
  7ec:	f1 e0       	ldi	r31, 0x01	; 1
