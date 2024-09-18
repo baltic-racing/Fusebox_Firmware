@@ -2,6 +2,7 @@
 
 volatile uint16_t fan_dc;
 volatile uint8_t case_counter = 0;
+uint8_t accufan_state =0;
 
 uint16_t getfanspeed(uint8_t temp){
 	
@@ -15,6 +16,20 @@ uint16_t getfanspeed(uint8_t temp){
 	uint16_t speed = (((FANSPEEDMAX-FANSPEEDMIN)/(TEMPMAX-TEMPMIN))*(temp-TEMPMIN))+FANSPEEDMIN;
 	return speed;
 	 
+}
+
+void toggleAkkufan()
+{
+	if (accufan_state==0)
+	{
+		AKKUFAN_PORT |= (1<<AKKUFAN_PIN);
+		accufan_state = 1;
+	}
+	if (accufan_state==1)
+	{
+		AKKUFAN_PORT &= ~(1<<AKKUFAN_PIN);
+		accufan_state = 0;
+	}
 }
 void timer1_config(){
 	

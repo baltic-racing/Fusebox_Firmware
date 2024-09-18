@@ -12,6 +12,10 @@
 #define FAN2_PORT		PORTE   
 #define FAN2_PIN		PE4  //Servo pin
 
+#define AKKUFAN_DDR		DDRB
+#define AKKUFAN_PORT	PORTB
+#define AKKUFAN_PIN		PB0
+
 #define FANSPEEDMIN 2300
 #define FANSPEEDMAX 3500
 #define TEMPMAX 90
@@ -22,6 +26,7 @@
 // Edit Prescaler in timer1_config if needed
 
 uint16_t getfanspeed(uint8_t temp);
+void toggleAkkufan();
 void timer1_config();
 
 

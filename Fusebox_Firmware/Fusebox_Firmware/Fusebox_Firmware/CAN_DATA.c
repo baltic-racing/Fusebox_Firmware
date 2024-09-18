@@ -9,6 +9,7 @@ uint8_t Fusebox4_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 uint8_t SHR0_databytes[8];
 uint8_t SHB0_databytes[8];
 uint8_t DIC0_databytes[8];
+uint8_t SWC0_databytes[8];
 
 struct CAN_MOB can_Fusebox0_mob;
 struct CAN_MOB can_Fusebox1_mob;
@@ -19,6 +20,7 @@ struct CAN_MOB can_SHR0_mob;
 struct CAN_MOB can_SHB0_mob;
 struct CAN_MOB can_DIC0_mob;
 struct CAN_MOB can_BMS3_mob;
+struct CAN_MOB can_SWC0_mob;
 
 
 
@@ -73,4 +75,8 @@ void CAN_Init_Messages()
 	can_BMS3_mob.mob_id = 0x200;
 	can_BMS3_mob.mob_idmask = 0xffff;
 	can_BMS3_mob.mob_number = 9;
+	
+	can_SWC0_mob.mob_id = 0x750;
+	can_SWC0_mob.mob_idmask = 0xffff;
+	can_SWC0_mob.mob_number = 10;
 }

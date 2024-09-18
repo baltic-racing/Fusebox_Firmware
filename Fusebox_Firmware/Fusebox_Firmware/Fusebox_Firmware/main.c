@@ -11,6 +11,7 @@ extern struct CAN_MOB can_SHR0_mob;
 extern struct CAN_MOB can_SHB0_mob;
 extern struct CAN_MOB can_DIC0_mob;
 extern struct CAN_MOB can_BMS3_mob;
+extern struct CAN_MOB can_SWC0_mob;
 extern uint8_t Fusebox0_databytes[8];
 extern uint8_t Fusebox1_databytes[8];
 extern uint8_t Fusebox2_databytes[8];
@@ -19,12 +20,15 @@ extern uint8_t Fusebox4_databytes[8];
 extern uint8_t SHR0_databytes[8];
 extern uint8_t SHB0_databytes[8];
 extern uint8_t DIC0_databytes[8];
+extern uint8_t SWC0_databytes[8];
 
 #define TSACT DIC0_databytes[1]
 #define TSON DIC0_databytes[0]
 #define APPS (uint16_t)(((SHR0_databytes[2]) | (SHR0_databytes[3] << 8))/10)
 #define TSRDY ((BMS3_databytes[6]>>3) & 1)
 #define APPSOK (uint8_t) SHR0_databytes[6]
+#define AKKUFAN (uint8_t) SWC0_databytes[3]
+#define AKKUFAN_OFF (uint8_t) SWC0_databytes[2]
 
 
 
@@ -34,6 +38,8 @@ int16_t ac_current = 0;
 uint16_t current_limit = 300;	//in Ampere
 uint16_t R2D_counter;
 uint8_t R2D_active;
+uint8_t accufan_counter=0;
+uint8_t Akku_fan_on = 0;
 
 volatile uint16_t Motor_Temp;
 extern volatile uint16_t fan_dc;
@@ -50,6 +56,7 @@ int main(void)
 	can_cfg();
 	adc_config();
 	CAN_Init_Messages();
+	//PORTB |= (1<<PB0);
 
 	uint8_t BMS3_databytes[8];
 	int8_t TS_RDY = 0;
@@ -71,21 +78,26 @@ int main(void)
 		{
 			time_10ms = sys_time;
 			
-			fan_dc = 2200;
+			fan_dc = 2300;
 			if (cooling_fan_offset > 50){
 				cooling_fan_offset = 51;
-				fan_dc = getfanspeed(35);  // min. 2300
+				fan_dc = 2500;  // min. 2300
 			}
 
 			can_rx(&can_SHR0_mob, SHR0_databytes);
 			can_rx(&can_SHB0_mob, SHB0_databytes);
 			can_rx(&can_DIC0_mob, DIC0_databytes);
 			can_rx(&can_BMS3_mob, BMS3_databytes);
+			can_rx(&can_SWC0_mob, SWC0_databytes);
 			
 			
 			if (DRV_EN==1)
 			{
 				ac_current = calculate_ac_current(current_limit, APPS);
+			}
+			else
+			{
+				ac_current = 0;
 			}
 			
  			Fusebox0_databytes[0]	=	adc_get(0)&0xff			;
@@ -124,6 +136,52 @@ int main(void)
 				R2D_bit = 0;
 				DRV_EN = 0;
 			}
+			
+			//PORTB |= (1<<PB0);
+			
+			/*
+			if(AKKUFAN==1 && Akku_fan_on == 0)
+			{
+				Akku_fan_on = 1;
+				/*
+				if (accufan_counter >= 10)
+				{
+					toggleAkkufan();
+					accufan_counter=0;
+				}
+				
+			}
+			else
+			{
+				Akku_fan_on = 0;
+				PORTB &= (0<<PB0);
+			}
+			*/
+			
+			if(AKKUFAN == 1)
+			{
+				Akku_fan_on = 1;
+			}
+			/*
+			if(AKKUFAN == 1 && Akku_fan_on == 1 && accufan_counter >= 10)
+			{
+				Akku_fan_on = 0;
+				accufan_counter = 0;
+				PORTB &= (0<<PB0);
+			}
+			*/
+			
+			if(Akku_fan_on == 1)
+			{
+				PORTB |= (1<<PB0);
+			}
+			
+			if(AKKUFAN_OFF == 1)
+			{
+				PORTB &= (0<<PB0);
+				Akku_fan_on = 0;
+			}
+			
 			
 			Fusebox2_databytes[0] = DRV_EN;
 			 
@@ -171,6 +229,8 @@ int main(void)
 		{
 			time_100ms = sys_time;
 			sys_tick_heart();
+			accufan_counter++;
+			
 			 
  		}  //end of 100ms
 		 
