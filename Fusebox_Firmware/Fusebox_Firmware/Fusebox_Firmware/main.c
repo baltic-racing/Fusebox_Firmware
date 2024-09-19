@@ -28,7 +28,7 @@ extern uint8_t SWC0_databytes[8];
 #define TSRDY ((BMS3_databytes[6]>>3) & 1)
 #define APPSOK (uint8_t) SHR0_databytes[6]
 #define AKKUFAN (uint8_t) SWC0_databytes[3]
-#define AKKUFAN_OFF (uint8_t) SWC0_databytes[2]
+#define COOLINGFAN (uint8_t) SWC0_databytes[2]
 
 
 
@@ -38,7 +38,7 @@ int16_t ac_current = 0;
 uint16_t current_limit = 300;	//in Ampere
 uint16_t R2D_counter;
 uint8_t R2D_active;
-uint8_t accufan_counter=0;
+uint32_t accufan_counter=0;
 uint8_t Akku_fan_on = 0;
 
 volatile uint16_t Motor_Temp;
@@ -158,9 +158,36 @@ int main(void)
 			}
 			*/
 			
-			if(AKKUFAN == 1)
+			if(AKKUFAN == 1 && accufan_counter>10)
 			{
-				Akku_fan_on = 1;
+				//(Akku_fan_on += 1 ) & 1;
+				
+				if (Akku_fan_on == 1 )
+				{
+					Akku_fan_on = 0;
+					PORTB &= ~(1<<PB0);
+				}
+				else
+				{
+					Akku_fan_on = 1;
+					PORTB |= (1<<PB0);
+				}
+				
+				
+				/*
+				switch(Akku_fan_on){
+					
+					case 0:  PORTB &= ~(1<<PB0);
+					
+					case 1:  PORTB |= (1<<PB0);
+				}
+				*/
+				accufan_counter = 0;
+				
+			}
+			
+			if (COOLINGFAN == 1){
+				PORTB &= ~(1<<PB6);
 			}
 			/*
 			if(AKKUFAN == 1 && Akku_fan_on == 1 && accufan_counter >= 10)
@@ -170,7 +197,7 @@ int main(void)
 				PORTB &= (0<<PB0);
 			}
 			*/
-			
+			/*
 			if(Akku_fan_on == 1)
 			{
 				PORTB |= (1<<PB0);
@@ -178,11 +205,11 @@ int main(void)
 			
 			if(AKKUFAN_OFF == 1)
 			{
-				PORTB &= (0<<PB0);
+				PORTB &= ~(1<<PB0);
 				Akku_fan_on = 0;
 			}
 			
-			
+			*/
 			Fusebox2_databytes[0] = DRV_EN;
 			 
 			can_tx(&can_Fusebox0_mob, Fusebox0_databytes);	//(0x600 --> Board Voltages)
