@@ -56,7 +56,7 @@ int main(void)
 	can_cfg();
 	adc_config();
 	CAN_Init_Messages();
-	//PORTB |= (1<<PB0);
+	
 
 	uint8_t BMS3_databytes[8];
 	int8_t TS_RDY = 0;
@@ -78,12 +78,8 @@ int main(void)
 		{
 			time_10ms = sys_time;
 			
-			fan_dc = 2300;
-			if (cooling_fan_offset > 50){
-				cooling_fan_offset = 51;
-				fan_dc = 2500;  // min. 2300
-			}
-
+			fan_dc = 2500;
+			
 			can_rx(&can_SHR0_mob, SHR0_databytes);
 			can_rx(&can_SHB0_mob, SHB0_databytes);
 			can_rx(&can_DIC0_mob, DIC0_databytes);
@@ -137,26 +133,6 @@ int main(void)
 				DRV_EN = 0;
 			}
 			
-			//PORTB |= (1<<PB0);
-			
-			/*
-			if(AKKUFAN==1 && Akku_fan_on == 0)
-			{
-				Akku_fan_on = 1;
-				/*
-				if (accufan_counter >= 10)
-				{
-					toggleAkkufan();
-					accufan_counter=0;
-				}
-				
-			}
-			else
-			{
-				Akku_fan_on = 0;
-				PORTB &= (0<<PB0);
-			}
-			*/
 			
 			if(AKKUFAN == 1 && accufan_counter>10)
 			{
@@ -174,14 +150,7 @@ int main(void)
 				}
 				
 				
-				/*
-				switch(Akku_fan_on){
-					
-					case 0:  PORTB &= ~(1<<PB0);
-					
-					case 1:  PORTB |= (1<<PB0);
-				}
-				*/
+			
 				accufan_counter = 0;
 				
 			}
@@ -189,27 +158,7 @@ int main(void)
 			if (COOLINGFAN == 1){
 				PORTB &= ~(1<<PB6);
 			}
-			/*
-			if(AKKUFAN == 1 && Akku_fan_on == 1 && accufan_counter >= 10)
-			{
-				Akku_fan_on = 0;
-				accufan_counter = 0;
-				PORTB &= (0<<PB0);
-			}
-			*/
-			/*
-			if(Akku_fan_on == 1)
-			{
-				PORTB |= (1<<PB0);
-			}
 			
-			if(AKKUFAN_OFF == 1)
-			{
-				PORTB &= ~(1<<PB0);
-				Akku_fan_on = 0;
-			}
-			
-			*/
 			Fusebox2_databytes[0] = DRV_EN;
 			 
 			can_tx(&can_Fusebox0_mob, Fusebox0_databytes);	//(0x600 --> Board Voltages)
@@ -219,39 +168,7 @@ int main(void)
 			can_tx(&can_Fusebox4_mob, Fusebox4_databytes);	//(AC Current Limit)
 				
 		}	//end of 10 ms cycle
-	
-		//if (TSON == 1)
-		//{
-			//R2D_active = 1;
-			//R2D_counter++;
-			//
-			//
-		//}
-		//if (R2D_active == 1 )
-		//{
-			//if (R2D_counter <= 0xFFF)
-			//{
-				//
-			//R2D_counter++;
-			//PORTD |= (1 << PD4);
-			//}
-			//else
-			//{
-				//R2D_counter = 0;
-				//R2D_active = 0;
-				//PORTD &= (0 << PD4);
-			//}
-		//}
-		
-		//
-				//if (TSON == 1)
-				//{
-					//R2D_activation();
-					//
-				//}
-		
-	
-	
+
 		if (TIME_PASSED_100_MS)
 		{
 			time_100ms = sys_time;
@@ -277,7 +194,7 @@ int main(void)
 			Fusebox1_databytes[6]	= 0;
 			Fusebox1_databytes[7]	= 0;
 			
-			cooling_fan_offset++;
+			
 		} //end of 200ms
 
 	}  //end of while
