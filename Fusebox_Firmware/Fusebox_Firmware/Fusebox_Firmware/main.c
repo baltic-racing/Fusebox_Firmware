@@ -41,6 +41,9 @@ uint8_t R2D_active;
 uint32_t accufan_counter=0;
 uint8_t Akku_fan_on = 0;
 
+uint32_t coolingfan_counter = 0;
+uint8_t Cooling_fan_on = 0;
+
 volatile uint16_t Motor_Temp;
 extern volatile uint16_t fan_dc;
 extern volatile uint16_t wp_dc;
@@ -149,14 +152,27 @@ int main(void)
 					PORTB |= (1<<PB0);
 				}
 				
-				
-			
 				accufan_counter = 0;
 				
 			}
 			
-			if (COOLINGFAN == 1){
-				PORTB &= ~(1<<PB6);
+			if (COOLINGFAN == 1 && coolingfan_counter>10)
+			{
+				
+				if(Cooling_fan_on == 1)
+				{
+					Cooling_fan_on = 0;
+					PORTB &= ~(1<<PB6);
+				}
+				
+				else
+				{
+					Cooling_fan_on = 1;
+					PORTB |= (1<<PB6);
+				}
+				
+				coolingfan_counter = 0;
+				
 			}
 			
 			Fusebox2_databytes[0] = DRV_EN;
@@ -174,6 +190,8 @@ int main(void)
 			time_100ms = sys_time;
 			sys_tick_heart();
 			accufan_counter++;
+			
+			coolingfan_counter++;
 			
 			 
  		}  //end of 100ms
