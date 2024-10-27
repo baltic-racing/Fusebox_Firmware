@@ -104,7 +104,7 @@ int main(void)
  			Fusebox0_databytes[2]	=	adc_get(1)&0xff			;	
  			Fusebox0_databytes[3]	=	(adc_get(1)>>8)&0xff	; 
 			Fusebox0_databytes[4]	=	0						;
-			Fusebox0_databytes[5]	=	0						;
+			Fusebox0_databytes[5]	=	(Akku_fan_on <<7) | (Cooling_fan_on <<6);
  			Fusebox0_databytes[6]	=	0						;
 			Fusebox0_databytes[7]	=	0						;
 			
