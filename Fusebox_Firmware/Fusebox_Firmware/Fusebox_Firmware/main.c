@@ -18,6 +18,7 @@ extern uint8_t Fusebox1_databytes[8];
 extern uint8_t Fusebox2_databytes[8];
 extern uint8_t Fusebox3_databytes[8];
 extern uint8_t Fusebox4_databytes[8];
+extern uint8_t Fusebox5_databytes[8];
 extern uint8_t SHR0_databytes[8];
 extern uint8_t SHB0_databytes[8];
 extern uint8_t DIC0_databytes[8];
@@ -35,6 +36,8 @@ extern uint8_t SWC0_databytes[8];
 uint8_t DRV_EN = 0;
 uint8_t R2D_pressed = 0;
 int16_t ac_current = 0;
+int16_t ac_current_l = 0;
+int16_t ac_current_r = 0;
 uint16_t current_limit = 300;	//in Ampere
 uint16_t R2D_counter;
 uint8_t R2D_active;
@@ -86,16 +89,31 @@ int main(void)
 			can_rx(&can_BMS3_mob, BMS3_databytes);
 			can_rx(&can_SWC0_mob, SWC0_databytes);
 			
-			
 			if (R2D_bit==1)
 			{
-				ac_current = calculate_ac_current(current_limit, APPS);
-			}
+				if ((SA<<1) >10)
+				{
+					if ((SA>>7) == 1) //negative Lenkwinkel > links
+					{
+						ac_current_l = (calculate_ac_current(current_limit, APPS))*((100-(SA<<1))/100);
+						ac_current_r =calculate_ac_current(current_limit, APPS);
+					}
+					else if((SA>>7) == 0)
+					{
+						ac_current_r = (calculate_ac_current(current_limit, APPS))*((100-(SA<<1))/100);
+						ac_current_l =calculate_ac_current(current_limit, APPS);
+					}
+					else
+					{
+					ac_current_r = calculate_ac_current(current_limit, APPS);
+					ac_current_l = calculate_ac_current(current_limit, APPS);
+				    }
+			    }
 			else
 			{
-				ac_current = 0;
+				ac_current_r = 0;
+				ac_current_l = 0;
 			}
-			
 			
 			uint16_t adc1 =adc_get(1);
 			uint16_t lv_bat = (uint16_t)(((adc1 - 17.714) * 0.03712)*10);  // calculation for LV Battery voltage
@@ -109,8 +127,11 @@ int main(void)
  			Fusebox0_databytes[6]	=	0						;
 			Fusebox0_databytes[7]	=	0						;
 			
-			Fusebox3_databytes[0] = (ac_current*10>> 8);
-			Fusebox3_databytes[1] = ac_current*10;
+			Fusebox3_databytes[0] = (ac_current_l*10>> 8);
+			Fusebox3_databytes[1] = ac_current_l*10;
+			
+			Fusebox4_databytes[0] = (ac_current_r*10>> 8);
+			Fusebox4_databytes[1] = ac_current_r*10;
 			
 			Fusebox4_databytes[0] = (current_limit*10 >> 8);
 			Fusebox4_databytes[1] = current_limit*10;
@@ -124,12 +145,6 @@ int main(void)
 					R2D_bit = 1;
 					DRV_EN = 1;
 				}
-				//if (APPSOK==1)
-				//{
-					//DRV_EN = 0;
-					//R2D_bit = 0;
-					//
-				//}
 			}
 			else
 			{
@@ -168,8 +183,9 @@ int main(void)
 			//can_tx(&can_Fusebox2_mob, Fusebox2_databytes);	//(DRV Enable)
 			can_tx(&can_Fusebox3_mob, Fusebox3_databytes);	//(AC Current)
 			can_tx(&can_Fusebox4_mob, Fusebox4_databytes);	//(AC Current Limit)
+		    can_tx(&can_Fusebox5_mob, Fusebox4_databytes);	//(AC Current Limit)
 				
-		}	//end of 10 ms cycle
+			}	//end of 10 ms cycle
 
 		if (TIME_PASSED_100_MS)
 		{
