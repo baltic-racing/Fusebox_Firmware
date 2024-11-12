@@ -49,6 +49,35 @@ int16_t calculate_ac_current(uint16_t limit, uint16_t value){
 	
 	return (int16_t)((float)limit * ((float)value/10));
 }
+void controlMotorsBasedOnSteering(uint16_t limit, uint16_t value, int8_t sa) {
+	typedef struct {
+		uint16_t left;
+		uint16_t right;
+	} Motor;
+	
+	Motor current = {0};  // Initialize the struct with 0 values
+
+	// Bound the steering angle between -90 and 90
+	if (sa < -90) sa = -90;
+	if (sa > 90) sa = 90;
+	
+	// Calculate the throttle limit
+	int throttle_limit = (value * limit) / 99;
+
+	if (sa < 0) {
+		// Left turn
+		current.left = limit + (sa * limit / 90);
+		current.right = limit - (sa * limit / 90);
+		} else if (sa > 0) {
+		// Right turn
+		current.left = limit - (sa * limit / 90);
+		current.right = limit + (sa * limit / 90);
+		} else {
+		// Straight
+		current.left = throttle_limit;
+		current.right = throttle_limit;
+	}
+}
 
 ISR(TIMER0_COMP_vect)
 {

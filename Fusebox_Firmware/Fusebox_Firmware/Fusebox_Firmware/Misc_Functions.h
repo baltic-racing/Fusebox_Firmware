@@ -19,6 +19,8 @@ void fault_not_detected();
 void fault_detected();
 
 int16_t calculate_ac_current(uint16_t limit, uint16_t value);
+int16_t calculate_ac_current_sa_R(uint16_t limit, uint16_t value, uint16_t sa);
+int16_t calculate_ac_current_sa_L(uint16_t limit, uint16_t value, uint16_t sa);
 
 ISR(TIMER0_COMP_vect);
 

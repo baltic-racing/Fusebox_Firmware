@@ -30,6 +30,7 @@ extern uint8_t SWC0_databytes[8];
 #define APPSOK (uint8_t) SHR0_databytes[6]
 #define AKKUFAN (uint8_t) SWC0_databytes[3]
 #define COOLINGFAN (uint8_t) SWC0_databytes[2]
+#define SA (uint8_t) (SHR0_databytes[4])
 
 uint8_t DRV_EN = 0;
 uint8_t R2D_pressed = 0;
@@ -85,6 +86,7 @@ int main(void)
 			can_rx(&can_BMS3_mob, BMS3_databytes);
 			can_rx(&can_SWC0_mob, SWC0_databytes);
 			
+			
 			if (R2D_bit==1)
 			{
 				ac_current = calculate_ac_current(current_limit, APPS);
@@ -93,6 +95,7 @@ int main(void)
 			{
 				ac_current = 0;
 			}
+			
 			
 			uint16_t adc1 =adc_get(1);
 			uint16_t lv_bat = (uint16_t)(((adc1 - 17.714) * 0.03712)*10);  // calculation for LV Battery voltage
