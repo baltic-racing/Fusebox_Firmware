@@ -14,8 +14,9 @@ uint8_t SWC0_databytes[8];
 struct CAN_MOB can_Fusebox0_mob;
 struct CAN_MOB can_Fusebox1_mob;
 struct CAN_MOB can_Fusebox2_mob; //to INVX (Drive Enable)
-struct CAN_MOB can_Fusebox3_mob; //to INVX (AC Peak Current)
+struct CAN_MOB can_Fusebox3_mob; //to INVL (AC Peak Current)
 struct CAN_MOB can_Fusebox4_mob; //to INVX (AC Peak Current Limit)
+struct CAN_MOB can_Fusebox5_mob; //to INVR (AC Peak Current)
 struct CAN_MOB can_SHR0_mob;
 struct CAN_MOB can_SHB0_mob;
 struct CAN_MOB can_DIC0_mob;
@@ -44,7 +45,7 @@ void CAN_Init_Messages()
 	can_Fusebox2_mob.mob_idmask = 0xFFFF; //sent
 	can_Fusebox2_mob.mob_number = 2;
 
-	can_Fusebox3_mob.mob_id = (0x1A << 5) | (INVX_SN); //ID 0x342	Set AC current
+	can_Fusebox3_mob.mob_id = (0x1A << 5) | (INV1_SN); //ID 0x342	Set AC current
 	can_Fusebox3_mob.mob_idmask = 0xFFFF; //sent
 	can_Fusebox3_mob.mob_number = 3;
 
@@ -59,6 +60,10 @@ void CAN_Init_Messages()
 	can_Fusebox4_mob.mob_id = (0x20 << 5) | (INVX_SN);	// set AC current limit
 	can_Fusebox4_mob.mob_idmask = 0xFFFF; //sent
 	can_Fusebox4_mob.mob_number = 5;
+	
+	can_Fusebox5_mob.mob_id = (0x20 << 5) | (INV0_SN);	// set AC current 
+	can_Fusebox5_mob.mob_idmask = 0xFFFF; //sent
+	can_Fusebox5_mob.mob_number = 5;
 
 	can_SHR0_mob.mob_id = 0x400;
 	can_SHR0_mob.mob_idmask = 0b11111111111; //receive with no filter?

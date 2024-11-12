@@ -98,7 +98,7 @@ int main(void)
 						ac_current_l = (calculate_ac_current(current_limit, APPS))*((100-(SA<<1))/100);
 						ac_current_r =calculate_ac_current(current_limit, APPS);
 					}
-					else if((SA>>7) == 0)
+					else if((SA>>7) == 0) //positive Lenkwinkel > rechts
 					{
 						ac_current_r = (calculate_ac_current(current_limit, APPS))*((100-(SA<<1))/100);
 						ac_current_l =calculate_ac_current(current_limit, APPS);
