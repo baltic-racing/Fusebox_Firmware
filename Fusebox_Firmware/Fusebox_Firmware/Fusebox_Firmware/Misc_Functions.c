@@ -49,6 +49,10 @@ int16_t calculate_ac_current(uint16_t limit, uint16_t value){
 	
 	return (int16_t)((float)limit * ((float)value/10));
 }
+uint16_t test_ac(uint8_t value){
+	
+	return (300)*((101-(value))/100);
+}
 //void controlMotorsBasedOnSteering(uint16_t limit, uint16_t value, int8_t sa) {
 	//typedef struct {
 		//uint16_t left;

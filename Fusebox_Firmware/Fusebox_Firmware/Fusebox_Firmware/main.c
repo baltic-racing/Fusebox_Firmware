@@ -7,6 +7,7 @@ extern struct CAN_MOB can_Fusebox1_mob;
 extern struct CAN_MOB can_Fusebox2_mob;
 extern struct CAN_MOB can_Fusebox3_mob;
 extern struct CAN_MOB can_Fusebox4_mob;
+extern struct CAN_MOB can_Fusebox5_mob;
 
 extern struct CAN_MOB can_SHR0_mob;
 extern struct CAN_MOB can_SHB0_mob;
@@ -15,12 +16,12 @@ extern struct CAN_MOB can_BMS3_mob;
 extern struct CAN_MOB can_SWC0_mob;
 extern uint8_t Fusebox0_databytes[8];
 extern uint8_t Fusebox1_databytes[8];
-extern uint8_t Fusebox2_databytes[8];
+/*extern uint8_t Fusebox2_databytes[8];*/
 extern uint8_t Fusebox3_databytes[8];
 extern uint8_t Fusebox4_databytes[8];
 extern uint8_t Fusebox5_databytes[8];
 extern uint8_t SHR0_databytes[8];
-extern uint8_t SHB0_databytes[8];
+/*extern uint8_t SHB0_databytes[8];*/
 extern uint8_t DIC0_databytes[8];
 extern uint8_t SWC0_databytes[8];
 
@@ -36,8 +37,8 @@ extern uint8_t SWC0_databytes[8];
 uint8_t DRV_EN = 0;
 uint8_t R2D_pressed = 0;
 int16_t ac_current = 0;
-int16_t ac_current_l = 0;
-int16_t ac_current_r = 0;
+uint16_t ac_current_l = 0;
+uint16_t ac_current_r = 0;
 uint16_t current_limit = 300;	//in Ampere
 uint16_t R2D_counter;
 uint8_t R2D_active;
@@ -48,6 +49,8 @@ uint8_t BMS3_databytes[8];
 uint8_t TS_RDY = 0;
 uint8_t R2D_bit = 0;
 uint16_t FRO_Byte = 0;
+uint8_t lenkwinkel = 0;
+uint8_t safilter = 0;
 
 volatile uint16_t Motor_Temp;
 extern volatile uint16_t fan_dc;
@@ -64,6 +67,7 @@ int main(void)
 	can_cfg();
 	adc_config();
 	CAN_Init_Messages();
+	
 
 	sei();
 
@@ -84,36 +88,45 @@ int main(void)
 			fan_dc = 2500;
 			
 			can_rx(&can_SHR0_mob, SHR0_databytes);
-			can_rx(&can_SHB0_mob, SHB0_databytes);
+	/*		can_rx(&can_SHB0_mob, SHB0_databytes);*/
 			can_rx(&can_DIC0_mob, DIC0_databytes);
 			can_rx(&can_BMS3_mob, BMS3_databytes);
 			can_rx(&can_SWC0_mob, SWC0_databytes);
 			
-			if (R2D_bit==1)
-			{
-				if ((SA<<1) >10)
-				{
-					if ((SA>>7) == 1) //negative Lenkwinkel > links
-					{
-						ac_current_l = (calculate_ac_current(current_limit, APPS))*((100-(SA<<1))/100);
-						ac_current_r =calculate_ac_current(current_limit, APPS);
-					}
-					else if((SA>>7) == 0) //positive Lenkwinkel > rechts
-					{
-						ac_current_r = (calculate_ac_current(current_limit, APPS))*((100-(SA<<1))/100);
-						ac_current_l =calculate_ac_current(current_limit, APPS);
-					}
-					else
-					{
-					ac_current_r = calculate_ac_current(current_limit, APPS);
-					ac_current_l = calculate_ac_current(current_limit, APPS);
-				    }
-			    }
-			else
-			{
-				ac_current_r = 0;
-				ac_current_l = 0;
-			}
+			uint8_t lenkwinkel = SA & 0x7F;
+			uint8_t safilter = lenkwinkel;
+			//1xxxxxx && 0111111
+ 			 
+			 
+  			if (R2D_bit==1)
+  			{
+  				
+				  if ((safilter) >10)
+  					{
+	  			
+	  					if ((SA>>7) == 1) //negative Lenkwinkel > links
+	  					{
+		  					ac_current_l = ((calculate_ac_current(current_limit, APPS))* (float) ((101-(lenkwinkel))))/100;
+		  					ac_current_r =calculate_ac_current(current_limit, APPS);
+	  					}
+	  					else if((SA>>7) == 0) //positive Lenkwinkel > rechts
+	  					{
+		  					ac_current_r = ((calculate_ac_current(current_limit, APPS))* (float) ((101-(lenkwinkel))))/100;
+		  					ac_current_l =calculate_ac_current(current_limit, APPS);
+	  					}
+  					}
+  					else
+  					{
+	  					ac_current_r =calculate_ac_current(current_limit, APPS);
+	  					ac_current_l =calculate_ac_current(current_limit, APPS);
+  					}
+  				
+  			}
+  			else
+  			{
+  				ac_current_r = 0;
+  				ac_current_l = 0;
+  			}
 			
 			uint16_t adc1 =adc_get(1);
 			uint16_t lv_bat = (uint16_t)(((adc1 - 17.714) * 0.03712)*10);  // calculation for LV Battery voltage
@@ -127,19 +140,19 @@ int main(void)
  			Fusebox0_databytes[6]	=	0						;
 			Fusebox0_databytes[7]	=	0						;
 			
-			Fusebox3_databytes[0] = (ac_current_l*10>> 8);
-			Fusebox3_databytes[1] = ac_current_l*10;
+			Fusebox3_databytes[0] = (ac_current_r*10>> 8);
+			Fusebox3_databytes[1] = ac_current_r*10;
 			
-			Fusebox4_databytes[0] = (ac_current_r*10>> 8);
-			Fusebox4_databytes[1] = ac_current_r*10;
+			Fusebox4_databytes[0] = (ac_current_l*10>> 8);
+			Fusebox4_databytes[1] = ac_current_l*10;
 			
-			Fusebox4_databytes[0] = (current_limit*10 >> 8);
-			Fusebox4_databytes[1] = current_limit*10;
+			Fusebox5_databytes[0] = (current_limit*10 >> 8);
+			Fusebox5_databytes[1] = current_limit*10;
 			
 			//	TS ACTIVATE PROCEDURE
 			if (TSRDY == 1)
 			{
-				if ((TSACT == 1) && (R2D_bit == 0))// && (APPSOK == 0))
+				if ((TSACT == 1) && (R2D_bit == 0))
 				{
 					R2D_activation();
 					R2D_bit = 1;
@@ -182,8 +195,8 @@ int main(void)
 			can_tx(&can_Fusebox1_mob, Fusebox1_databytes);	//(0x601 --> SDC Indicator)
 			//can_tx(&can_Fusebox2_mob, Fusebox2_databytes);	//(DRV Enable)
 			can_tx(&can_Fusebox3_mob, Fusebox3_databytes);	//(AC Current)
-			can_tx(&can_Fusebox4_mob, Fusebox4_databytes);	//(AC Current Limit)
-		    can_tx(&can_Fusebox5_mob, Fusebox4_databytes);	//(AC Current Limit)
+			can_tx(&can_Fusebox4_mob, Fusebox4_databytes);	//(AC Current)
+		    can_tx(&can_Fusebox5_mob, Fusebox5_databytes);	//(AC Current Limit)
 				
 			}	//end of 10 ms cycle
 
