@@ -98,35 +98,35 @@ int main(void)
 			//1xxxxxx && 0111111
  			 
 			 
-  			if (R2D_bit==1)
-  			{
-  				
-				  if ((safilter) >10)
-  					{
-	  			
-	  					if ((SA>>7) == 1) //negative Lenkwinkel > links
-	  					{
-		  					ac_current_l = ((calculate_ac_current(current_limit, APPS))* (float) ((101-(lenkwinkel))))/100;
-		  					ac_current_r =calculate_ac_current(current_limit, APPS);
-	  					}
-	  					else if((SA>>7) == 0) //positive Lenkwinkel > rechts
-	  					{
-		  					ac_current_r = ((calculate_ac_current(current_limit, APPS))* (float) ((101-(lenkwinkel))))/100;
-		  					ac_current_l =calculate_ac_current(current_limit, APPS);
-	  					}
-  					}
-  					else
-  					{
-	  					ac_current_r =calculate_ac_current(current_limit, APPS);
-	  					ac_current_l =calculate_ac_current(current_limit, APPS);
-  					}
-  				
-  			}
-  			else
-  			{
-  				ac_current_r = 0;
-  				ac_current_l = 0;
-  			}
+  			//if (R2D_bit==1)
+  			//{
+  				//
+				  //if ((safilter) >10)
+  					//{
+	  			//
+	  					//if ((SA>>7) == 1) //negative Lenkwinkel > links
+	  					//{
+		  					//ac_current_l = ((calculate_ac_current(current_limit, APPS))* (float) ((101-(lenkwinkel))))/100;
+		  					//ac_current_r =calculate_ac_current(current_limit, APPS);
+	  					//}
+	  					//else if((SA>>7) == 0) //positive Lenkwinkel > rechts
+	  					//{
+		  					//ac_current_r = ((calculate_ac_current(current_limit, APPS))* (float) ((101-(lenkwinkel))))/100;
+		  					//ac_current_l =calculate_ac_current(current_limit, APPS);
+	  					//}
+  					//}
+  					//else
+  					//{
+	  					//ac_current_r =calculate_ac_current(current_limit, APPS);
+	  					//ac_current_l =calculate_ac_current(current_limit, APPS);
+  					//}
+  				//
+  			//}
+  			//else
+  			//{
+  				//ac_current_r = 0;
+  				//ac_current_l = 0;
+  			//}
 			
 			uint16_t adc1 =adc_get(1);
 			uint16_t lv_bat = (uint16_t)(((adc1 - 17.714) * 0.03712)*10);  // calculation for LV Battery voltage
@@ -135,7 +135,7 @@ int main(void)
 			Fusebox0_databytes[1]	=	(adc_get(0)>>8)&0xff	;	
  			Fusebox0_databytes[2]	=	lv_bat	     &0xff      ;	
  			Fusebox0_databytes[3]	=   (lv_bat >>8) &0xff      ; 
-			Fusebox0_databytes[4]	=	0						;
+			Fusebox0_databytes[4]	=	R2D_bit					; //0					;
 			Fusebox0_databytes[5]	=	0						;
  			Fusebox0_databytes[6]	=	0						;
 			Fusebox0_databytes[7]	=	0						;
