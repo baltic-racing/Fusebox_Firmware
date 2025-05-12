@@ -149,6 +149,7 @@ int main(void)
 			Fusebox5_databytes[0] = (current_limit*10 >> 8);
 			Fusebox5_databytes[1] = current_limit*10;
 			
+			R2D_bit = 1;
 			//	TS ACTIVATE PROCEDURE
 			if (TSRDY == 1)
 			{
@@ -161,7 +162,7 @@ int main(void)
 			}
 			else
 			{
-				R2D_bit = 0;
+				//R2D_bit = 0;
 				DRV_EN = 0;
 			}
 			
