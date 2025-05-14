@@ -39,18 +39,23 @@ uint16_t R2D_counter;
 uint8_t R2D_active;
 uint32_t accufan_counter=0;
 uint8_t Akku_fan_on = 0;
-uint16_t lv_bat = 0;
+//uint16_t adc0 = 0;
+//uint16_t l_lv = 0;
+//uint16_t v_NIMH = 0;
 uint8_t BMS3_databytes[8];
 uint8_t TS_RDY = 0;
 uint8_t R2D_bit = 0;
-uint16_t FRO_Byte = 0;
+uint8_t FRO_Byte = 0;
+uint16_t FRO =0;
+uint8_t Fuse_Can = 0;
+uint8_t SDCI_FB = 0;
 
 volatile uint16_t Motor_Temp;
 extern volatile uint16_t fan_dc;
 extern volatile uint16_t wp_dc;
 
 uint8_t cooling_fan_offset = 0;
-
+uint8_t fuse = 0;
 int main(void)
 {
 	sys_timer_config();
@@ -77,6 +82,7 @@ int main(void)
 		{
 			time_10ms = sys_time;
 			
+
 			fan_dc = 2500;
 			
 			can_rx(&can_SHR0_mob, SHR0_databytes);
@@ -94,23 +100,39 @@ int main(void)
 				ac_current = 0;
 			}
 			
-			uint16_t adc1 =adc_get(1);
-			uint16_t lv_bat = (uint16_t)(((adc1 - 17.714) * 0.03712)*10);  // calculation for LV Battery voltage
- 
- 			Fusebox0_databytes[0]	=	adc_get(0)&0xff			;
-			Fusebox0_databytes[1]	=	(adc_get(0)>>8)&0xff	;	
- 			Fusebox0_databytes[2]	=	lv_bat	     &0xff      ;	
- 			Fusebox0_databytes[3]	=   (lv_bat >>8) &0xff      ; 
-			Fusebox0_databytes[4]	=	0						;
+			
+			uint16_t adc1 = adc_get(1); 
+			uint16_t l_lv = ((20+(adc1-564.0)*0.037)*10.0); // calculated with rise of a regression line (0.037) and *10 for decimal place
+			
+			uint16_t adc0 = adc_get(0);
+			uint16_t v_NIMH =  (adc0*4.8875); // voltage in mV
+			
+			PORTC = ((PORTC & 0xF0)|(fuse & 0x0F));	//PortC for Multiplexer for Fuse_Read_Out
+			
+			Fuse_Can = Fuse_Byte(FRO_Byte , FRO);
+						 
+ 			Fusebox0_databytes[0]	=	v_NIMH			&0xff	;
+			Fusebox0_databytes[1]	=	(v_NIMH	>>8)	&0xff	;	
+ 			Fusebox0_databytes[2]	=	l_lv			&0xff   ;	
+ 			Fusebox0_databytes[3]	=   (l_lv >>8)		&0xff   ; 
+			Fusebox0_databytes[4]	=	SDCI_FB			&0xff	;
 			Fusebox0_databytes[5]	=	0						;
- 			Fusebox0_databytes[6]	=	0						;
-			Fusebox0_databytes[7]	=	0						;
+ 			Fusebox0_databytes[6]	=	0						;	//FRO		&0xFF		; 
+			Fusebox0_databytes[7]	=	Fuse_Can & 0xFF			;	//(FRO >>8)	&0xFF		; // für Einzelabfrage der Fuses
 			
 			Fusebox3_databytes[0] = (ac_current*10>> 8);
 			Fusebox3_databytes[1] = ac_current*10;
 			
 			Fusebox4_databytes[0] = (current_limit*10 >> 8);
 			Fusebox4_databytes[1] = current_limit*10;
+			
+			
+			FRO_Byte++;
+			if (FRO_Byte>14)
+			{
+				FRO_Byte = 0;
+			}
+			
 			
 			//	TS ACTIVATE PROCEDURE
 			if (TSRDY == 1)
@@ -174,12 +196,21 @@ int main(void)
 			sys_tick_heart();
 			accufan_counter++;
 			
-			 
+ 			FRO = Fuse_Read_Out(fuse);
+ 			fuse++;
+ 			if (fuse>13)
+ 			{
+	 			fuse = 0;
+ 			}
+				
+			SDCI_FB = SDCI_read_out();
+			
  		}  //end of 100ms
 		 
 		if (TIME_PASSED_200_MS)
 		{
 			time_200ms = sys_time;
+			 
 			//
 			//FRO_Byte = Fuse_Read_Out();
 			//

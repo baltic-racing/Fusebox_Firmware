@@ -18,6 +18,7 @@ void port_config(){  //0 input, 1 output
 	DDRF = 0;
 	// Fuse Read Out Status
 	DDRG = 0;
+	
 }
 
 void sys_timer_config(void)
