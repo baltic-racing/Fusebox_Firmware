@@ -10,6 +10,10 @@ extern struct CAN_MOB can_BMS3_mob;
 extern uint8_t Fusebox0_databytes[8];
 
 
+
+uint32_t accufan_counter=0;
+uint8_t Akku_fan_on = 0;
+uint8_t AKKUFAN =0;
 int main(void)
 {
 	sys_timer_config();
@@ -37,9 +41,10 @@ int main(void)
 		{
 			time_10ms = sys_time;
 			
-			AIR_close = ((~PINB & (1 << PB6 ))>> PB6);		// TS_ACT on PB6 
+			AIR_close = ((PINE & (1 << PE2 ))>> PE2);		// TS_ACT on PB4
+			AKKUFAN = (PINE & (1 << PE5));
 
-			PINB = (IMD_LED_light << PB4);					// IMD light on PB4
+			PINE = (IMD_LED_light << PE0);					// IMD light on PE0
 
 			can_rx(&can_BMS3_mob, BMS3_databytes);
 			
@@ -56,11 +61,32 @@ int main(void)
 			
 			can_tx(&can_Fusebox0_mob, Fusebox0_databytes);	//(0x600 --> Board Voltages)
 			
+			
+			if(AKKUFAN && accufan_counter>10)
+			{
+				//(Akku_fan_on += 1 ) & 1;
+				
+				if(Akku_fan_on == 1 )
+				{
+					Akku_fan_on = 0;
+					PORTB &= ~(1<<PB0);
+				}
+				else
+				{
+					Akku_fan_on = 1;
+					PORTB |= (1<<PB0);
+				}
+				
+				accufan_counter = 0;
+				
+			}
+			
 		}	//end of 10 ms cycle
 		
-		if (TIME_PASSED_100_MS)
+		if(TIME_PASSED_100_MS)
 		{
 			time_100ms = sys_time;
+			accufan_counter++;
 			sys_tick_heart();
 			
 		}  //end of 100ms

@@ -6,10 +6,15 @@ volatile unsigned char DRV_EN = 0;
 
 void port_config(){  //0 input, 1 output
 	// WP, fan and LED outputs
-	DDRB &= ~(1<<PB6);
-	DDRB |= (1<<PB4);
+	DDRB =0;
+	DDRE = 0;
+	DDRB  |=(1<<PB0) | (1<<PB4);//&= ~(1<<PB4);
+	DDRE |= (1<<PE0)|(1<<PE4);
+	//DDRE &= ~(1<<PE5);
+	
 
-    PORTB |= (1<<PB6);
+    PORTB |= (1<<PB4);
+	PORTE |= (1<<PE4);
 }
 
 void sys_timer_config(void)
