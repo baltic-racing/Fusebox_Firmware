@@ -117,8 +117,8 @@ int main(void)
  			Fusebox0_databytes[3]	=   (l_lv >>8)		&0xff   ; 
 			Fusebox0_databytes[4]	=	SDCI_FB			&0xff	;
 			Fusebox0_databytes[5]	=	0						;
- 			Fusebox0_databytes[6]	=	0						;	//FRO		&0xFF		; 
-			Fusebox0_databytes[7]	=	Fuse_Can & 0xFF			;	//(FRO >>8)	&0xFF		; // für Einzelabfrage der Fuses
+ 			Fusebox0_databytes[6]	=	Akku_fan_on		&0xff	;	//Akku_fan_on 
+			Fusebox0_databytes[7]	=	Fuse_Can		&0xff	;	//(FRO >>8)	&0xFF		; // für Einzelabfrage der Fuses
 			
 			Fusebox3_databytes[0] = (ac_current*10>> 8);
 			Fusebox3_databytes[1] = ac_current*10;
