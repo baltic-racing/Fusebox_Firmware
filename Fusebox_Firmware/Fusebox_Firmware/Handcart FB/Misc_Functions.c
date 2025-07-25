@@ -9,7 +9,7 @@ void port_config(){  //0 input, 1 output
 	DDRB =0;
 	DDRE = 0;
 	DDRB  |=(1<<PB0) | (1<<PB4);//&= ~(1<<PB4);
-	DDRE |= (1<<PE0)|(1<<PE4);
+	DDRE |= (1<<PE0)|(1<<PE4)|(1<<PE7);
 	//DDRE &= ~(1<<PE5);
 	
 

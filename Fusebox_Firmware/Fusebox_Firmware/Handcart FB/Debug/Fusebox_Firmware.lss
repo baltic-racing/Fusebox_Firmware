@@ -3,31 +3,31 @@ Fusebox_Firmware.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  000005d8  2**0
+  0 .data         00000000  00800100  00800100  000005e4  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000564  00000000  00000000  00000074  2**1
+  1 .text         00000570  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000035  00800100  00800100  000005d8  2**0
+  2 .bss          00000035  00800100  00800100  000005e4  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000005d8  2**0
+  3 .comment      00000030  00000000  00000000  000005e4  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000608  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000614  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000c8  00000000  00000000  00000644  2**0
+  5 .debug_aranges 000000c8  00000000  00000000  00000650  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00001180  00000000  00000000  0000070c  2**0
+  6 .debug_info   0000118f  00000000  00000000  00000718  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000d18  00000000  00000000  0000188c  2**0
+  7 .debug_abbrev 00000d18  00000000  00000000  000018a7  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000081b  00000000  00000000  000025a4  2**0
+  8 .debug_line   00000821  00000000  00000000  000025bf  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000190  00000000  00000000  00002dc0  2**2
+  9 .debug_frame  00000190  00000000  00000000  00002de0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000076a  00000000  00000000  00002f50  2**0
+ 10 .debug_str    00000778  00000000  00000000  00002f70  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000003cf  00000000  00000000  000036ba  2**0
+ 11 .debug_loc    000003ee  00000000  00000000  000036e8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000088  00000000  00000000  00003a89  2**0
+ 12 .debug_ranges 00000088  00000000  00000000  00003ad6  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -65,7 +65,7 @@ Disassembly of section .text:
   3a:	00 00       	nop
   3c:	46 c0       	rjmp	.+140    	; 0xca <__bad_interrupt>
   3e:	00 00       	nop
-  40:	6a c2       	rjmp	.+1236   	; 0x516 <__vector_16>
+  40:	70 c2       	rjmp	.+1248   	; 0x522 <__vector_16>
   42:	00 00       	nop
   44:	42 c0       	rjmp	.+132    	; 0xca <__bad_interrupt>
   46:	00 00       	nop
@@ -120,7 +120,7 @@ Disassembly of section .text:
   a0:	11 e0       	ldi	r17, 0x01	; 1
   a2:	a0 e0       	ldi	r26, 0x00	; 0
   a4:	b1 e0       	ldi	r27, 0x01	; 1
-  a6:	e4 e6       	ldi	r30, 0x64	; 100
+  a6:	e0 e7       	ldi	r30, 0x70	; 112
   a8:	f5 e0       	ldi	r31, 0x05	; 5
   aa:	02 c0       	rjmp	.+4      	; 0xb0 <__do_copy_data+0x10>
   ac:	05 90       	lpm	r0, Z+
@@ -143,7 +143,7 @@ Disassembly of section .text:
   c2:	b2 07       	cpc	r27, r18
   c4:	e1 f7       	brne	.-8      	; 0xbe <.do_clear_bss_loop>
   c6:	1c d1       	rcall	.+568    	; 0x300 <main>
-  c8:	4b c2       	rjmp	.+1174   	; 0x560 <_exit>
+  c8:	51 c2       	rjmp	.+1186   	; 0x56c <_exit>
 
 000000ca <__bad_interrupt>:
   ca:	9a cf       	rjmp	.-204    	; 0x0 <__vectors>
@@ -570,9 +570,9 @@ int main(void)
  310:	0f be       	out	0x3f, r0	; 63
  312:	cd bf       	out	0x3d, r28	; 61
 	sys_timer_config();
- 314:	f3 d0       	rcall	.+486    	; 0x4fc <sys_timer_config>
+ 314:	f9 d0       	rcall	.+498    	; 0x508 <sys_timer_config>
 	port_config();
- 316:	e3 d0       	rcall	.+454    	; 0x4de <port_config>
+ 316:	e9 d0       	rcall	.+466    	; 0x4ea <port_config>
 	can_cfg();
  318:	f6 de       	rcall	.-532    	; 0x106 <can_cfg>
  31a:	d2 df       	rcall	.-92     	; 0x2c0 <CAN_Init_Messages>
@@ -582,7 +582,7 @@ int main(void)
 	uint8_t BMS3_databytes[8];
 	uint8_t AIR_close = 0;
 	uint8_t IMD_LED_light = 0;
-	
+	uint8_t AMS_LED_light = 0;
 
 	sei();
  320:	40 91 12 01 	lds	r20, 0x0112	; 0x800112 <sys_time>
@@ -633,7 +633,7 @@ int main(void)
  394:	a1 05       	cpc	r26, r1
  396:	b1 05       	cpc	r27, r1
  398:	08 f4       	brcc	.+2      	; 0x39c <main+0x9c>
- 39a:	62 c0       	rjmp	.+196    	; 0x460 <__LOCK_REGION_LENGTH__+0x60>
+ 39a:	68 c0       	rjmp	.+208    	; 0x46c <__LOCK_REGION_LENGTH__+0x6c>
  39c:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
 		{
 			time_10ms = sys_time;
@@ -675,208 +675,217 @@ int main(void)
 			IMD_LED_light = (BMS3_databytes[6]<<1>>7);
  3e6:	88 0f       	add	r24, r24
  3e8:	99 1f       	adc	r25, r25
- 3ea:	88 0f       	add	r24, r24
- 3ec:	89 2f       	mov	r24, r25
- 3ee:	88 1f       	adc	r24, r24
- 3f0:	99 0b       	sbc	r25, r25
- 3f2:	18 2f       	mov	r17, r24
- 3f4:	e8 e2       	ldi	r30, 0x28	; 40
- 3f6:	f1 e0       	ldi	r31, 0x01	; 1
+ 3ea:	9c 01       	movw	r18, r24
+ 3ec:	22 0f       	add	r18, r18
+ 3ee:	23 2f       	mov	r18, r19
+ 3f0:	22 1f       	adc	r18, r18
+ 3f2:	33 0b       	sbc	r19, r19
+ 3f4:	12 2f       	mov	r17, r18
+ 3f6:	89 2f       	mov	r24, r25
+ 3f8:	87 95       	ror	r24
+			
+			AMS_LED_light = (BMS3_databytes[6] << 1 >> 8);
+			PINE = (AMS_LED_light << PE7);
+ 3fa:	88 27       	eor	r24, r24
+ 3fc:	87 95       	ror	r24
+ 3fe:	8c b9       	out	0x0c, r24	; 12
+ 400:	e8 e2       	ldi	r30, 0x28	; 40
+ 402:	f1 e0       	ldi	r31, 0x01	; 1
 			
  			Fusebox0_databytes[0]	=	0						;
- 3f8:	10 82       	st	Z, r1
- 3fa:	11 82       	std	Z+1, r1	; 0x01
- 3fc:	12 82       	std	Z+2, r1	; 0x02
+ 404:	10 82       	st	Z, r1
+ 406:	11 82       	std	Z+1, r1	; 0x01
+ 408:	12 82       	std	Z+2, r1	; 0x02
 			Fusebox0_databytes[1]	=	0						;	
- 3fe:	13 82       	std	Z+3, r1	; 0x03
+ 40a:	13 82       	std	Z+3, r1	; 0x03
  			Fusebox0_databytes[2]	=	0						;	
- 400:	14 82       	std	Z+4, r1	; 0x04
+ 40c:	14 82       	std	Z+4, r1	; 0x04
  			Fusebox0_databytes[3]	=	0						; 
- 402:	e5 82       	std	Z+5, r14	; 0x05
+ 40e:	e5 82       	std	Z+5, r14	; 0x05
 			Fusebox0_databytes[4]	=	0						;
- 404:	16 82       	std	Z+6, r1	; 0x06
+ 410:	16 82       	std	Z+6, r1	; 0x06
 			Fusebox0_databytes[5]	=	AIR_close				;
- 406:	17 82       	std	Z+7, r1	; 0x07
+ 412:	17 82       	std	Z+7, r1	; 0x07
  			Fusebox0_databytes[6]	=	0						;
 			Fusebox0_databytes[7]	=	0						;
- 408:	bf 01       	movw	r22, r30
+ 414:	bf 01       	movw	r22, r30
 			
 			can_tx(&can_Fusebox0_mob, Fusebox0_databytes);	//(0x600 --> Board Voltages)
- 40a:	86 e1       	ldi	r24, 0x16	; 22
- 40c:	91 e0       	ldi	r25, 0x01	; 1
- 40e:	11 df       	rcall	.-478    	; 0x232 <can_tx>
- 410:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 416:	86 e1       	ldi	r24, 0x16	; 22
+ 418:	91 e0       	ldi	r25, 0x01	; 1
+ 41a:	0b df       	rcall	.-490    	; 0x232 <can_tx>
+ 41c:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
 			
 			
 			if(AKKUFAN && accufan_counter>10)
- 414:	88 23       	and	r24, r24
- 416:	21 f1       	breq	.+72     	; 0x460 <__LOCK_REGION_LENGTH__+0x60>
- 418:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <accufan_counter>
- 41c:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <accufan_counter+0x1>
- 420:	a0 91 04 01 	lds	r26, 0x0104	; 0x800104 <accufan_counter+0x2>
- 424:	b0 91 05 01 	lds	r27, 0x0105	; 0x800105 <accufan_counter+0x3>
- 428:	0b 97       	sbiw	r24, 0x0b	; 11
- 42a:	a1 05       	cpc	r26, r1
- 42c:	b1 05       	cpc	r27, r1
- 42e:	c0 f0       	brcs	.+48     	; 0x460 <__LOCK_REGION_LENGTH__+0x60>
- 430:	80 91 01 01 	lds	r24, 0x0101	; 0x800101 <Akku_fan_on>
+ 420:	88 23       	and	r24, r24
+ 422:	21 f1       	breq	.+72     	; 0x46c <__LOCK_REGION_LENGTH__+0x6c>
+ 424:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <accufan_counter>
+ 428:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <accufan_counter+0x1>
+ 42c:	a0 91 04 01 	lds	r26, 0x0104	; 0x800104 <accufan_counter+0x2>
+ 430:	b0 91 05 01 	lds	r27, 0x0105	; 0x800105 <accufan_counter+0x3>
+ 434:	0b 97       	sbiw	r24, 0x0b	; 11
+ 436:	a1 05       	cpc	r26, r1
+ 438:	b1 05       	cpc	r27, r1
+ 43a:	c0 f0       	brcs	.+48     	; 0x46c <__LOCK_REGION_LENGTH__+0x6c>
+ 43c:	80 91 01 01 	lds	r24, 0x0101	; 0x800101 <Akku_fan_on>
 			{
 				//(Akku_fan_on += 1 ) & 1;
 				
 				if(Akku_fan_on == 1 )
- 434:	81 30       	cpi	r24, 0x01	; 1
- 436:	31 f4       	brne	.+12     	; 0x444 <__LOCK_REGION_LENGTH__+0x44>
- 438:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <Akku_fan_on>
+ 440:	81 30       	cpi	r24, 0x01	; 1
+ 442:	31 f4       	brne	.+12     	; 0x450 <__LOCK_REGION_LENGTH__+0x50>
+ 444:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <Akku_fan_on>
 				{
 					Akku_fan_on = 0;
- 43c:	85 b1       	in	r24, 0x05	; 5
- 43e:	8e 7f       	andi	r24, 0xFE	; 254
+ 448:	85 b1       	in	r24, 0x05	; 5
+ 44a:	8e 7f       	andi	r24, 0xFE	; 254
 					PORTB &= ~(1<<PB0);
- 440:	85 b9       	out	0x05, r24	; 5
- 442:	06 c0       	rjmp	.+12     	; 0x450 <__LOCK_REGION_LENGTH__+0x50>
- 444:	81 e0       	ldi	r24, 0x01	; 1
- 446:	80 93 01 01 	sts	0x0101, r24	; 0x800101 <Akku_fan_on>
+ 44c:	85 b9       	out	0x05, r24	; 5
+ 44e:	06 c0       	rjmp	.+12     	; 0x45c <__LOCK_REGION_LENGTH__+0x5c>
+ 450:	81 e0       	ldi	r24, 0x01	; 1
+ 452:	80 93 01 01 	sts	0x0101, r24	; 0x800101 <Akku_fan_on>
 				}
 				else
 				{
 					Akku_fan_on = 1;
- 44a:	85 b1       	in	r24, 0x05	; 5
- 44c:	81 60       	ori	r24, 0x01	; 1
+ 456:	85 b1       	in	r24, 0x05	; 5
+ 458:	81 60       	ori	r24, 0x01	; 1
 					PORTB |= (1<<PB0);
- 44e:	85 b9       	out	0x05, r24	; 5
- 450:	10 92 02 01 	sts	0x0102, r1	; 0x800102 <accufan_counter>
+ 45a:	85 b9       	out	0x05, r24	; 5
+ 45c:	10 92 02 01 	sts	0x0102, r1	; 0x800102 <accufan_counter>
 				}
 				
 				accufan_counter = 0;
- 454:	10 92 03 01 	sts	0x0103, r1	; 0x800103 <accufan_counter+0x1>
- 458:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <accufan_counter+0x2>
- 45c:	10 92 05 01 	sts	0x0105, r1	; 0x800105 <accufan_counter+0x3>
- 460:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
+ 460:	10 92 03 01 	sts	0x0103, r1	; 0x800103 <accufan_counter+0x1>
+ 464:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <accufan_counter+0x2>
+ 468:	10 92 05 01 	sts	0x0105, r1	; 0x800105 <accufan_counter+0x3>
+ 46c:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
 				
 			}
 			
 		}	//end of 10 ms cycle
 		
 		if(TIME_PASSED_100_MS)
- 464:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
- 468:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
- 46c:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
- 470:	40 91 06 01 	lds	r20, 0x0106	; 0x800106 <time_100ms>
- 474:	50 91 07 01 	lds	r21, 0x0107	; 0x800107 <time_100ms+0x1>
- 478:	60 91 08 01 	lds	r22, 0x0108	; 0x800108 <time_100ms+0x2>
- 47c:	70 91 09 01 	lds	r23, 0x0109	; 0x800109 <time_100ms+0x3>
- 480:	84 1b       	sub	r24, r20
- 482:	95 0b       	sbc	r25, r21
- 484:	a6 0b       	sbc	r26, r22
- 486:	b7 0b       	sbc	r27, r23
- 488:	84 36       	cpi	r24, 0x64	; 100
- 48a:	91 05       	cpc	r25, r1
- 48c:	a1 05       	cpc	r26, r1
- 48e:	b1 05       	cpc	r27, r1
- 490:	08 f4       	brcc	.+2      	; 0x494 <__LOCK_REGION_LENGTH__+0x94>
- 492:	46 cf       	rjmp	.-372    	; 0x320 <main+0x20>
- 494:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
+ 470:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
+ 474:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
+ 478:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
+ 47c:	40 91 06 01 	lds	r20, 0x0106	; 0x800106 <time_100ms>
+ 480:	50 91 07 01 	lds	r21, 0x0107	; 0x800107 <time_100ms+0x1>
+ 484:	60 91 08 01 	lds	r22, 0x0108	; 0x800108 <time_100ms+0x2>
+ 488:	70 91 09 01 	lds	r23, 0x0109	; 0x800109 <time_100ms+0x3>
+ 48c:	84 1b       	sub	r24, r20
+ 48e:	95 0b       	sbc	r25, r21
+ 490:	a6 0b       	sbc	r26, r22
+ 492:	b7 0b       	sbc	r27, r23
+ 494:	84 36       	cpi	r24, 0x64	; 100
+ 496:	91 05       	cpc	r25, r1
+ 498:	a1 05       	cpc	r26, r1
+ 49a:	b1 05       	cpc	r27, r1
+ 49c:	08 f4       	brcc	.+2      	; 0x4a0 <__LOCK_REGION_LENGTH__+0xa0>
+ 49e:	40 cf       	rjmp	.-384    	; 0x320 <main+0x20>
+ 4a0:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
 		{
 			time_100ms = sys_time;
- 498:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
- 49c:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
- 4a0:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
- 4a4:	80 93 06 01 	sts	0x0106, r24	; 0x800106 <time_100ms>
- 4a8:	90 93 07 01 	sts	0x0107, r25	; 0x800107 <time_100ms+0x1>
- 4ac:	a0 93 08 01 	sts	0x0108, r26	; 0x800108 <time_100ms+0x2>
- 4b0:	b0 93 09 01 	sts	0x0109, r27	; 0x800109 <time_100ms+0x3>
- 4b4:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <accufan_counter>
+ 4a4:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
+ 4a8:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
+ 4ac:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
+ 4b0:	80 93 06 01 	sts	0x0106, r24	; 0x800106 <time_100ms>
+ 4b4:	90 93 07 01 	sts	0x0107, r25	; 0x800107 <time_100ms+0x1>
+ 4b8:	a0 93 08 01 	sts	0x0108, r26	; 0x800108 <time_100ms+0x2>
+ 4bc:	b0 93 09 01 	sts	0x0109, r27	; 0x800109 <time_100ms+0x3>
+ 4c0:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <accufan_counter>
 			accufan_counter++;
- 4b8:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <accufan_counter+0x1>
- 4bc:	a0 91 04 01 	lds	r26, 0x0104	; 0x800104 <accufan_counter+0x2>
- 4c0:	b0 91 05 01 	lds	r27, 0x0105	; 0x800105 <accufan_counter+0x3>
- 4c4:	01 96       	adiw	r24, 0x01	; 1
- 4c6:	a1 1d       	adc	r26, r1
- 4c8:	b1 1d       	adc	r27, r1
- 4ca:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <accufan_counter>
- 4ce:	90 93 03 01 	sts	0x0103, r25	; 0x800103 <accufan_counter+0x1>
- 4d2:	a0 93 04 01 	sts	0x0104, r26	; 0x800104 <accufan_counter+0x2>
- 4d6:	b0 93 05 01 	sts	0x0105, r27	; 0x800105 <accufan_counter+0x3>
- 4da:	18 d0       	rcall	.+48     	; 0x50c <sys_tick_heart>
+ 4c4:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <accufan_counter+0x1>
+ 4c8:	a0 91 04 01 	lds	r26, 0x0104	; 0x800104 <accufan_counter+0x2>
+ 4cc:	b0 91 05 01 	lds	r27, 0x0105	; 0x800105 <accufan_counter+0x3>
+ 4d0:	01 96       	adiw	r24, 0x01	; 1
+ 4d2:	a1 1d       	adc	r26, r1
+ 4d4:	b1 1d       	adc	r27, r1
+ 4d6:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <accufan_counter>
+ 4da:	90 93 03 01 	sts	0x0103, r25	; 0x800103 <accufan_counter+0x1>
+ 4de:	a0 93 04 01 	sts	0x0104, r26	; 0x800104 <accufan_counter+0x2>
+ 4e2:	b0 93 05 01 	sts	0x0105, r27	; 0x800105 <accufan_counter+0x3>
+ 4e6:	18 d0       	rcall	.+48     	; 0x518 <sys_tick_heart>
 			sys_tick_heart();
- 4dc:	21 cf       	rjmp	.-446    	; 0x320 <main+0x20>
+ 4e8:	1b cf       	rjmp	.-458    	; 0x320 <main+0x20>
 
-000004de <port_config>:
- 4de:	14 b8       	out	0x04, r1	; 4
- 4e0:	1d b8       	out	0x0d, r1	; 13
+000004ea <port_config>:
+ 4ea:	14 b8       	out	0x04, r1	; 4
+ 4ec:	1d b8       	out	0x0d, r1	; 13
 }
 
 int16_t calculate_ac_current(uint16_t limit, uint16_t value){
 	
 	return (int16_t)((float)limit * ((float)value/10));
 }
- 4e2:	84 b1       	in	r24, 0x04	; 4
- 4e4:	81 61       	ori	r24, 0x11	; 17
- 4e6:	84 b9       	out	0x04, r24	; 4
- 4e8:	8d b1       	in	r24, 0x0d	; 13
- 4ea:	81 61       	ori	r24, 0x11	; 17
- 4ec:	8d b9       	out	0x0d, r24	; 13
- 4ee:	85 b1       	in	r24, 0x05	; 5
- 4f0:	80 61       	ori	r24, 0x10	; 16
- 4f2:	85 b9       	out	0x05, r24	; 5
- 4f4:	8e b1       	in	r24, 0x0e	; 14
- 4f6:	80 61       	ori	r24, 0x10	; 16
- 4f8:	8e b9       	out	0x0e, r24	; 14
- 4fa:	08 95       	ret
+ 4ee:	84 b1       	in	r24, 0x04	; 4
+ 4f0:	81 61       	ori	r24, 0x11	; 17
+ 4f2:	84 b9       	out	0x04, r24	; 4
+ 4f4:	8d b1       	in	r24, 0x0d	; 13
+ 4f6:	81 69       	ori	r24, 0x91	; 145
+ 4f8:	8d b9       	out	0x0d, r24	; 13
+ 4fa:	85 b1       	in	r24, 0x05	; 5
+ 4fc:	80 61       	ori	r24, 0x10	; 16
+ 4fe:	85 b9       	out	0x05, r24	; 5
+ 500:	8e b1       	in	r24, 0x0e	; 14
+ 502:	80 61       	ori	r24, 0x10	; 16
+ 504:	8e b9       	out	0x0e, r24	; 14
+ 506:	08 95       	ret
 
-000004fc <sys_timer_config>:
- 4fc:	8b e0       	ldi	r24, 0x0B	; 11
- 4fe:	84 bd       	out	0x24, r24	; 36
- 500:	89 ef       	ldi	r24, 0xF9	; 249
- 502:	87 bd       	out	0x27, r24	; 39
- 504:	82 e0       	ldi	r24, 0x02	; 2
- 506:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7f006e>
- 50a:	08 95       	ret
+00000508 <sys_timer_config>:
+ 508:	8b e0       	ldi	r24, 0x0B	; 11
+ 50a:	84 bd       	out	0x24, r24	; 36
+ 50c:	89 ef       	ldi	r24, 0xF9	; 249
+ 50e:	87 bd       	out	0x27, r24	; 39
+ 510:	82 e0       	ldi	r24, 0x02	; 2
+ 512:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7f006e>
+ 516:	08 95       	ret
 
-0000050c <sys_tick_heart>:
- 50c:	95 b1       	in	r25, 0x05	; 5
- 50e:	84 e0       	ldi	r24, 0x04	; 4
- 510:	89 27       	eor	r24, r25
- 512:	85 b9       	out	0x05, r24	; 5
- 514:	08 95       	ret
+00000518 <sys_tick_heart>:
+ 518:	95 b1       	in	r25, 0x05	; 5
+ 51a:	84 e0       	ldi	r24, 0x04	; 4
+ 51c:	89 27       	eor	r24, r25
+ 51e:	85 b9       	out	0x05, r24	; 5
+ 520:	08 95       	ret
 
-00000516 <__vector_16>:
+00000522 <__vector_16>:
 
 ISR(TIMER0_COMP_vect)
 {
- 516:	1f 92       	push	r1
- 518:	0f 92       	push	r0
- 51a:	0f b6       	in	r0, 0x3f	; 63
- 51c:	0f 92       	push	r0
- 51e:	11 24       	eor	r1, r1
- 520:	8f 93       	push	r24
- 522:	9f 93       	push	r25
- 524:	af 93       	push	r26
- 526:	bf 93       	push	r27
+ 522:	1f 92       	push	r1
+ 524:	0f 92       	push	r0
+ 526:	0f b6       	in	r0, 0x3f	; 63
+ 528:	0f 92       	push	r0
+ 52a:	11 24       	eor	r1, r1
+ 52c:	8f 93       	push	r24
+ 52e:	9f 93       	push	r25
+ 530:	af 93       	push	r26
+ 532:	bf 93       	push	r27
 	sys_time++;	//system time incremented on each interrupt flag from the CTC mode compare register => every OCR0A
- 528:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
- 52c:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
- 530:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
- 534:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
- 538:	01 96       	adiw	r24, 0x01	; 1
- 53a:	a1 1d       	adc	r26, r1
- 53c:	b1 1d       	adc	r27, r1
- 53e:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <sys_time>
- 542:	90 93 13 01 	sts	0x0113, r25	; 0x800113 <sys_time+0x1>
- 546:	a0 93 14 01 	sts	0x0114, r26	; 0x800114 <sys_time+0x2>
- 54a:	b0 93 15 01 	sts	0x0115, r27	; 0x800115 <sys_time+0x3>
- 54e:	bf 91       	pop	r27
- 550:	af 91       	pop	r26
- 552:	9f 91       	pop	r25
- 554:	8f 91       	pop	r24
- 556:	0f 90       	pop	r0
- 558:	0f be       	out	0x3f, r0	; 63
- 55a:	0f 90       	pop	r0
- 55c:	1f 90       	pop	r1
- 55e:	18 95       	reti
+ 534:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
+ 538:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
+ 53c:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
+ 540:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
+ 544:	01 96       	adiw	r24, 0x01	; 1
+ 546:	a1 1d       	adc	r26, r1
+ 548:	b1 1d       	adc	r27, r1
+ 54a:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <sys_time>
+ 54e:	90 93 13 01 	sts	0x0113, r25	; 0x800113 <sys_time+0x1>
+ 552:	a0 93 14 01 	sts	0x0114, r26	; 0x800114 <sys_time+0x2>
+ 556:	b0 93 15 01 	sts	0x0115, r27	; 0x800115 <sys_time+0x3>
+ 55a:	bf 91       	pop	r27
+ 55c:	af 91       	pop	r26
+ 55e:	9f 91       	pop	r25
+ 560:	8f 91       	pop	r24
+ 562:	0f 90       	pop	r0
+ 564:	0f be       	out	0x3f, r0	; 63
+ 566:	0f 90       	pop	r0
+ 568:	1f 90       	pop	r1
+ 56a:	18 95       	reti
 
-00000560 <_exit>:
- 560:	f8 94       	cli
+0000056c <_exit>:
+ 56c:	f8 94       	cli
 
-00000562 <__stop_program>:
- 562:	ff cf       	rjmp	.-2      	; 0x562 <__stop_program>
+0000056e <__stop_program>:
+ 56e:	ff cf       	rjmp	.-2      	; 0x56e <__stop_program>

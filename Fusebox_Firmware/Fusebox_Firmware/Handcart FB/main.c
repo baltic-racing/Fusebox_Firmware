@@ -24,7 +24,7 @@ int main(void)
 	uint8_t BMS3_databytes[8];
 	uint8_t AIR_close = 0;
 	uint8_t IMD_LED_light = 0;
-	
+	uint8_t AMS_LED_light = 0;
 
 	sei();
 
@@ -49,6 +49,9 @@ int main(void)
 			can_rx(&can_BMS3_mob, BMS3_databytes);
 			
 			IMD_LED_light = (BMS3_databytes[6]<<1>>7);
+			
+			AMS_LED_light = (BMS3_databytes[6] << 1 >> 8);
+			PINE = (AMS_LED_light << PE7);
 			
  			Fusebox0_databytes[0]	=	0						;
 			Fusebox0_databytes[1]	=	0						;	
@@ -95,3 +98,5 @@ int main(void)
 //end of the world
 
 
+//AMS_LED_light = (BMS3_databytes[6] << 1 >> 8);
+//PINB = (AMS_LED_light << PE7);
