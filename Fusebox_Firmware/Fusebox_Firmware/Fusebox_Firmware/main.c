@@ -115,10 +115,10 @@ int main(void)
 			Fusebox0_databytes[1]	=	(v_NIMH	>>8)	&0xff	;	
  			Fusebox0_databytes[2]	=	l_lv			&0xff   ;	
  			Fusebox0_databytes[3]	=   (l_lv >>8)		&0xff   ; 
-			Fusebox0_databytes[4]	=	SDCI_FB			&0xff	;
+			Fusebox0_databytes[4]	=	0						;//SDCI_FB			&0xff	;
 			Fusebox0_databytes[5]	=	0						;
  			Fusebox0_databytes[6]	=	Akku_fan_on		&0xff	;	//Akku_fan_on 
-			Fusebox0_databytes[7]	=	Fuse_Can		&0xff	;	//(FRO >>8)	&0xFF		; // für Einzelabfrage der Fuses
+			Fusebox0_databytes[7]	=	Fuse_Can		&0xff	;	// für Einzelabfrage der Fuses
 			
 			Fusebox3_databytes[0] = (ac_current*10>> 8);
 			Fusebox3_databytes[1] = ac_current*10;
@@ -127,11 +127,7 @@ int main(void)
 			Fusebox4_databytes[1] = current_limit*10;
 			
 			
-			FRO_Byte++;
-			if (FRO_Byte>14)
-			{
-				FRO_Byte = 0;
-			}
+			
 			
 			
 			//	TS ACTIVATE PROCEDURE
@@ -196,13 +192,19 @@ int main(void)
 			sys_tick_heart();
 			accufan_counter++;
 			
+			FRO_Byte++;
+			if (FRO_Byte>14)
+			{
+				FRO_Byte = 0;
+			}
+			
  			FRO = Fuse_Read_Out(fuse);
  			fuse++;
  			if (fuse>13)
  			{
 	 			fuse = 0;
  			}
-				
+			
 			SDCI_FB = SDCI_read_out();
 			
  		}  //end of 100ms
