@@ -1,0 +1,891 @@
+
+Fusebox_Firmware.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  000005e4  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000570  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000035  00800100  00800100  000005e4  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  000005e4  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000614  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 000000c8  00000000  00000000  00000650  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   0000118f  00000000  00000000  00000718  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 00000d18  00000000  00000000  000018a7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   00000821  00000000  00000000  000025bf  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000190  00000000  00000000  00002de0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000778  00000000  00000000  00002f70  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    000003ee  00000000  00000000  000036e8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000088  00000000  00000000  00003ad6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	49 c0       	rjmp	.+146    	; 0x94 <__ctors_end>
+   2:	00 00       	nop
+   4:	62 c0       	rjmp	.+196    	; 0xca <__bad_interrupt>
+   6:	00 00       	nop
+   8:	60 c0       	rjmp	.+192    	; 0xca <__bad_interrupt>
+   a:	00 00       	nop
+   c:	5e c0       	rjmp	.+188    	; 0xca <__bad_interrupt>
+   e:	00 00       	nop
+  10:	5c c0       	rjmp	.+184    	; 0xca <__bad_interrupt>
+  12:	00 00       	nop
+  14:	5a c0       	rjmp	.+180    	; 0xca <__bad_interrupt>
+  16:	00 00       	nop
+  18:	58 c0       	rjmp	.+176    	; 0xca <__bad_interrupt>
+  1a:	00 00       	nop
+  1c:	56 c0       	rjmp	.+172    	; 0xca <__bad_interrupt>
+  1e:	00 00       	nop
+  20:	54 c0       	rjmp	.+168    	; 0xca <__bad_interrupt>
+  22:	00 00       	nop
+  24:	52 c0       	rjmp	.+164    	; 0xca <__bad_interrupt>
+  26:	00 00       	nop
+  28:	50 c0       	rjmp	.+160    	; 0xca <__bad_interrupt>
+  2a:	00 00       	nop
+  2c:	4e c0       	rjmp	.+156    	; 0xca <__bad_interrupt>
+  2e:	00 00       	nop
+  30:	4c c0       	rjmp	.+152    	; 0xca <__bad_interrupt>
+  32:	00 00       	nop
+  34:	4a c0       	rjmp	.+148    	; 0xca <__bad_interrupt>
+  36:	00 00       	nop
+  38:	48 c0       	rjmp	.+144    	; 0xca <__bad_interrupt>
+  3a:	00 00       	nop
+  3c:	46 c0       	rjmp	.+140    	; 0xca <__bad_interrupt>
+  3e:	00 00       	nop
+  40:	70 c2       	rjmp	.+1248   	; 0x522 <__vector_16>
+  42:	00 00       	nop
+  44:	42 c0       	rjmp	.+132    	; 0xca <__bad_interrupt>
+  46:	00 00       	nop
+  48:	40 c0       	rjmp	.+128    	; 0xca <__bad_interrupt>
+  4a:	00 00       	nop
+  4c:	3e c0       	rjmp	.+124    	; 0xca <__bad_interrupt>
+  4e:	00 00       	nop
+  50:	3c c0       	rjmp	.+120    	; 0xca <__bad_interrupt>
+  52:	00 00       	nop
+  54:	3a c0       	rjmp	.+116    	; 0xca <__bad_interrupt>
+  56:	00 00       	nop
+  58:	38 c0       	rjmp	.+112    	; 0xca <__bad_interrupt>
+  5a:	00 00       	nop
+  5c:	36 c0       	rjmp	.+108    	; 0xca <__bad_interrupt>
+  5e:	00 00       	nop
+  60:	34 c0       	rjmp	.+104    	; 0xca <__bad_interrupt>
+  62:	00 00       	nop
+  64:	32 c0       	rjmp	.+100    	; 0xca <__bad_interrupt>
+  66:	00 00       	nop
+  68:	30 c0       	rjmp	.+96     	; 0xca <__bad_interrupt>
+  6a:	00 00       	nop
+  6c:	2e c0       	rjmp	.+92     	; 0xca <__bad_interrupt>
+  6e:	00 00       	nop
+  70:	2c c0       	rjmp	.+88     	; 0xca <__bad_interrupt>
+  72:	00 00       	nop
+  74:	2a c0       	rjmp	.+84     	; 0xca <__bad_interrupt>
+  76:	00 00       	nop
+  78:	28 c0       	rjmp	.+80     	; 0xca <__bad_interrupt>
+  7a:	00 00       	nop
+  7c:	26 c0       	rjmp	.+76     	; 0xca <__bad_interrupt>
+  7e:	00 00       	nop
+  80:	24 c0       	rjmp	.+72     	; 0xca <__bad_interrupt>
+  82:	00 00       	nop
+  84:	22 c0       	rjmp	.+68     	; 0xca <__bad_interrupt>
+  86:	00 00       	nop
+  88:	20 c0       	rjmp	.+64     	; 0xca <__bad_interrupt>
+  8a:	00 00       	nop
+  8c:	1e c0       	rjmp	.+60     	; 0xca <__bad_interrupt>
+  8e:	00 00       	nop
+  90:	1c c0       	rjmp	.+56     	; 0xca <__bad_interrupt>
+	...
+
+00000094 <__ctors_end>:
+  94:	11 24       	eor	r1, r1
+  96:	1f be       	out	0x3f, r1	; 63
+  98:	cf ef       	ldi	r28, 0xFF	; 255
+  9a:	d0 e1       	ldi	r29, 0x10	; 16
+  9c:	de bf       	out	0x3e, r29	; 62
+  9e:	cd bf       	out	0x3d, r28	; 61
+
+000000a0 <__do_copy_data>:
+  a0:	11 e0       	ldi	r17, 0x01	; 1
+  a2:	a0 e0       	ldi	r26, 0x00	; 0
+  a4:	b1 e0       	ldi	r27, 0x01	; 1
+  a6:	e0 e7       	ldi	r30, 0x70	; 112
+  a8:	f5 e0       	ldi	r31, 0x05	; 5
+  aa:	02 c0       	rjmp	.+4      	; 0xb0 <__do_copy_data+0x10>
+  ac:	05 90       	lpm	r0, Z+
+  ae:	0d 92       	st	X+, r0
+  b0:	a0 30       	cpi	r26, 0x00	; 0
+  b2:	b1 07       	cpc	r27, r17
+  b4:	d9 f7       	brne	.-10     	; 0xac <__do_copy_data+0xc>
+
+000000b6 <__do_clear_bss>:
+  b6:	21 e0       	ldi	r18, 0x01	; 1
+  b8:	a0 e0       	ldi	r26, 0x00	; 0
+  ba:	b1 e0       	ldi	r27, 0x01	; 1
+  bc:	01 c0       	rjmp	.+2      	; 0xc0 <.do_clear_bss_start>
+
+000000be <.do_clear_bss_loop>:
+  be:	1d 92       	st	X+, r1
+
+000000c0 <.do_clear_bss_start>:
+  c0:	a5 33       	cpi	r26, 0x35	; 53
+  c2:	b2 07       	cpc	r27, r18
+  c4:	e1 f7       	brne	.-8      	; 0xbe <.do_clear_bss_loop>
+  c6:	1c d1       	rcall	.+568    	; 0x300 <main>
+  c8:	51 c2       	rjmp	.+1186   	; 0x56c <_exit>
+
+000000ca <__bad_interrupt>:
+  ca:	9a cf       	rjmp	.-204    	; 0x0 <__vectors>
+
+000000cc <can_check_free>:
+
+uint8_t can_check_free(uint8_t mobnum){
+	
+	uint8_t mob_status = 0;
+	
+	if(mobnum >= 8){
+  cc:	88 30       	cpi	r24, 0x08	; 8
+  ce:	78 f0       	brcs	.+30     	; 0xee <can_check_free+0x22>
+		
+		mob_status = !((CANEN1 >> (mobnum-8)) &1);
+  d0:	20 91 dd 00 	lds	r18, 0x00DD	; 0x8000dd <__TEXT_REGION_LENGTH__+0x7f00dd>
+  d4:	90 e0       	ldi	r25, 0x00	; 0
+  d6:	08 97       	sbiw	r24, 0x08	; 8
+  d8:	30 e0       	ldi	r19, 0x00	; 0
+  da:	02 c0       	rjmp	.+4      	; 0xe0 <can_check_free+0x14>
+  dc:	35 95       	asr	r19
+  de:	27 95       	ror	r18
+  e0:	8a 95       	dec	r24
+  e2:	e2 f7       	brpl	.-8      	; 0xdc <can_check_free+0x10>
+  e4:	81 e0       	ldi	r24, 0x01	; 1
+  e6:	20 ff       	sbrs	r18, 0
+  e8:	0d c0       	rjmp	.+26     	; 0x104 <can_check_free+0x38>
+  ea:	80 e0       	ldi	r24, 0x00	; 0
+  ec:	08 95       	ret
+
+
+		} else {
+		
+		mob_status = !((CANEN2 >> mobnum) &1);
+  ee:	20 91 dc 00 	lds	r18, 0x00DC	; 0x8000dc <__TEXT_REGION_LENGTH__+0x7f00dc>
+  f2:	30 e0       	ldi	r19, 0x00	; 0
+  f4:	02 c0       	rjmp	.+4      	; 0xfa <can_check_free+0x2e>
+  f6:	35 95       	asr	r19
+  f8:	27 95       	ror	r18
+  fa:	8a 95       	dec	r24
+  fc:	e2 f7       	brpl	.-8      	; 0xf6 <can_check_free+0x2a>
+  fe:	81 e0       	ldi	r24, 0x01	; 1
+ 100:	20 fd       	sbrc	r18, 0
+ 102:	80 e0       	ldi	r24, 0x00	; 0
+	}
+
+	return mob_status;
+	
+}
+ 104:	08 95       	ret
+
+00000106 <can_cfg>:
+void can_cfg(){
+	
+	CANGCON = 0; // Disable CAN
+ 106:	10 92 d8 00 	sts	0x00D8, r1	; 0x8000d8 <__TEXT_REGION_LENGTH__+0x7f00d8>
+	
+	for (uint8_t mob = 0; mob < 15 ; mob++){//reset all mobs
+ 10a:	40 e0       	ldi	r20, 0x00	; 0
+ 10c:	29 c0       	rjmp	.+82     	; 0x160 <can_cfg+0x5a>
+		CANPAGE = mob<<MOBNB0 | (1<<AINC);
+ 10e:	80 e1       	ldi	r24, 0x10	; 16
+ 110:	48 9f       	mul	r20, r24
+ 112:	90 01       	movw	r18, r0
+ 114:	11 24       	eor	r1, r1
+ 116:	82 2f       	mov	r24, r18
+ 118:	88 60       	ori	r24, 0x08	; 8
+ 11a:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7f00ed>
+		CANSTMOB = 0;
+ 11e:	10 92 ee 00 	sts	0x00EE, r1	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7f00ee>
+		CANCDMOB = 0;
+ 122:	10 92 ef 00 	sts	0x00EF, r1	; 0x8000ef <__TEXT_REGION_LENGTH__+0x7f00ef>
+		CANIDT4 = 0;
+ 126:	10 92 f0 00 	sts	0x00F0, r1	; 0x8000f0 <__TEXT_REGION_LENGTH__+0x7f00f0>
+		CANIDT3 = 0;
+ 12a:	10 92 f1 00 	sts	0x00F1, r1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7f00f1>
+		CANIDT2 = 0;
+ 12e:	10 92 f2 00 	sts	0x00F2, r1	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7f00f2>
+		CANIDT1 = 0;
+ 132:	10 92 f3 00 	sts	0x00F3, r1	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7f00f3>
+		CANIDM4 = 0;
+ 136:	10 92 f4 00 	sts	0x00F4, r1	; 0x8000f4 <__TEXT_REGION_LENGTH__+0x7f00f4>
+		CANIDM3 = 0;
+ 13a:	10 92 f5 00 	sts	0x00F5, r1	; 0x8000f5 <__TEXT_REGION_LENGTH__+0x7f00f5>
+		CANIDM2 = 0;
+ 13e:	10 92 f6 00 	sts	0x00F6, r1	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7f00f6>
+		CANIDM1 = 0;
+ 142:	10 92 f7 00 	sts	0x00F7, r1	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7f00f7>
+		for (uint8_t byte = 0; byte < 8; byte++){
+ 146:	80 e0       	ldi	r24, 0x00	; 0
+ 148:	08 c0       	rjmp	.+16     	; 0x15a <can_cfg+0x54>
+			CANPAGE = mob<<MOBNB0 | 1<<AINC | byte;
+ 14a:	98 2f       	mov	r25, r24
+ 14c:	92 2b       	or	r25, r18
+ 14e:	98 60       	ori	r25, 0x08	; 8
+ 150:	90 93 ed 00 	sts	0x00ED, r25	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7f00ed>
+			CANMSG = 0;
+ 154:	10 92 fa 00 	sts	0x00FA, r1	; 0x8000fa <__TEXT_REGION_LENGTH__+0x7f00fa>
+		CANIDT1 = 0;
+		CANIDM4 = 0;
+		CANIDM3 = 0;
+		CANIDM2 = 0;
+		CANIDM1 = 0;
+		for (uint8_t byte = 0; byte < 8; byte++){
+ 158:	8f 5f       	subi	r24, 0xFF	; 255
+ 15a:	88 30       	cpi	r24, 0x08	; 8
+ 15c:	b0 f3       	brcs	.-20     	; 0x14a <can_cfg+0x44>
+}
+void can_cfg(){
+	
+	CANGCON = 0; // Disable CAN
+	
+	for (uint8_t mob = 0; mob < 15 ; mob++){//reset all mobs
+ 15e:	4f 5f       	subi	r20, 0xFF	; 255
+ 160:	4f 30       	cpi	r20, 0x0F	; 15
+ 162:	a8 f2       	brcs	.-86     	; 0x10e <can_cfg+0x8>
+			CANPAGE = mob<<MOBNB0 | 1<<AINC | byte;
+			CANMSG = 0;
+		}
+	}
+
+	CANBT1 = 0x02;// Set Baudrate
+ 164:	82 e0       	ldi	r24, 0x02	; 2
+ 166:	80 93 e2 00 	sts	0x00E2, r24	; 0x8000e2 <__TEXT_REGION_LENGTH__+0x7f00e2>
+	CANBT2 = 0x0C;// 500kBaud according
+ 16a:	8c e0       	ldi	r24, 0x0C	; 12
+ 16c:	80 93 e3 00 	sts	0x00E3, r24	; 0x8000e3 <__TEXT_REGION_LENGTH__+0x7f00e3>
+	CANBT3 = 0x37;// to Datasheet S. 267
+ 170:	87 e3       	ldi	r24, 0x37	; 55
+ 172:	80 93 e4 00 	sts	0x00E4, r24	; 0x8000e4 <__TEXT_REGION_LENGTH__+0x7f00e4>
+
+	CANGIE = 0;
+ 176:	10 92 db 00 	sts	0x00DB, r1	; 0x8000db <__TEXT_REGION_LENGTH__+0x7f00db>
+
+	CANGCON |= (1<<ENASTB); // Enable CAN
+ 17a:	e8 ed       	ldi	r30, 0xD8	; 216
+ 17c:	f0 e0       	ldi	r31, 0x00	; 0
+ 17e:	80 81       	ld	r24, Z
+ 180:	82 60       	ori	r24, 0x02	; 2
+ 182:	80 83       	st	Z, r24
+ 184:	08 95       	ret
+
+00000186 <can_rx>:
+	
+	
+	
+}
+void can_rx(struct CAN_MOB *to_receive, uint8_t *data){
+ 186:	0f 93       	push	r16
+ 188:	1f 93       	push	r17
+ 18a:	cf 93       	push	r28
+ 18c:	df 93       	push	r29
+ 18e:	ec 01       	movw	r28, r24
+ 190:	8b 01       	movw	r16, r22
+	
+	CANPAGE = to_receive->mob_number << MOBNB0;
+ 192:	8c 81       	ldd	r24, Y+4	; 0x04
+ 194:	82 95       	swap	r24
+ 196:	80 7f       	andi	r24, 0xF0	; 240
+ 198:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7f00ed>
+	if (can_check_free(to_receive->mob_number)){
+ 19c:	8c 81       	ldd	r24, Y+4	; 0x04
+ 19e:	96 df       	rcall	.-212    	; 0xcc <can_check_free>
+ 1a0:	88 23       	and	r24, r24
+ 1a2:	71 f1       	breq	.+92     	; 0x200 <can_rx+0x7a>
+		/* load the id 11 bit */
+		CANIDT1 = to_receive->mob_id >>3;
+ 1a4:	88 81       	ld	r24, Y
+ 1a6:	99 81       	ldd	r25, Y+1	; 0x01
+ 1a8:	96 95       	lsr	r25
+ 1aa:	87 95       	ror	r24
+ 1ac:	96 95       	lsr	r25
+ 1ae:	87 95       	ror	r24
+ 1b0:	96 95       	lsr	r25
+ 1b2:	87 95       	ror	r24
+ 1b4:	80 93 f3 00 	sts	0x00F3, r24	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7f00f3>
+		CANIDT2 = (to_receive->mob_id << 5)&0b11100000;
+ 1b8:	88 81       	ld	r24, Y
+ 1ba:	82 95       	swap	r24
+ 1bc:	88 0f       	add	r24, r24
+ 1be:	80 7e       	andi	r24, 0xE0	; 224
+ 1c0:	80 93 f2 00 	sts	0x00F2, r24	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7f00f2>
+		CANIDT3 = 0;
+ 1c4:	10 92 f1 00 	sts	0x00F1, r1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7f00f1>
+		CANIDT4 = 1<<RTRTAG;
+ 1c8:	84 e0       	ldi	r24, 0x04	; 4
+ 1ca:	80 93 f0 00 	sts	0x00F0, r24	; 0x8000f0 <__TEXT_REGION_LENGTH__+0x7f00f0>
+		CANIDM1 = to_receive->mob_idmask >>3;
+ 1ce:	8a 81       	ldd	r24, Y+2	; 0x02
+ 1d0:	9b 81       	ldd	r25, Y+3	; 0x03
+ 1d2:	96 95       	lsr	r25
+ 1d4:	87 95       	ror	r24
+ 1d6:	96 95       	lsr	r25
+ 1d8:	87 95       	ror	r24
+ 1da:	96 95       	lsr	r25
+ 1dc:	87 95       	ror	r24
+ 1de:	80 93 f7 00 	sts	0x00F7, r24	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7f00f7>
+		CANIDM2 = (to_receive->mob_idmask <<5)&0b11100000;
+ 1e2:	8a 81       	ldd	r24, Y+2	; 0x02
+ 1e4:	82 95       	swap	r24
+ 1e6:	88 0f       	add	r24, r24
+ 1e8:	80 7e       	andi	r24, 0xE0	; 224
+ 1ea:	80 93 f6 00 	sts	0x00F6, r24	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7f00f6>
+		CANIDM3 = 0;
+ 1ee:	10 92 f5 00 	sts	0x00F5, r1	; 0x8000f5 <__TEXT_REGION_LENGTH__+0x7f00f5>
+		CANIDM4 = 0;
+ 1f2:	10 92 f4 00 	sts	0x00F4, r1	; 0x8000f4 <__TEXT_REGION_LENGTH__+0x7f00f4>
+		CANCDMOB = (1 << CONMOB1) | (1 << CONMOB0)| (1<<DLC3);
+ 1f6:	88 ec       	ldi	r24, 0xC8	; 200
+ 1f8:	80 93 ef 00 	sts	0x00EF, r24	; 0x8000ef <__TEXT_REGION_LENGTH__+0x7f00ef>
+		CANSTMOB = 0;
+ 1fc:	10 92 ee 00 	sts	0x00EE, r1	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7f00ee>
+	CANGCON |= (1<<ENASTB); // Enable CAN
+	
+	
+	
+}
+void can_rx(struct CAN_MOB *to_receive, uint8_t *data){
+ 200:	20 e0       	ldi	r18, 0x00	; 0
+ 202:	10 c0       	rjmp	.+32     	; 0x224 <can_rx+0x9e>
+		CANCDMOB = (1 << CONMOB1) | (1 << CONMOB0)| (1<<DLC3);
+		CANSTMOB = 0;
+	}
+	
+	for(uint8_t byte = 0; byte <8; byte++){
+		CANPAGE = (to_receive->mob_number << MOBNB0) | (1 << AINC) | byte;
+ 204:	8c 81       	ldd	r24, Y+4	; 0x04
+ 206:	30 e1       	ldi	r19, 0x10	; 16
+ 208:	83 9f       	mul	r24, r19
+ 20a:	c0 01       	movw	r24, r0
+ 20c:	11 24       	eor	r1, r1
+ 20e:	82 2b       	or	r24, r18
+ 210:	88 60       	ori	r24, 0x08	; 8
+ 212:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7f00ed>
+		data[byte] = CANMSG;
+ 216:	f8 01       	movw	r30, r16
+ 218:	e2 0f       	add	r30, r18
+ 21a:	f1 1d       	adc	r31, r1
+ 21c:	80 91 fa 00 	lds	r24, 0x00FA	; 0x8000fa <__TEXT_REGION_LENGTH__+0x7f00fa>
+ 220:	80 83       	st	Z, r24
+		CANIDM4 = 0;
+		CANCDMOB = (1 << CONMOB1) | (1 << CONMOB0)| (1<<DLC3);
+		CANSTMOB = 0;
+	}
+	
+	for(uint8_t byte = 0; byte <8; byte++){
+ 222:	2f 5f       	subi	r18, 0xFF	; 255
+ 224:	28 30       	cpi	r18, 0x08	; 8
+ 226:	70 f3       	brcs	.-36     	; 0x204 <can_rx+0x7e>
+		CANPAGE = (to_receive->mob_number << MOBNB0) | (1 << AINC) | byte;
+		data[byte] = CANMSG;
+	}
+	
+	
+}
+ 228:	df 91       	pop	r29
+ 22a:	cf 91       	pop	r28
+ 22c:	1f 91       	pop	r17
+ 22e:	0f 91       	pop	r16
+ 230:	08 95       	ret
+
+00000232 <can_tx>:
+void can_tx(struct CAN_MOB *to_send, uint8_t *data){
+ 232:	cf 93       	push	r28
+ 234:	df 93       	push	r29
+ 236:	ec 01       	movw	r28, r24
+	
+	for(uint8_t byte = 0; byte <8; byte++){
+ 238:	20 e0       	ldi	r18, 0x00	; 0
+ 23a:	10 c0       	rjmp	.+32     	; 0x25c <can_tx+0x2a>
+		CANPAGE = (to_send->mob_number << MOBNB0) | (1 << AINC) | byte;
+ 23c:	8c 81       	ldd	r24, Y+4	; 0x04
+ 23e:	30 e1       	ldi	r19, 0x10	; 16
+ 240:	83 9f       	mul	r24, r19
+ 242:	c0 01       	movw	r24, r0
+ 244:	11 24       	eor	r1, r1
+ 246:	82 2b       	or	r24, r18
+ 248:	88 60       	ori	r24, 0x08	; 8
+ 24a:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7f00ed>
+		CANMSG = data[byte];
+ 24e:	fb 01       	movw	r30, r22
+ 250:	e2 0f       	add	r30, r18
+ 252:	f1 1d       	adc	r31, r1
+ 254:	80 81       	ld	r24, Z
+ 256:	80 93 fa 00 	sts	0x00FA, r24	; 0x8000fa <__TEXT_REGION_LENGTH__+0x7f00fa>
+	
+	
+}
+void can_tx(struct CAN_MOB *to_send, uint8_t *data){
+	
+	for(uint8_t byte = 0; byte <8; byte++){
+ 25a:	2f 5f       	subi	r18, 0xFF	; 255
+ 25c:	28 30       	cpi	r18, 0x08	; 8
+ 25e:	70 f3       	brcs	.-36     	; 0x23c <can_tx+0xa>
+		CANPAGE = (to_send->mob_number << MOBNB0) | (1 << AINC) | byte;
+		CANMSG = data[byte];
+	}
+	
+	CANPAGE = to_send->mob_number << MOBNB0;
+ 260:	8c 81       	ldd	r24, Y+4	; 0x04
+ 262:	82 95       	swap	r24
+ 264:	80 7f       	andi	r24, 0xF0	; 240
+ 266:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7f00ed>
+	if (can_check_free(to_send->mob_number)){
+ 26a:	8c 81       	ldd	r24, Y+4	; 0x04
+ 26c:	2f df       	rcall	.-418    	; 0xcc <can_check_free>
+ 26e:	88 23       	and	r24, r24
+ 270:	21 f1       	breq	.+72     	; 0x2ba <can_tx+0x88>
+		CANSTMOB = 0;
+ 272:	ee ee       	ldi	r30, 0xEE	; 238
+ 274:	f0 e0       	ldi	r31, 0x00	; 0
+ 276:	10 82       	st	Z, r1
+		CANIDT1 = to_send->mob_id>>3;
+ 278:	88 81       	ld	r24, Y
+ 27a:	99 81       	ldd	r25, Y+1	; 0x01
+ 27c:	96 95       	lsr	r25
+ 27e:	87 95       	ror	r24
+ 280:	96 95       	lsr	r25
+ 282:	87 95       	ror	r24
+ 284:	96 95       	lsr	r25
+ 286:	87 95       	ror	r24
+ 288:	80 93 f3 00 	sts	0x00F3, r24	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7f00f3>
+		CANIDT2 = (to_send->mob_id << 5) & 0b11100000;
+ 28c:	88 81       	ld	r24, Y
+ 28e:	82 95       	swap	r24
+ 290:	88 0f       	add	r24, r24
+ 292:	80 7e       	andi	r24, 0xE0	; 224
+ 294:	80 93 f2 00 	sts	0x00F2, r24	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7f00f2>
+		CANIDT3 = 0;
+ 298:	10 92 f1 00 	sts	0x00F1, r1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7f00f1>
+		CANIDT4 = 0;
+ 29c:	10 92 f0 00 	sts	0x00F0, r1	; 0x8000f0 <__TEXT_REGION_LENGTH__+0x7f00f0>
+		CANIDM1 = 0; //0b11111111;
+ 2a0:	10 92 f7 00 	sts	0x00F7, r1	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7f00f7>
+		CANIDM2 = 0; //0b11100000;
+ 2a4:	10 92 f6 00 	sts	0x00F6, r1	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7f00f6>
+		CANIDM3 = 0;
+ 2a8:	10 92 f5 00 	sts	0x00F5, r1	; 0x8000f5 <__TEXT_REGION_LENGTH__+0x7f00f5>
+		CANIDM4 = 0;
+ 2ac:	10 92 f4 00 	sts	0x00F4, r1	; 0x8000f4 <__TEXT_REGION_LENGTH__+0x7f00f4>
+		CANSTMOB = 0;
+ 2b0:	10 82       	st	Z, r1
+		CANCDMOB = (1<<CONMOB0) | 1 << DLC3;
+ 2b2:	88 e4       	ldi	r24, 0x48	; 72
+ 2b4:	80 93 ef 00 	sts	0x00EF, r24	; 0x8000ef <__TEXT_REGION_LENGTH__+0x7f00ef>
+		CANSTMOB = 0;
+ 2b8:	10 82       	st	Z, r1
+	}
+	
+}
+ 2ba:	df 91       	pop	r29
+ 2bc:	cf 91       	pop	r28
+ 2be:	08 95       	ret
+
+000002c0 <CAN_Init_Messages>:
+struct CAN_MOB can_Fusebox1_mob;
+struct CAN_MOB can_BMS3_mob;
+
+void CAN_Init_Messages()
+{
+	can_Fusebox0_mob.mob_id = 0x500;
+ 2c0:	e6 e1       	ldi	r30, 0x16	; 22
+ 2c2:	f1 e0       	ldi	r31, 0x01	; 1
+ 2c4:	80 e0       	ldi	r24, 0x00	; 0
+ 2c6:	95 e0       	ldi	r25, 0x05	; 5
+ 2c8:	91 83       	std	Z+1, r25	; 0x01
+ 2ca:	80 83       	st	Z, r24
+	can_Fusebox0_mob.mob_idmask = 0xFFFF; //sent
+ 2cc:	8f ef       	ldi	r24, 0xFF	; 255
+ 2ce:	9f ef       	ldi	r25, 0xFF	; 255
+ 2d0:	93 83       	std	Z+3, r25	; 0x03
+ 2d2:	82 83       	std	Z+2, r24	; 0x02
+	can_Fusebox0_mob.mob_number = 0;
+ 2d4:	14 82       	std	Z+4, r1	; 0x04
+
+	can_Fusebox1_mob.mob_id = 0x601;
+ 2d6:	eb e1       	ldi	r30, 0x1B	; 27
+ 2d8:	f1 e0       	ldi	r31, 0x01	; 1
+ 2da:	21 e0       	ldi	r18, 0x01	; 1
+ 2dc:	36 e0       	ldi	r19, 0x06	; 6
+ 2de:	31 83       	std	Z+1, r19	; 0x01
+ 2e0:	20 83       	st	Z, r18
+	can_Fusebox1_mob.mob_idmask = 0xFFFF; //sent
+ 2e2:	93 83       	std	Z+3, r25	; 0x03
+ 2e4:	82 83       	std	Z+2, r24	; 0x02
+	can_Fusebox1_mob.mob_number = 1;
+ 2e6:	21 e0       	ldi	r18, 0x01	; 1
+ 2e8:	24 83       	std	Z+4, r18	; 0x04
+	uint8_t Fusebox3_1_databytes[8] = {0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+	*/
+
+	
+
+	can_BMS3_mob.mob_id = 0x200;
+ 2ea:	e0 e3       	ldi	r30, 0x30	; 48
+ 2ec:	f1 e0       	ldi	r31, 0x01	; 1
+ 2ee:	20 e0       	ldi	r18, 0x00	; 0
+ 2f0:	32 e0       	ldi	r19, 0x02	; 2
+ 2f2:	31 83       	std	Z+1, r19	; 0x01
+ 2f4:	20 83       	st	Z, r18
+	can_BMS3_mob.mob_idmask = 0xffff;
+ 2f6:	93 83       	std	Z+3, r25	; 0x03
+ 2f8:	82 83       	std	Z+2, r24	; 0x02
+	can_BMS3_mob.mob_number = 9;
+ 2fa:	89 e0       	ldi	r24, 0x09	; 9
+ 2fc:	84 83       	std	Z+4, r24	; 0x04
+ 2fe:	08 95       	ret
+
+00000300 <main>:
+
+uint32_t accufan_counter=0;
+uint8_t Akku_fan_on = 0;
+uint8_t AKKUFAN =0;
+int main(void)
+{
+ 300:	cf 93       	push	r28
+ 302:	df 93       	push	r29
+ 304:	cd b7       	in	r28, 0x3d	; 61
+ 306:	de b7       	in	r29, 0x3e	; 62
+ 308:	28 97       	sbiw	r28, 0x08	; 8
+ 30a:	0f b6       	in	r0, 0x3f	; 63
+ 30c:	f8 94       	cli
+ 30e:	de bf       	out	0x3e, r29	; 62
+ 310:	0f be       	out	0x3f, r0	; 63
+ 312:	cd bf       	out	0x3d, r28	; 61
+	sys_timer_config();
+ 314:	f9 d0       	rcall	.+498    	; 0x508 <sys_timer_config>
+	port_config();
+ 316:	e9 d0       	rcall	.+466    	; 0x4ea <port_config>
+	can_cfg();
+ 318:	f6 de       	rcall	.-532    	; 0x106 <can_cfg>
+ 31a:	d2 df       	rcall	.-92     	; 0x2c0 <CAN_Init_Messages>
+	CAN_Init_Messages();
+ 31c:	78 94       	sei
+ 31e:	10 e0       	ldi	r17, 0x00	; 0
+	uint8_t BMS3_databytes[8];
+	uint8_t AIR_close = 0;
+	uint8_t IMD_LED_light = 0;
+	uint8_t AMS_LED_light = 0;
+
+	sei();
+ 320:	40 91 12 01 	lds	r20, 0x0112	; 0x800112 <sys_time>
+
+	//	SUPERLOOP STARTS HERE
+	
+	while (1)
+	{
+		if(TIME_PASSED_1_MS)
+ 324:	50 91 13 01 	lds	r21, 0x0113	; 0x800113 <sys_time+0x1>
+ 328:	60 91 14 01 	lds	r22, 0x0114	; 0x800114 <sys_time+0x2>
+ 32c:	70 91 15 01 	lds	r23, 0x0115	; 0x800115 <sys_time+0x3>
+ 330:	80 91 0e 01 	lds	r24, 0x010E	; 0x80010e <time_1ms>
+ 334:	90 91 0f 01 	lds	r25, 0x010F	; 0x80010f <time_1ms+0x1>
+ 338:	a0 91 10 01 	lds	r26, 0x0110	; 0x800110 <time_1ms+0x2>
+ 33c:	b0 91 11 01 	lds	r27, 0x0111	; 0x800111 <time_1ms+0x3>
+ 340:	48 17       	cp	r20, r24
+ 342:	59 07       	cpc	r21, r25
+ 344:	6a 07       	cpc	r22, r26
+ 346:	7b 07       	cpc	r23, r27
+ 348:	81 f0       	breq	.+32     	; 0x36a <main+0x6a>
+ 34a:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
+		{
+			time_1ms = sys_time;
+ 34e:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
+ 352:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
+ 356:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
+ 35a:	80 93 0e 01 	sts	0x010E, r24	; 0x80010e <time_1ms>
+ 35e:	90 93 0f 01 	sts	0x010F, r25	; 0x80010f <time_1ms+0x1>
+ 362:	a0 93 10 01 	sts	0x0110, r26	; 0x800110 <time_1ms+0x2>
+ 366:	b0 93 11 01 	sts	0x0111, r27	; 0x800111 <time_1ms+0x3>
+ 36a:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
+		}
+		
+		if(TIME_PASSED_10_MS)
+ 36e:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
+ 372:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
+ 376:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
+ 37a:	40 91 0a 01 	lds	r20, 0x010A	; 0x80010a <time_10ms>
+ 37e:	50 91 0b 01 	lds	r21, 0x010B	; 0x80010b <time_10ms+0x1>
+ 382:	60 91 0c 01 	lds	r22, 0x010C	; 0x80010c <time_10ms+0x2>
+ 386:	70 91 0d 01 	lds	r23, 0x010D	; 0x80010d <time_10ms+0x3>
+ 38a:	84 1b       	sub	r24, r20
+ 38c:	95 0b       	sbc	r25, r21
+ 38e:	a6 0b       	sbc	r26, r22
+ 390:	b7 0b       	sbc	r27, r23
+ 392:	0a 97       	sbiw	r24, 0x0a	; 10
+ 394:	a1 05       	cpc	r26, r1
+ 396:	b1 05       	cpc	r27, r1
+ 398:	08 f4       	brcc	.+2      	; 0x39c <main+0x9c>
+ 39a:	68 c0       	rjmp	.+208    	; 0x46c <__LOCK_REGION_LENGTH__+0x6c>
+ 39c:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
+		{
+			time_10ms = sys_time;
+ 3a0:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
+ 3a4:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
+ 3a8:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
+ 3ac:	80 93 0a 01 	sts	0x010A, r24	; 0x80010a <time_10ms>
+ 3b0:	90 93 0b 01 	sts	0x010B, r25	; 0x80010b <time_10ms+0x1>
+ 3b4:	a0 93 0c 01 	sts	0x010C, r26	; 0x80010c <time_10ms+0x2>
+ 3b8:	b0 93 0d 01 	sts	0x010D, r27	; 0x80010d <time_10ms+0x3>
+ 3bc:	8c b1       	in	r24, 0x0c	; 12
+ 3be:	84 70       	andi	r24, 0x04	; 4
+			
+			AIR_close = ((PINE & (1 << PE2 ))>> PE2);		// TS_ACT on PB4
+ 3c0:	e8 2e       	mov	r14, r24
+ 3c2:	f1 2c       	mov	r15, r1
+ 3c4:	f5 94       	asr	r15
+ 3c6:	e7 94       	ror	r14
+ 3c8:	f5 94       	asr	r15
+ 3ca:	e7 94       	ror	r14
+ 3cc:	8c b1       	in	r24, 0x0c	; 12
+ 3ce:	80 72       	andi	r24, 0x20	; 32
+			AKKUFAN = (PINE & (1 << PE5));
+ 3d0:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 3d4:	1c b9       	out	0x0c, r17	; 12
+ 3d6:	be 01       	movw	r22, r28
+
+			PINE = (IMD_LED_light << PE0);					// IMD light on PE0
+ 3d8:	6f 5f       	subi	r22, 0xFF	; 255
+
+			can_rx(&can_BMS3_mob, BMS3_databytes);
+ 3da:	7f 4f       	sbci	r23, 0xFF	; 255
+ 3dc:	80 e3       	ldi	r24, 0x30	; 48
+ 3de:	91 e0       	ldi	r25, 0x01	; 1
+ 3e0:	d2 de       	rcall	.-604    	; 0x186 <can_rx>
+ 3e2:	8f 81       	ldd	r24, Y+7	; 0x07
+ 3e4:	90 e0       	ldi	r25, 0x00	; 0
+			
+			IMD_LED_light = (BMS3_databytes[6]<<1>>7);
+ 3e6:	88 0f       	add	r24, r24
+ 3e8:	99 1f       	adc	r25, r25
+ 3ea:	9c 01       	movw	r18, r24
+ 3ec:	22 0f       	add	r18, r18
+ 3ee:	23 2f       	mov	r18, r19
+ 3f0:	22 1f       	adc	r18, r18
+ 3f2:	33 0b       	sbc	r19, r19
+ 3f4:	12 2f       	mov	r17, r18
+ 3f6:	89 2f       	mov	r24, r25
+ 3f8:	87 95       	ror	r24
+			
+			AMS_LED_light = (BMS3_databytes[6] << 1 >> 8);
+			PINE = (AMS_LED_light << PE7);
+ 3fa:	88 27       	eor	r24, r24
+ 3fc:	87 95       	ror	r24
+ 3fe:	8c b9       	out	0x0c, r24	; 12
+ 400:	e8 e2       	ldi	r30, 0x28	; 40
+ 402:	f1 e0       	ldi	r31, 0x01	; 1
+			
+ 			Fusebox0_databytes[0]	=	0						;
+ 404:	10 82       	st	Z, r1
+ 406:	11 82       	std	Z+1, r1	; 0x01
+ 408:	12 82       	std	Z+2, r1	; 0x02
+			Fusebox0_databytes[1]	=	0						;	
+ 40a:	13 82       	std	Z+3, r1	; 0x03
+ 			Fusebox0_databytes[2]	=	0						;	
+ 40c:	14 82       	std	Z+4, r1	; 0x04
+ 			Fusebox0_databytes[3]	=	0						; 
+ 40e:	e5 82       	std	Z+5, r14	; 0x05
+			Fusebox0_databytes[4]	=	0						;
+ 410:	16 82       	std	Z+6, r1	; 0x06
+			Fusebox0_databytes[5]	=	AIR_close				;
+ 412:	17 82       	std	Z+7, r1	; 0x07
+ 			Fusebox0_databytes[6]	=	0						;
+			Fusebox0_databytes[7]	=	0						;
+ 414:	bf 01       	movw	r22, r30
+			
+			can_tx(&can_Fusebox0_mob, Fusebox0_databytes);	//(0x600 --> Board Voltages)
+ 416:	86 e1       	ldi	r24, 0x16	; 22
+ 418:	91 e0       	ldi	r25, 0x01	; 1
+ 41a:	0b df       	rcall	.-490    	; 0x232 <can_tx>
+ 41c:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
+			
+			
+			if(AKKUFAN && accufan_counter>10)
+ 420:	88 23       	and	r24, r24
+ 422:	21 f1       	breq	.+72     	; 0x46c <__LOCK_REGION_LENGTH__+0x6c>
+ 424:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <accufan_counter>
+ 428:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <accufan_counter+0x1>
+ 42c:	a0 91 04 01 	lds	r26, 0x0104	; 0x800104 <accufan_counter+0x2>
+ 430:	b0 91 05 01 	lds	r27, 0x0105	; 0x800105 <accufan_counter+0x3>
+ 434:	0b 97       	sbiw	r24, 0x0b	; 11
+ 436:	a1 05       	cpc	r26, r1
+ 438:	b1 05       	cpc	r27, r1
+ 43a:	c0 f0       	brcs	.+48     	; 0x46c <__LOCK_REGION_LENGTH__+0x6c>
+ 43c:	80 91 01 01 	lds	r24, 0x0101	; 0x800101 <Akku_fan_on>
+			{
+				//(Akku_fan_on += 1 ) & 1;
+				
+				if(Akku_fan_on == 1 )
+ 440:	81 30       	cpi	r24, 0x01	; 1
+ 442:	31 f4       	brne	.+12     	; 0x450 <__LOCK_REGION_LENGTH__+0x50>
+ 444:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <Akku_fan_on>
+				{
+					Akku_fan_on = 0;
+ 448:	85 b1       	in	r24, 0x05	; 5
+ 44a:	8e 7f       	andi	r24, 0xFE	; 254
+					PORTB &= ~(1<<PB0);
+ 44c:	85 b9       	out	0x05, r24	; 5
+ 44e:	06 c0       	rjmp	.+12     	; 0x45c <__LOCK_REGION_LENGTH__+0x5c>
+ 450:	81 e0       	ldi	r24, 0x01	; 1
+ 452:	80 93 01 01 	sts	0x0101, r24	; 0x800101 <Akku_fan_on>
+				}
+				else
+				{
+					Akku_fan_on = 1;
+ 456:	85 b1       	in	r24, 0x05	; 5
+ 458:	81 60       	ori	r24, 0x01	; 1
+					PORTB |= (1<<PB0);
+ 45a:	85 b9       	out	0x05, r24	; 5
+ 45c:	10 92 02 01 	sts	0x0102, r1	; 0x800102 <accufan_counter>
+				}
+				
+				accufan_counter = 0;
+ 460:	10 92 03 01 	sts	0x0103, r1	; 0x800103 <accufan_counter+0x1>
+ 464:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <accufan_counter+0x2>
+ 468:	10 92 05 01 	sts	0x0105, r1	; 0x800105 <accufan_counter+0x3>
+ 46c:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
+				
+			}
+			
+		}	//end of 10 ms cycle
+		
+		if(TIME_PASSED_100_MS)
+ 470:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
+ 474:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
+ 478:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
+ 47c:	40 91 06 01 	lds	r20, 0x0106	; 0x800106 <time_100ms>
+ 480:	50 91 07 01 	lds	r21, 0x0107	; 0x800107 <time_100ms+0x1>
+ 484:	60 91 08 01 	lds	r22, 0x0108	; 0x800108 <time_100ms+0x2>
+ 488:	70 91 09 01 	lds	r23, 0x0109	; 0x800109 <time_100ms+0x3>
+ 48c:	84 1b       	sub	r24, r20
+ 48e:	95 0b       	sbc	r25, r21
+ 490:	a6 0b       	sbc	r26, r22
+ 492:	b7 0b       	sbc	r27, r23
+ 494:	84 36       	cpi	r24, 0x64	; 100
+ 496:	91 05       	cpc	r25, r1
+ 498:	a1 05       	cpc	r26, r1
+ 49a:	b1 05       	cpc	r27, r1
+ 49c:	08 f4       	brcc	.+2      	; 0x4a0 <__LOCK_REGION_LENGTH__+0xa0>
+ 49e:	40 cf       	rjmp	.-384    	; 0x320 <main+0x20>
+ 4a0:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
+		{
+			time_100ms = sys_time;
+ 4a4:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
+ 4a8:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
+ 4ac:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
+ 4b0:	80 93 06 01 	sts	0x0106, r24	; 0x800106 <time_100ms>
+ 4b4:	90 93 07 01 	sts	0x0107, r25	; 0x800107 <time_100ms+0x1>
+ 4b8:	a0 93 08 01 	sts	0x0108, r26	; 0x800108 <time_100ms+0x2>
+ 4bc:	b0 93 09 01 	sts	0x0109, r27	; 0x800109 <time_100ms+0x3>
+ 4c0:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <accufan_counter>
+			accufan_counter++;
+ 4c4:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <accufan_counter+0x1>
+ 4c8:	a0 91 04 01 	lds	r26, 0x0104	; 0x800104 <accufan_counter+0x2>
+ 4cc:	b0 91 05 01 	lds	r27, 0x0105	; 0x800105 <accufan_counter+0x3>
+ 4d0:	01 96       	adiw	r24, 0x01	; 1
+ 4d2:	a1 1d       	adc	r26, r1
+ 4d4:	b1 1d       	adc	r27, r1
+ 4d6:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <accufan_counter>
+ 4da:	90 93 03 01 	sts	0x0103, r25	; 0x800103 <accufan_counter+0x1>
+ 4de:	a0 93 04 01 	sts	0x0104, r26	; 0x800104 <accufan_counter+0x2>
+ 4e2:	b0 93 05 01 	sts	0x0105, r27	; 0x800105 <accufan_counter+0x3>
+ 4e6:	18 d0       	rcall	.+48     	; 0x518 <sys_tick_heart>
+			sys_tick_heart();
+ 4e8:	1b cf       	rjmp	.-458    	; 0x320 <main+0x20>
+
+000004ea <port_config>:
+ 4ea:	14 b8       	out	0x04, r1	; 4
+ 4ec:	1d b8       	out	0x0d, r1	; 13
+}
+
+int16_t calculate_ac_current(uint16_t limit, uint16_t value){
+	
+	return (int16_t)((float)limit * ((float)value/10));
+}
+ 4ee:	84 b1       	in	r24, 0x04	; 4
+ 4f0:	81 61       	ori	r24, 0x11	; 17
+ 4f2:	84 b9       	out	0x04, r24	; 4
+ 4f4:	8d b1       	in	r24, 0x0d	; 13
+ 4f6:	81 69       	ori	r24, 0x91	; 145
+ 4f8:	8d b9       	out	0x0d, r24	; 13
+ 4fa:	85 b1       	in	r24, 0x05	; 5
+ 4fc:	80 61       	ori	r24, 0x10	; 16
+ 4fe:	85 b9       	out	0x05, r24	; 5
+ 500:	8e b1       	in	r24, 0x0e	; 14
+ 502:	80 61       	ori	r24, 0x10	; 16
+ 504:	8e b9       	out	0x0e, r24	; 14
+ 506:	08 95       	ret
+
+00000508 <sys_timer_config>:
+ 508:	8b e0       	ldi	r24, 0x0B	; 11
+ 50a:	84 bd       	out	0x24, r24	; 36
+ 50c:	89 ef       	ldi	r24, 0xF9	; 249
+ 50e:	87 bd       	out	0x27, r24	; 39
+ 510:	82 e0       	ldi	r24, 0x02	; 2
+ 512:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7f006e>
+ 516:	08 95       	ret
+
+00000518 <sys_tick_heart>:
+ 518:	95 b1       	in	r25, 0x05	; 5
+ 51a:	84 e0       	ldi	r24, 0x04	; 4
+ 51c:	89 27       	eor	r24, r25
+ 51e:	85 b9       	out	0x05, r24	; 5
+ 520:	08 95       	ret
+
+00000522 <__vector_16>:
+
+ISR(TIMER0_COMP_vect)
+{
+ 522:	1f 92       	push	r1
+ 524:	0f 92       	push	r0
+ 526:	0f b6       	in	r0, 0x3f	; 63
+ 528:	0f 92       	push	r0
+ 52a:	11 24       	eor	r1, r1
+ 52c:	8f 93       	push	r24
+ 52e:	9f 93       	push	r25
+ 530:	af 93       	push	r26
+ 532:	bf 93       	push	r27
+	sys_time++;	//system time incremented on each interrupt flag from the CTC mode compare register => every OCR0A
+ 534:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <sys_time>
+ 538:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <sys_time+0x1>
+ 53c:	a0 91 14 01 	lds	r26, 0x0114	; 0x800114 <sys_time+0x2>
+ 540:	b0 91 15 01 	lds	r27, 0x0115	; 0x800115 <sys_time+0x3>
+ 544:	01 96       	adiw	r24, 0x01	; 1
+ 546:	a1 1d       	adc	r26, r1
+ 548:	b1 1d       	adc	r27, r1
+ 54a:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <sys_time>
+ 54e:	90 93 13 01 	sts	0x0113, r25	; 0x800113 <sys_time+0x1>
+ 552:	a0 93 14 01 	sts	0x0114, r26	; 0x800114 <sys_time+0x2>
+ 556:	b0 93 15 01 	sts	0x0115, r27	; 0x800115 <sys_time+0x3>
+ 55a:	bf 91       	pop	r27
+ 55c:	af 91       	pop	r26
+ 55e:	9f 91       	pop	r25
+ 560:	8f 91       	pop	r24
+ 562:	0f 90       	pop	r0
+ 564:	0f be       	out	0x3f, r0	; 63
+ 566:	0f 90       	pop	r0
+ 568:	1f 90       	pop	r1
+ 56a:	18 95       	reti
+
+0000056c <_exit>:
+ 56c:	f8 94       	cli
+
+0000056e <__stop_program>:
+ 56e:	ff cf       	rjmp	.-2      	; 0x56e <__stop_program>
