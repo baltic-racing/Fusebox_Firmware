@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (11.3.rel1)
+# Toolchain: GNU Tools for STM32 (13.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -60,8 +60,8 @@ all: main-build
 main-build: Fusebox_Firmware_TY26.elf secondary-outputs
 
 # Tool invocations
-Fusebox_Firmware_TY26.elf Fusebox_Firmware_TY26.map: $(OBJS) $(USER_OBJS) C:\Users\tkien\Documents\GitHub\Fusebox_Firmware\Fusebox_Firmware_TY26\STM32G474VETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Fusebox_Firmware_TY26.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\tkien\Documents\GitHub\Fusebox_Firmware\Fusebox_Firmware_TY26\STM32G474VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Fusebox_Firmware_TY26.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Fusebox_Firmware_TY26.elf Fusebox_Firmware_TY26.map: $(OBJS) $(USER_OBJS) C:\Users\jakob\OneDrive\Documents\GitHub\Fusebox_Firmware\Fusebox_Firmware_TY26\STM32G474VETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Fusebox_Firmware_TY26.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\jakob\OneDrive\Documents\GitHub\Fusebox_Firmware\Fusebox_Firmware_TY26\STM32G474VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Fusebox_Firmware_TY26.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

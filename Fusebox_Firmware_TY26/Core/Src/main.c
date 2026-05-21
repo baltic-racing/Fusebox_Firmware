@@ -98,8 +98,21 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  uint16_t WP_active = 0;
+	  if(!WP_active)
+	  {
+		  /* Pin für WP dauerhaft HIGH */
+		  HAL_GPIO_WritePin(GPIOD, WP_SW_Pin, GPIO_PIN_SET);
+		  /* Pin für WP Standby high */
+		  HAL_GPIO_WritePin(GPIOC, Reset_WP_Pin, GPIO_PIN_SET);
+
+		  WP_active = 1;
+	  }
+
+
 	  HAL_GPIO_TogglePin(GPIOE, LED_RD_Pin);
 	  HAL_Delay(100);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
