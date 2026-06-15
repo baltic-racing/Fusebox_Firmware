@@ -106,6 +106,15 @@ int main(void)
 		  /* Pin für WP Standby high */
 		  HAL_GPIO_WritePin(GPIOC, Reset_WP_Pin, GPIO_PIN_SET);
 
+		  /* Pin für Radiator Fans dauerhaft HIGH */
+		  HAL_GPIO_WritePin(GPIOD, FAN_Radiator_SW_Pin, GPIO_PIN_SET);
+		  /* Pin für Radiator Fans Standby high */
+		  HAL_GPIO_WritePin(GPIOC, Reset_Radiator_Pin, GPIO_PIN_SET);
+
+		  /*Pin für TSAC Fan dauerhaft HIGH */
+		  HAL_GPIO_WritePin(GPIOD, FAN_TSAC_SW_Pin, GPIO_PIN_SET);
+
+
 		  WP_active = 1;
 	  }
 
