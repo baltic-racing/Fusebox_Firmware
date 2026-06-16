@@ -50,7 +50,8 @@ uint16_t WP_active = 0;
 uint16_t Radiator_start_1 = 0;
 uint16_t Radiator_start_2 = 0;
 uint32_t time1 = 0;
-uint32_t time2 = 0;
+uint32_t time2 = 5000;
+uint8_t fanspeed = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -136,7 +137,7 @@ int main(void)
 
 
 
-	  if (!Radiator_start_1){
+/*	  if (!Radiator_start_1){
 		  setFanSpeed(20);
 		  time1 = HAL_GetTick();
 		  Radiator_start_1 = 1;
@@ -147,6 +148,18 @@ int main(void)
 		  Radiator_start_2 = 1;
 		  setFanSpeed(60);
 	  }
+*/
+	 time1 = HAL_GetTick();
+	 if(!Radiator_start_1 && (time1 - time2 > 5000) ){
+		 time2 = HAL_GetTick();
+		 fanspeed += 5 ;
+		 setFanSpeed(fanspeed);
+		 if(fanspeed > 60){
+			 Radiator_start_1 = 1;
+		 }
+
+	 }
+
 
     /* USER CODE END WHILE */
 
