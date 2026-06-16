@@ -20,6 +20,7 @@
 #include "main.h"
 #include "adc.h"
 #include "fdcan.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -34,7 +35,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define Radiator_startup_time  10000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -45,7 +46,11 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint16_t WP_active = 0;
+uint16_t Radiator_start_1 = 0;
+uint16_t Radiator_start_2 = 0;
+uint32_t time1 = 0;
+uint32_t time2 = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -56,7 +61,10 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void setFanSpeed(uint8_t percent) {
+    uint32_t ccr = (percent * 1000) / 100;
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ccr);
+}
 /* USER CODE END 0 */
 
 /**
@@ -90,15 +98,19 @@ int main(void)
   MX_GPIO_Init();
   MX_ADC1_Init();
   MX_FDCAN1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  // start PWM
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
 
+  // set to 0% duty cycle
+  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  uint16_t WP_active = 0;
 	  if(!WP_active)
 	  {
 		  /* Pin für WP dauerhaft HIGH */
@@ -121,6 +133,20 @@ int main(void)
 
 	  HAL_GPIO_TogglePin(GPIOE, LED_RD_Pin);
 	  HAL_Delay(100);
+
+
+
+	  if (!Radiator_start_1){
+		  setFanSpeed(20);
+		  time1 = HAL_GetTick();
+		  Radiator_start_1 = 1;
+	  }
+	  time2 = HAL_GetTick();
+	  if (!Radiator_start_2 && Radiator_start_1 && (time2 - time1 > Radiator_startup_time))
+	  {
+		  Radiator_start_2 = 1;
+		  setFanSpeed(60);
+	  }
 
     /* USER CODE END WHILE */
 
