@@ -53,18 +53,17 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, MUX_S3_Pin|MUX_S2_Pin|MUX_S1_Pin
-                          |MUX_S0_Pin|LED_GN_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOE, LED_RD_Pin|LED_BL_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOE, MUX_S3_Pin|MUX_S2_Pin|MUX_S1_Pin|MUX_S0_Pin
+                          |LED_GN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, Reset_Radiator_Pin|Reset_WP_Pin|Reset_MAB_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(MAB_SW_GPIO_Port, MAB_SW_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(SDCI_Inertia_GPIO_Port, SDCI_Inertia_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, WP_SW_Pin|FAN_Radiator_SW_Pin|FAN_TSAC_SW_Pin|WP_CTRL_Pin
@@ -93,8 +92,10 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(MAB_SW_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SDCI_ButtL_Pin SDCI_ButtDB_Pin SDCI_TSMS_Pin FRO_out_Pin */
-  GPIO_InitStruct.Pin = SDCI_ButtL_Pin|SDCI_ButtDB_Pin|SDCI_TSMS_Pin|FRO_out_Pin;
+  /*Configure GPIO pins : SDCI_ButtL_Pin SDCI_ButtDB_Pin SDCI_Inertia_Pin SDCI_TSMS_Pin
+                           FRO_out_Pin */
+  GPIO_InitStruct.Pin = SDCI_ButtL_Pin|SDCI_ButtDB_Pin|SDCI_Inertia_Pin|SDCI_TSMS_Pin
+                          |FRO_out_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -104,13 +105,6 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : SDCI_Inertia_Pin */
-  GPIO_InitStruct.Pin = SDCI_Inertia_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(SDCI_Inertia_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : SDCI_HV_Distri_Pin SDCI_BOTS_Pin */
   GPIO_InitStruct.Pin = SDCI_HV_Distri_Pin|SDCI_BOTS_Pin;

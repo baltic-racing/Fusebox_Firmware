@@ -20,6 +20,7 @@
 #include "main.h"
 #include "adc.h"
 #include "fdcan.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -46,6 +47,16 @@
 
 /* USER CODE BEGIN PV */
 
+
+
+// FDCAN1 Defines
+FDCAN_TxHeaderTypeDef   TxHeader1;
+FDCAN_RxHeaderTypeDef   RxHeader1;
+uint8_t               TxData1[8];
+uint8_t               RxData1[8];
+
+extern uint32_t sys_time;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,7 +78,19 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+	uint32_t last20 = 0;;
+	uint32_t last100 = 0;
 
+	// Configure TX Header for FDCAN1
+	TxHeader1.Identifier = 0x11;
+	TxHeader1.IdType = FDCAN_STANDARD_ID;
+	TxHeader1.TxFrameType = FDCAN_DATA_FRAME;
+	TxHeader1.DataLength = FDCAN_DLC_BYTES_8;
+	TxHeader1.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+	TxHeader1.BitRateSwitch = FDCAN_BRS_OFF;
+	TxHeader1.FDFormat = FDCAN_CLASSIC_CAN;
+	TxHeader1.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+	TxHeader1.MessageMarker = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -90,7 +113,23 @@ int main(void)
   MX_GPIO_Init();
   MX_ADC1_Init();
   MX_FDCAN1_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Base_Start_IT(&htim1);
+
+  // Start FDCAN1
+  if(HAL_FDCAN_Start(&hfdcan1)!= HAL_OK)
+  {
+   Error_Handler();
+  }
+
+  // Activate the notification for new data in FIFO0 for FDCAN1
+
+  if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
+  {
+    /* Notification Error */
+    Error_Handler();
+  }
 
   /* USER CODE END 2 */
 
@@ -98,8 +137,34 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_TogglePin(GPIOE, LED_RD_Pin);
-	  HAL_Delay(100);
+
+
+	  if (sys_time>= last20 + 20)
+	  	{
+
+	  		last20 = sys_time;
+	  	}
+	  	if (sys_time>= last100 + 100)
+	  	{
+
+	  		TxData1[0] = 0;
+	  		TxData1[1] = 1;
+	  		TxData1[2] = 0;
+	  		TxData1[3] = 1;
+	  		TxData1[4] = 0;
+	  		TxData1[5] = 1;
+	  		TxData1[6] = 0;
+	  		TxData1[7] = 1;
+
+	  		 if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader1, TxData1)!= HAL_OK)
+	  		 {
+	  		  Error_Handler();
+	  		 }
+
+	  		HAL_GPIO_TogglePin(GPIOE, LED_RD_Pin);
+	  		last100 = sys_time;
+
+	  	}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -143,7 +208,7 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV4;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
