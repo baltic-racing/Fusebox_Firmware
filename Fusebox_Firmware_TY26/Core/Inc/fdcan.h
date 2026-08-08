@@ -36,11 +36,23 @@ extern FDCAN_HandleTypeDef hfdcan1;
 
 /* USER CODE BEGIN Private defines */
 
+extern FDCAN_TxHeaderTypeDef TxHeader1;
+extern FDCAN_RxHeaderTypeDef RxHeader1;
+extern uint8_t TxData1[8];
+extern uint8_t RxData1[8];
+
+extern uint16_t inv_temp_r_raw;
+extern uint16_t motor_temp_r_raw;
+extern uint16_t inv_temp_l_raw;
+extern uint16_t motor_temp_l_raw;
+
 /* USER CODE END Private defines */
 
 void MX_FDCAN1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+
+void config_FDCAN1(void);
 
 /* USER CODE END Prototypes */
 

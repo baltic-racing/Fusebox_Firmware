@@ -52,7 +52,7 @@ void MX_FDCAN1_Init(void)
   hfdcan1.Init.DataSyncJumpWidth = 1;
   hfdcan1.Init.DataTimeSeg1 = 1;
   hfdcan1.Init.DataTimeSeg2 = 1;
-  hfdcan1.Init.StdFiltersNbr = 1;
+  hfdcan1.Init.StdFiltersNbr = 2;
   hfdcan1.Init.ExtFiltersNbr = 0;
   hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
   if (HAL_FDCAN_Init(&hfdcan1) != HAL_OK)
@@ -60,7 +60,37 @@ void MX_FDCAN1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN FDCAN1_Init 2 */
+  FDCAN_FilterTypeDef sFilterConfig;
 
+  	  	// Filter 0:(0x453)
+  	  	sFilterConfig.IdType       = FDCAN_STANDARD_ID;
+  	  	sFilterConfig.FilterIndex  = 0;
+  	  	sFilterConfig.FilterType   = FDCAN_FILTER_MASK;
+  	  	sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+  	  	sFilterConfig.FilterID1    = 0x453;
+  	  	sFilterConfig.FilterID2    = 0x7FF;   // Mask: alle 11 Bits müssen exakt passen
+
+  	  	if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
+  	  	{
+  	  	  Error_Handler();
+  	  	}
+
+  	  	// Filter 1:(0x44A)
+  	  	sFilterConfig.FilterIndex  = 1;
+  	  	sFilterConfig.FilterID1    = 0x44A;
+  	  	sFilterConfig.FilterID2    = 0x7FF;
+
+  	  	if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
+  	  	{
+  	  	  Error_Handler();
+  	  	}
+
+  	  	// global filter, delete the recieved messages with wrong filter
+  	  	if (HAL_FDCAN_ConfigGlobalFilter(&hfdcan1, FDCAN_REJECT, FDCAN_REJECT,
+  	  	      FDCAN_FILTER_REMOTE, FDCAN_REJECT_REMOTE) != HAL_OK)
+  	  	{
+  	  	  Error_Handler();
+  	  	}
   /* USER CODE END FDCAN1_Init 2 */
 
 }
@@ -135,6 +165,55 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
 }
 
 /* USER CODE BEGIN 1 */
+
+FDCAN_TxHeaderTypeDef   TxHeader1;
+FDCAN_RxHeaderTypeDef   RxHeader1;
+uint8_t               TxData1[8];
+uint8_t               RxData1[8];
+
+uint16_t inv_temp_r_raw   = 0;
+uint16_t motor_temp_r_raw = 0;
+uint16_t inv_temp_l_raw   = 0;
+uint16_t motor_temp_l_raw = 0;
+
+void config_FDCAN1(void)
+{
+	// Configure TX Header for FDCAN1
+	TxHeader1.Identifier = 0x11;
+	TxHeader1.IdType = FDCAN_STANDARD_ID;
+	TxHeader1.TxFrameType = FDCAN_DATA_FRAME;
+	TxHeader1.DataLength = FDCAN_DLC_BYTES_8;
+	TxHeader1.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+	TxHeader1.BitRateSwitch = FDCAN_BRS_OFF;
+	TxHeader1.FDFormat = FDCAN_CLASSIC_CAN;
+	TxHeader1.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+	TxHeader1.MessageMarker = 0;
+}
+void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
+{
+  if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
+  {
+    if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader1, RxData1) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    // recieve the databytes
+    if (RxHeader1.Identifier == 0x453)
+    {
+      // Inverter rechts: INV Temp = Byte0/1, Motor Temp = Byte2/3
+      inv_temp_r_raw   = RxData1[0] | ((uint16_t)RxData1[1] << 8);
+      motor_temp_r_raw = RxData1[2] | ((uint16_t)RxData1[3] << 8);
+    }
+
+    if (RxHeader1.Identifier == 0x44A)
+    {
+      // Inverter links: INV Temp = Byte0/1, Motor Temp = Byte2/3
+      inv_temp_l_raw   = RxData1[0] | ((uint16_t)RxData1[1] << 8);
+      motor_temp_l_raw = RxData1[2] | ((uint16_t)RxData1[3] << 8);
+    }
+  }
+}
 
 /* USER CODE END 1 */
 

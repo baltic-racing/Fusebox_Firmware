@@ -67,7 +67,7 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, WP_SW_Pin|FAN_Radiator_SW_Pin|FAN_TSAC_SW_Pin|WP_CTRL_Pin
-                          |FAN_Radiator_CTRL_Pin|FAN_TSAC_CTRL_Pin|GP_SW_Pin|Reset_GP_Pin, GPIO_PIN_RESET);
+                          |FAN_TSAC_CTRL_Pin|GP_SW_Pin|Reset_GP_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : LED_RD_Pin MUX_S3_Pin MUX_S2_Pin MUX_S1_Pin
                            MUX_S0_Pin LED_GN_Pin LED_BL_Pin */
@@ -113,13 +113,20 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pins : WP_SW_Pin FAN_Radiator_SW_Pin FAN_TSAC_SW_Pin WP_CTRL_Pin
-                           FAN_Radiator_CTRL_Pin FAN_TSAC_CTRL_Pin GP_SW_Pin Reset_GP_Pin */
+                           GP_SW_Pin Reset_GP_Pin */
   GPIO_InitStruct.Pin = WP_SW_Pin|FAN_Radiator_SW_Pin|FAN_TSAC_SW_Pin|WP_CTRL_Pin
-                          |FAN_Radiator_CTRL_Pin|FAN_TSAC_CTRL_Pin|GP_SW_Pin|Reset_GP_Pin;
+                          |GP_SW_Pin|Reset_GP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : FAN_TSAC_CTRL_Pin */
+  GPIO_InitStruct.Pin = FAN_TSAC_CTRL_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(FAN_TSAC_CTRL_GPIO_Port, &GPIO_InitStruct);
 
 }
 

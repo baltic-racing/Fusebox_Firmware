@@ -49,12 +49,6 @@
 
 
 
-// FDCAN1 Defines
-FDCAN_TxHeaderTypeDef   TxHeader1;
-FDCAN_RxHeaderTypeDef   RxHeader1;
-uint8_t               TxData1[8];
-uint8_t               RxData1[8];
-
 extern uint32_t sys_time;
 
 /* USER CODE END PV */
@@ -81,16 +75,7 @@ int main(void)
 	uint32_t last20 = 0;;
 	uint32_t last100 = 0;
 
-	// Configure TX Header for FDCAN1
-	TxHeader1.Identifier = 0x11;
-	TxHeader1.IdType = FDCAN_STANDARD_ID;
-	TxHeader1.TxFrameType = FDCAN_DATA_FRAME;
-	TxHeader1.DataLength = FDCAN_DLC_BYTES_8;
-	TxHeader1.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-	TxHeader1.BitRateSwitch = FDCAN_BRS_OFF;
-	TxHeader1.FDFormat = FDCAN_CLASSIC_CAN;
-	TxHeader1.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
-	TxHeader1.MessageMarker = 0;
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -114,12 +99,16 @@ int main(void)
   MX_ADC1_Init();
   MX_FDCAN1_Init();
   MX_TIM1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1);
+
+  config_FDCAN1();
 
   // Start FDCAN1
   if(HAL_FDCAN_Start(&hfdcan1)!= HAL_OK)
   {
+
    Error_Handler();
   }
 
@@ -147,8 +136,8 @@ int main(void)
 	  	if (sys_time>= last100 + 100)
 	  	{
 
-	  		TxData1[0] = 0;
-	  		TxData1[1] = 1;
+	  		TxData1[0] = (inv_temp_r_raw);
+	  		TxData1[1] = (inv_temp_r_raw>>8);
 	  		TxData1[2] = 0;
 	  		TxData1[3] = 1;
 	  		TxData1[4] = 0;
@@ -158,7 +147,7 @@ int main(void)
 
 	  		 if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader1, TxData1)!= HAL_OK)
 	  		 {
-	  		  Error_Handler();
+	  		  //Error_Handler();
 	  		 }
 
 	  		HAL_GPIO_TogglePin(GPIOE, LED_RD_Pin);

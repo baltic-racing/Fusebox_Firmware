@@ -115,8 +115,8 @@ void Error_Handler(void);
 #define FAN_TSAC_SW_GPIO_Port GPIOD
 #define WP_CTRL_Pin GPIO_PIN_3
 #define WP_CTRL_GPIO_Port GPIOD
-#define FAN_Radiator_CTRL_Pin GPIO_PIN_4
-#define FAN_Radiator_CTRL_GPIO_Port GPIOD
+#define FAN_RADIATOR_CTRL_Pin GPIO_PIN_4
+#define FAN_RADIATOR_CTRL_GPIO_Port GPIOD
 #define FAN_TSAC_CTRL_Pin GPIO_PIN_5
 #define FAN_TSAC_CTRL_GPIO_Port GPIOD
 #define GP_SW_Pin GPIO_PIN_6
