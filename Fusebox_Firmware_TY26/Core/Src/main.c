@@ -35,6 +35,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define radiator_startup_time  10000
 
 /* USER CODE END PD */
 
@@ -56,12 +57,36 @@ extern uint32_t sys_time;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+void HSD_Init(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void WP_HSD_Init(void)
+{
+	  /* Pin für WP dauerhaft HIGH */
+	  HAL_GPIO_WritePin(GPIOD, WP_SW_Pin, GPIO_PIN_SET);
+	  /* Pin für WP Standby high */
+	  HAL_GPIO_WritePin(GPIOC, Reset_WP_Pin, GPIO_PIN_SET);
+}
+void FAN_RADIATOR_HSD_Init(void)
+{
+		/* Pin für Radiator Fans dauerhaft HIGH */
+	  HAL_GPIO_WritePin(GPIOD, FAN_Radiator_SW_Pin, GPIO_PIN_SET);
+	  /* Pin für Radiator Fans Standby high */
+	  HAL_GPIO_WritePin(GPIOC, Reset_Radiator_Pin, GPIO_PIN_SET);
+}
 
+void TSAC_FANS_Init(void)
+{
+	/*Pin für TSAC Fan dauerhaft HIGH */
+	HAL_GPIO_WritePin(GPIOD, FAN_TSAC_SW_Pin, GPIO_PIN_SET);
+}
+
+void setFanSpeed(uint8_t percent) {
+    uint32_t ccr = (percent * 1000) / 100;
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ccr);
+}
 /* USER CODE END 0 */
 
 /**
@@ -74,8 +99,15 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	uint32_t last20 = 0;;
 	uint32_t last100 = 0;
+	uint32_t last1000 = 0;
 
+	uint8_t radiator_startup_complete = 0;
 
+	uint32_t WP_start_time = 5000;
+	uint32_t TSAC_FANS_start_time = 10000;
+	uint32_t Radiator_start_time = 15000;
+
+	uint8_t fanspeed = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -149,15 +181,55 @@ int main(void)
 	  		 {
 	  		  //Error_Handler();
 	  		 }
+				if(radiator_startup_complete)
+				{
+
+				}
 
 	  		HAL_GPIO_TogglePin(GPIOE, LED_RD_Pin);
 	  		last100 = sys_time;
-
 	  	}
-    /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
+
+	  	/* end 100ms
+	  	#############################################################################################################*/
+
+		if (sys_time>= last1000 + 1000)
+		{
+			if (radiator_startup_complete == 0 )
+			{	  	if(sys_time > WP_start_time)
+					{
+				  		WP_HSD_Init();
+
+				  	}
+
+					if(sys_time > TSAC_FANS_start_time)
+					{
+						TSAC_FANS_Init();
+					}
+
+					if(sys_time > Radiator_start_time)
+					{
+						FAN_RADIATOR_HSD_Init();
+						fanspeed += 5 ;
+						setFanSpeed(fanspeed);
+
+						if(fanspeed > 60){
+						   radiator_startup_complete = 1;
+						}
+					}
+
+
+			}
+			last1000 = sys_time;
+		}
+
+		//end of 1s
+
+    /* USER CODE END WHILE */
   }
+    /* USER CODE BEGIN 3 */
+
   /* USER CODE END 3 */
 }
 
