@@ -35,7 +35,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define radiator_startup_time  10000
+#define WP_start_time  5000
+#define TSAC_FANS_start_time 10000
+#define Radiator_start_time  15000
 
 /* USER CODE END PD */
 
@@ -57,7 +59,7 @@ extern uint32_t sys_time;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-void HSD_Init(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -103,11 +105,9 @@ int main(void)
 
 	uint8_t radiator_startup_complete = 0;
 
-	uint32_t WP_start_time = 5000;
-	uint32_t TSAC_FANS_start_time = 10000;
-	uint32_t Radiator_start_time = 15000;
+	uint8_t fanspeed = 12;
 
-	uint8_t fanspeed = 0;
+	uint8_t inv_temp_r_C = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -151,6 +151,11 @@ int main(void)
     /* Notification Error */
     Error_Handler();
   }
+  // start PWM
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+
+  // set to 0% duty cycle
+  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0);
 
   /* USER CODE END 2 */
 
@@ -183,7 +188,17 @@ int main(void)
 	  		 }
 				if(radiator_startup_complete)
 				{
+			  		if (inv_temp_r_raw > 10 || inv_temp_r_raw < 255 )
+			  		{
+			  			inv_temp_r_C = (uint8_t)(inv_temp_r_raw / 10);
+			  		}
+			  		else
+			  		{
+			  			inv_temp_r_C = 65;
+			  		}
 
+			  		fanspeed = inv_temp_r_C + 35;
+			  		setFanSpeed(fanspeed);
 				}
 
 	  		HAL_GPIO_TogglePin(GPIOE, LED_RD_Pin);
@@ -211,10 +226,10 @@ int main(void)
 					if(sys_time > Radiator_start_time)
 					{
 						FAN_RADIATOR_HSD_Init();
-						fanspeed += 5 ;
+						fanspeed += 1 ;
 						setFanSpeed(fanspeed);
 
-						if(fanspeed > 60){
+						if(fanspeed > 34){
 						   radiator_startup_complete = 1;
 						}
 					}

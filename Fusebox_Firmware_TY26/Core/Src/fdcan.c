@@ -171,10 +171,10 @@ FDCAN_RxHeaderTypeDef   RxHeader1;
 uint8_t               TxData1[8];
 uint8_t               RxData1[8];
 
-uint16_t inv_temp_r_raw   = 0;
-uint16_t motor_temp_r_raw = 0;
-uint16_t inv_temp_l_raw   = 0;
-uint16_t motor_temp_l_raw = 0;
+int16_t inv_temp_r_raw   = 0;
+int16_t motor_temp_r_raw = 0;
+int16_t inv_temp_l_raw   = 0;
+int16_t motor_temp_l_raw = 0;
 
 void config_FDCAN1(void)
 {
@@ -202,7 +202,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
     if (RxHeader1.Identifier == 0x453)
     {
       // Inverter rechts: INV Temp = Byte0/1, Motor Temp = Byte2/3
-      inv_temp_r_raw   = RxData1[0] | ((uint16_t)RxData1[1] << 8);
+      inv_temp_r_raw   = (int16_t) ((uint16_t)((RxData1[0] << 8) | RxData1[1]));
       motor_temp_r_raw = RxData1[2] | ((uint16_t)RxData1[3] << 8);
     }
 

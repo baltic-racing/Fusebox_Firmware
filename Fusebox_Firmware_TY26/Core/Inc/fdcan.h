@@ -41,10 +41,10 @@ extern FDCAN_RxHeaderTypeDef RxHeader1;
 extern uint8_t TxData1[8];
 extern uint8_t RxData1[8];
 
-extern uint16_t inv_temp_r_raw;
-extern uint16_t motor_temp_r_raw;
-extern uint16_t inv_temp_l_raw;
-extern uint16_t motor_temp_l_raw;
+extern int16_t inv_temp_r_raw;
+extern int16_t motor_temp_r_raw;
+extern int16_t inv_temp_l_raw;
+extern int16_t motor_temp_l_raw;
 
 /* USER CODE END Private defines */
 
