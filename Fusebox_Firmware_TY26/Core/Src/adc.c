@@ -74,9 +74,9 @@ void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_3;
+  sConfig.Channel = ADC_CHANNEL_2;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_92CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -170,5 +170,36 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 
 /* USER CODE BEGIN 1 */
 
+
+uint16_t board_voltage_raw       = 0;   // Rank 1, Channel 2 (PA1)
+uint16_t bat_sense_raw           = 0;   // Rank 2, Channel 1 (PA0)
+uint16_t currentsense_radiator_raw = 0; // Rank 3, Channel 3 (PA2)
+uint16_t currentsense_wp_raw     = 0;   // Rank 4, Channel 4 (PA3)
+uint16_t currentsense_mab_raw    = 0;   // Rank 5, Channel 6 (PC0)
+uint16_t currentsense_gp_raw     = 0;   // Rank 6, Channel 7 (PC1)
+
+uint16_t ADC_Read(uint32_t channel)
+{
+	ADC_ChannelConfTypeDef sConfig = {0};
+
+	sConfig.Channel = channel;
+	sConfig.Rank = ADC_REGULAR_RANK_1;
+	sConfig.SamplingTime = ADC_SAMPLETIME_92CYCLES_5;
+	sConfig.SingleDiff = ADC_SINGLE_ENDED;
+	sConfig.OffsetNumber = ADC_OFFSET_NONE;
+	sConfig.Offset = 0;
+
+	if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+	{
+	  Error_Handler();
+	}
+
+	HAL_ADC_Start(&hadc1);
+	HAL_ADC_PollForConversion(&hadc1, 10);
+	uint16_t raw = HAL_ADC_GetValue(&hadc1);
+	HAL_ADC_Stop(&hadc1);
+
+	return raw;
+}
 /* USER CODE END 1 */
 

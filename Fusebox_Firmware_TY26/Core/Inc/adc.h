@@ -35,12 +35,19 @@ extern "C" {
 extern ADC_HandleTypeDef hadc1;
 
 /* USER CODE BEGIN Private defines */
+extern uint16_t board_voltage_raw;
+extern uint16_t bat_sense_raw;
+extern uint16_t currentsense_radiator_raw;
+extern uint16_t currentsense_wp_raw;
+extern uint16_t currentsense_mab_raw;
+extern uint16_t currentsense_gp_raw;
 
 /* USER CODE END Private defines */
 
 void MX_ADC1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+uint16_t ADC_Read(uint32_t channel);
 
 /* USER CODE END Prototypes */
 

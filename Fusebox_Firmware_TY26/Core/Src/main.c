@@ -22,6 +22,7 @@
 #include "fdcan.h"
 #include "tim.h"
 #include "gpio.h"
+#include "sdc.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -99,7 +100,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	uint32_t last20 = 0;;
+	uint32_t last10 = 0;;
 	uint32_t last100 = 0;
 	uint32_t last1000 = 0;
 
@@ -108,6 +109,9 @@ int main(void)
 	uint8_t fanspeed = 12;
 
 	uint8_t inv_temp_r_C = 0;
+
+	uint16_t board_voltage_mV = 0;
+	uint16_t bat_sense_mV = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -165,20 +169,29 @@ int main(void)
   {
 
 
-	  if (sys_time>= last20 + 20)
+	  if (sys_time>= last10 + 10)
 	  	{
 
-	  		last20 = sys_time;
-	  	}
-	  	if (sys_time>= last100 + 100)
-	  	{
+		  	/*Calculate physical units */
+		  	board_voltage_raw          = ADC_Read(ADC_CHANNEL_2);
+		  	bat_sense_raw               = ADC_Read(ADC_CHANNEL_1);
+		  	currentsense_radiator_raw   = ADC_Read(ADC_CHANNEL_3);
+		  	currentsense_wp_raw         = ADC_Read(ADC_CHANNEL_4);
+		  	currentsense_mab_raw        = ADC_Read(ADC_CHANNEL_6);
+		  	currentsense_gp_raw         = ADC_Read(ADC_CHANNEL_7);
 
-	  		TxData1[0] = (inv_temp_r_raw);
-	  		TxData1[1] = (inv_temp_r_raw>>8);
-	  		TxData1[2] = 0;
-	  		TxData1[3] = 1;
-	  		TxData1[4] = 0;
-	  		TxData1[5] = 1;
+
+		  	float board_voltage_calc = 20.0f + (board_voltage_raw - 2150) * 0.011907f;
+		  	board_voltage_mV = (uint16_t)(board_voltage_calc * 10.0f);
+
+		  	bat_sense_mV     = (bat_sense_raw     * 3300UL) / 4095UL;
+
+	  		TxData1[0] = (bat_sense_mV);
+	  		TxData1[1] = (bat_sense_mV>>8);
+	  		TxData1[2] = (board_voltage_mV);
+	  		TxData1[3] = (board_voltage_mV>>8);
+	  		TxData1[4] = (sdc_status);
+	  		TxData1[5] = (sdc_status>>8);
 	  		TxData1[6] = 0;
 	  		TxData1[7] = 1;
 
@@ -186,20 +199,31 @@ int main(void)
 	  		 {
 	  		  //Error_Handler();
 	  		 }
-				if(radiator_startup_complete)
-				{
-			  		if (inv_temp_r_raw > 10 || inv_temp_r_raw < 255 )
-			  		{
-			  			inv_temp_r_C = (uint8_t)(inv_temp_r_raw / 10);
-			  		}
-			  		else
-			  		{
-			  			inv_temp_r_C = 65;
-			  		}
 
-			  		fanspeed = inv_temp_r_C + 35;
-			  		setFanSpeed(fanspeed);
+	  		last10 = sys_time;
+	  	}
+
+	  	if (sys_time>= last100 + 100)
+	  	{
+
+	  		SDC_ReadAll();
+
+
+			if(radiator_startup_complete)
+			{
+				if (inv_temp_r_raw < 100 || inv_temp_r_raw > 640 )
+				{
+					inv_temp_r_C = 65;
 				}
+				else
+				{
+
+					inv_temp_r_C = (uint8_t)(inv_temp_r_raw / 10);
+				}
+
+				fanspeed = inv_temp_r_C + 35;
+				setFanSpeed(fanspeed);
+			}
 
 	  		HAL_GPIO_TogglePin(GPIOE, LED_RD_Pin);
 	  		last100 = sys_time;

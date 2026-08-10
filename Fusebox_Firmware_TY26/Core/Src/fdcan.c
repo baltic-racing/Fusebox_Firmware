@@ -179,7 +179,7 @@ int16_t motor_temp_l_raw = 0;
 void config_FDCAN1(void)
 {
 	// Configure TX Header for FDCAN1
-	TxHeader1.Identifier = 0x11;
+	TxHeader1.Identifier = 0x600;
 	TxHeader1.IdType = FDCAN_STANDARD_ID;
 	TxHeader1.TxFrameType = FDCAN_DATA_FRAME;
 	TxHeader1.DataLength = FDCAN_DLC_BYTES_8;
