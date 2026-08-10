@@ -22,11 +22,10 @@
 #include "fdcan.h"
 #include "tim.h"
 #include "gpio.h"
-#include "sdc.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "sdc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -112,6 +111,10 @@ int main(void)
 
 	uint16_t board_voltage_mV = 0;
 	uint16_t bat_sense_mV = 0;
+
+	uint16_t board_voltage_history[5] = {0};
+	uint8_t  board_voltage_index = 0;
+	uint16_t board_voltage_avg_raw = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -180,8 +183,20 @@ int main(void)
 		  	currentsense_mab_raw        = ADC_Read(ADC_CHANNEL_6);
 		  	currentsense_gp_raw         = ADC_Read(ADC_CHANNEL_7);
 
+		  	board_voltage_raw = ADC_Read(ADC_CHANNEL_2);
 
-		  	float board_voltage_calc = 20.0f + (board_voltage_raw - 2150) * 0.011907f;
+		  	board_voltage_history[board_voltage_index] = board_voltage_raw;
+		  	board_voltage_index = (board_voltage_index + 1) % 5;
+
+		  	uint32_t board_voltage_sum = 0;
+		  	for (uint8_t i = 0; i < 5; i++)
+		  	{
+		  		board_voltage_sum += board_voltage_history[i];
+		  	}
+		  	board_voltage_avg_raw = (uint16_t)(board_voltage_sum / 5);
+
+
+		  	float board_voltage_calc = 20.0f + (board_voltage_avg_raw - 2150) * 0.011907f;
 		  	board_voltage_mV = (uint16_t)(board_voltage_calc * 10.0f);
 
 		  	bat_sense_mV     = (bat_sense_raw     * 3300UL) / 4095UL;
@@ -193,12 +208,26 @@ int main(void)
 	  		TxData1[4] = (sdc_status);
 	  		TxData1[5] = (sdc_status>>8);
 	  		TxData1[6] = 0;
-	  		TxData1[7] = 1;
+	  		TxData1[7] = fanspeed;
 
 	  		 if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader1, TxData1)!= HAL_OK)
 	  		 {
 	  		  //Error_Handler();
 	  		 }
+
+	  		/*
+	  		 * Bit 15: SDCI_DB
+	  		 * Bit 14: SDCI_Inertia
+	  		 * Bit 13: SDCI_BOTS
+	  		 * Bit 12: SDCI_BL
+	  		 * Bit 11: SDCI_HV_Distri
+	  		 * Bit 10: SDCI_INV1
+	  		 * Bit  9: SDCI_INV0
+	  		 * Bit  8: SDCI_TSAC
+	  		 * Bit  7: SDCI_BR
+	  		 * Bit  6: SDCI_TSMS
+	  		 * Bit 5-0: ungenutzt
+	  		 */
 
 	  		last10 = sys_time;
 	  	}
@@ -264,9 +293,9 @@ int main(void)
 		}
 
 		//end of 1s
-
-    /* USER CODE END WHILE */
   }
+    /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
 
   /* USER CODE END 3 */

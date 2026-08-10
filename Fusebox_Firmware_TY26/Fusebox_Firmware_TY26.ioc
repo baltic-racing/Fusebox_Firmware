@@ -1,17 +1,20 @@
 #MicroXplorer Configuration settings - do not modify
 ADC1.Channel-0\#ChannelRegularConversion=ADC_CHANNEL_2
 ADC1.CommonPathInternal=null|null|null|null
-ADC1.IPParameters=Rank-0\#ChannelRegularConversion,Channel-0\#ChannelRegularConversion,SamplingTime-0\#ChannelRegularConversion,OffsetNumber-0\#ChannelRegularConversion,NbrOfConversionFlag,master,NbrOfConversion,CommonPathInternal
+ADC1.IPParameters=Rank-0\#ChannelRegularConversion,Channel-0\#ChannelRegularConversion,SamplingTime-0\#ChannelRegularConversion,OffsetNumber-0\#ChannelRegularConversion,NbrOfConversionFlag,master,NbrOfConversion,OversamplingMode,RightBitShift,Ratio,CommonPathInternal
 ADC1.NbrOfConversion=1
 ADC1.NbrOfConversionFlag=1
 ADC1.OffsetNumber-0\#ChannelRegularConversion=ADC_OFFSET_NONE
+ADC1.OversamplingMode=ENABLE
 ADC1.Rank-0\#ChannelRegularConversion=1
+ADC1.Ratio=ADC_OVERSAMPLING_RATIO_16
+ADC1.RightBitShift=ADC_RIGHTBITSHIFT_4
 ADC1.SamplingTime-0\#ChannelRegularConversion=ADC_SAMPLETIME_92CYCLES_5
 ADC1.master=1
 CAD.formats=[]
 CAD.pinconfig=Dual
 CAD.provider=
-FDCAN1.AutoRetransmission=DISABLE
+FDCAN1.AutoRetransmission=ENABLE
 FDCAN1.CalculateBaudRateNominal=500000
 FDCAN1.CalculateTimeBitNominal=2000
 FDCAN1.CalculateTimeQuantumNominal=125.0
