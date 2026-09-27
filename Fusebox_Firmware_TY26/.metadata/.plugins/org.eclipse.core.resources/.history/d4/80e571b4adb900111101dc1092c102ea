@@ -1,0 +1,21 @@
+/*
+ * FRO.h
+ * Liest die 14 Sicherungskanäle nacheinander über einen Multiplexer.
+ *
+ * Created on: Sep 26, 2026
+ * Author: Lilly
+ */
+
+#ifndef FRO_H_
+#define FRO_H_
+
+#include <stdint.h>
+
+void FRO_Init(uint32_t now_ms);
+void FRO_Task(uint32_t now_ms);
+
+/* Bit 0 bis 13: letzter gelesener Zustand der jeweiligen Sicherung. */
+uint16_t FRO_GetStatus(void);
+uint16_t FRO_GetStatus(void);
+
+#endif /* SRC_FRO_H_ */

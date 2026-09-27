@@ -1,0 +1,48 @@
+/*
+ * CAN_DATA.c
+ *
+ *  Created on: Sep 26, 2026
+ *      Author: Lilly
+ */
+
+#include "CAN_DATA.h"
+#include "FRO.h"
+#include "fdcan.h"
+
+static uint32_t can_last_ms = 0;
+static FDCAN_TxHeaderTypeDef fusebox0_header;
+static uint8_t fusebox0_data[8] = {0};
+
+void CAN_DATA_Init(uint32_t now_ms)
+{
+  can_last_ms = now_ms;
+
+  fusebox0_header.Identifier = 0x600U;
+  fusebox0_header.IdType = FDCAN_STANDARD_ID;
+  fusebox0_header.TxFrameType = FDCAN_DATA_FRAME;
+  fusebox0_header.DataLength = FDCAN_DLC_BYTES_8;
+  fusebox0_header.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+  fusebox0_header.BitRateSwitch = FDCAN_BRS_OFF;
+  fusebox0_header.FDFormat = FDCAN_CLASSIC_CAN;
+  fusebox0_header.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+  fusebox0_header.MessageMarker = 0U;
+}
+
+void CAN_DATA_Task(uint32_t now_ms)
+{
+  if ((uint32_t)(now_ms - can_last_ms) >= 10U)
+  {
+    can_last_ms += 10U;
+
+    uint16_t fro_status = FRO_GetStatus();
+    fusebox0_data[6] = (uint8_t)(fro_status & 0xFFU);
+    fusebox0_data[7] = (uint8_t)((fro_status >> 8) & 0x3FU);
+
+    if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1,
+                                       &fusebox0_header,
+                                       fusebox0_data) != HAL_OK)
+    {
+      Error_Handler();
+    }
+  }
+}
