@@ -1,17 +1,10 @@
-13:29:28 **** Incremental Build of configuration Debug for project Fusebox_Firmware_TY26 ****
+15:36:11 **** Incremental Build of configuration Debug for project Fusebox_Firmware_TY26 ****
 make -j16 all 
-arm-none-eabi-gcc "../Core/Src/FRO.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/FRO.d" -MT"Core/Src/FRO.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/FRO.o"
-arm-none-eabi-gcc -o "Fusebox_Firmware_TY26.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Lilly\OneDrive\Dokumente\GitHub\Fusebox\Fusebox_Firmware\Fusebox_Firmware_TY26\STM32G474VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Fusebox_Firmware_TY26.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: Fusebox_Firmware_TY26.elf
- 
 arm-none-eabi-size  Fusebox_Firmware_TY26.elf 
-arm-none-eabi-objdump -h -S Fusebox_Firmware_TY26.elf  > "Fusebox_Firmware_TY26.list"
    text	   data	    bss	    dec	    hex	filename
   22152	     16	   2032	  24200	   5e88	Fusebox_Firmware_TY26.elf
 Finished building: default.size.stdout
  
-Finished building: Fusebox_Firmware_TY26.list
- 
 
-13:29:30 Build Finished. 0 errors, 0 warnings. (took 1s.843ms)
+15:36:12 Build Finished. 0 errors, 0 warnings. (took 540ms)
 
