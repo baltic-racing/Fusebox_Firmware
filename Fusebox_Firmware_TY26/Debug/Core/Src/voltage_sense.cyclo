@@ -1,0 +1,4 @@
+../Core/Src/voltage_sense.c:11:6:VOLTAGE_SENSE_Read	1
+../Core/Src/voltage_sense.c:18:6:VOLTAGE_SENSE_Update	2
+../Core/Src/voltage_sense.c:40:10:VOLTAGE_SENSE_GetBoardVoltage	1
+../Core/Src/voltage_sense.c:45:10:VOLTAGE_SENSE_GetBatSense	1

@@ -17,6 +17,7 @@ extern "C" {
 extern uint16_t sdc_status;
 
 void SDC_ReadAll(void);
+void SDC_Task(uint32_t now);
 
 #ifdef __cplusplus
 }

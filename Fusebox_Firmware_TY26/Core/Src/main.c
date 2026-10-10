@@ -26,6 +26,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "sdc.h"
+#include "FRO.h"
+#include "CAN_DATA.h"
+#include "voltage_sense.h"
+#include "current_sense.h"
+#include "cooling_control.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -35,9 +40,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define WP_start_time  5000
-#define TSAC_FANS_start_time 10000
-#define Radiator_start_time  15000
 
 /* USER CODE END PD */
 
@@ -49,11 +51,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
-
-
-extern uint32_t sys_time;
-
+extern volatile uint32_t sys_time;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,31 +62,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void WP_HSD_Init(void)
-{
-	  /* Pin für WP dauerhaft HIGH */
-	  HAL_GPIO_WritePin(GPIOD, WP_SW_Pin, GPIO_PIN_SET);
-	  /* Pin für WP Standby high */
-	  HAL_GPIO_WritePin(GPIOC, Reset_WP_Pin, GPIO_PIN_SET);
-}
-void FAN_RADIATOR_HSD_Init(void)
-{
-		/* Pin für Radiator Fans dauerhaft HIGH */
-	  HAL_GPIO_WritePin(GPIOD, FAN_Radiator_SW_Pin, GPIO_PIN_SET);
-	  /* Pin für Radiator Fans Standby high */
-	  HAL_GPIO_WritePin(GPIOC, Reset_Radiator_Pin, GPIO_PIN_SET);
-}
 
-void TSAC_FANS_Init(void)
-{
-	/*Pin für TSAC Fan dauerhaft HIGH */
-	HAL_GPIO_WritePin(GPIOD, FAN_TSAC_SW_Pin, GPIO_PIN_SET);
-}
-
-void setFanSpeed(uint8_t percent) {
-    uint32_t ccr = (percent * 1000) / 100;
-    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ccr);
-}
 /* USER CODE END 0 */
 
 /**
@@ -99,22 +73,9 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	uint32_t last10 = 0;;
-	uint32_t last100 = 0;
-	uint32_t last1000 = 0;
-
-	uint8_t radiator_startup_complete = 0;
-
-	uint8_t fanspeed = 12;
-
-	uint8_t inv_temp_r_C = 0;
-
-	uint16_t board_voltage_mV = 0;
-	uint16_t bat_sense_mV = 0;
-
-	uint16_t board_voltage_history[5] = {0};
-	uint8_t  board_voltage_index = 0;
-	uint16_t board_voltage_avg_raw = 0;
+	uint32_t last10 = 0U;
+	uint32_t last100 = 0U;
+	uint32_t last1000 = 0U;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -139,11 +100,16 @@ int main(void)
   MX_FDCAN1_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_Base_Start_IT(&htim1);
 
-  config_FDCAN1();
+  if (HAL_TIM_Base_Start_IT(&htim1) != HAL_OK)
+  {
+      Error_Handler();
+  }
 
+  CAN_DATA_Init();
+  FRO_Init(HAL_GetTick());
   // Start FDCAN1
   if(HAL_FDCAN_Start(&hfdcan1)!= HAL_OK)
   {
@@ -164,140 +130,56 @@ int main(void)
   // set to 0% duty cycle
   __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0);
 
+  TSAC_PWM_Init();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+      FRO_Task(HAL_GetTick());
 
+      /* Messungen, Berechnung und CAN in ursprünglicher Reihenfolge. */
+      /* Messungen, Berechnung und CAN in ursprünglicher Reihenfolge. */
+      if (sys_time >= last10 + 10U)
+      {
+          VOLTAGE_SENSE_Read();
+          CURRENT_SENSE_Update();
+          VOLTAGE_SENSE_Update();
 
-	  if (sys_time>= last10 + 10)
-	  	{
+          CAN_DATA_SendFusebox0(VOLTAGE_SENSE_GetBatSense(),
+                               VOLTAGE_SENSE_GetBoardVoltage(),
+                               sdc_status);
 
-		  	/*Calculate physical units */
-		  	board_voltage_raw          = ADC_Read(ADC_CHANNEL_2);
-		  	bat_sense_raw               = ADC_Read(ADC_CHANNEL_1);
-		  	currentsense_radiator_raw   = ADC_Read(ADC_CHANNEL_3);
-		  	currentsense_wp_raw         = ADC_Read(ADC_CHANNEL_4);
-		  	currentsense_mab_raw        = ADC_Read(ADC_CHANNEL_6);
-		  	currentsense_gp_raw         = ADC_Read(ADC_CHANNEL_7);
+          CAN_DATA_SendCurrentSense();
 
-		  	board_voltage_raw = ADC_Read(ADC_CHANNEL_2);
+          last10 = sys_time;
+      }
 
-		  	board_voltage_history[board_voltage_index] = board_voltage_raw;
-		  	board_voltage_index = (board_voltage_index + 1) % 5;
+      /* SDC, Lüfterregelung und Status-LED. */
+      if (sys_time >= last100 + 100U)
+      {
+          SDC_ReadAll();
+          COOLING_CONTROL_Update();
+          STATUS_LED_Update();
+          CAN_DATA_SendTsacPWM();
 
-		  	uint32_t board_voltage_sum = 0;
-		  	for (uint8_t i = 0; i < 5; i++)
-		  	{
-		  		board_voltage_sum += board_voltage_history[i];
-		  	}
-		  	board_voltage_avg_raw = (uint16_t)(board_voltage_sum / 5);
+          last100 = sys_time;
+      }
 
+      /* Startablauf für Pumpen und Lüfter. */
+      if (sys_time >= last1000 + 1000U)
+      {
+          COOLING_CONTROL_Startup(sys_time);
 
-		  	float board_voltage_calc = 20.0f + (board_voltage_avg_raw - 2150) * 0.011907f;
-		  	board_voltage_mV = (uint16_t)(board_voltage_calc * 10.0f);
+          last1000 = sys_time;
+      }
 
-		  	bat_sense_mV     = (bat_sense_raw     * 3300UL) / 4095UL;
-
-	  		TxData1[0] = (bat_sense_mV);
-	  		TxData1[1] = (bat_sense_mV>>8);
-	  		TxData1[2] = (board_voltage_mV);
-	  		TxData1[3] = (board_voltage_mV>>8);
-	  		TxData1[4] = (sdc_status);
-	  		TxData1[5] = (sdc_status>>8);
-	  		TxData1[6] = 0;
-	  		TxData1[7] = fanspeed;
-
-	  		 if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader1, TxData1)!= HAL_OK)
-	  		 {
-	  		  //Error_Handler();
-	  		 }
-
-	  		/*
-	  		 * Bit 15: SDCI_DB
-	  		 * Bit 14: SDCI_Inertia
-	  		 * Bit 13: SDCI_BOTS
-	  		 * Bit 12: SDCI_BL
-	  		 * Bit 11: SDCI_HV_Distri
-	  		 * Bit 10: SDCI_INV1
-	  		 * Bit  9: SDCI_INV0
-	  		 * Bit  8: SDCI_TSAC
-	  		 * Bit  7: SDCI_BR
-	  		 * Bit  6: SDCI_TSMS
-	  		 * Bit 5-0: ungenutzt
-	  		 */
-
-	  		last10 = sys_time;
-	  	}
-
-	  	if (sys_time>= last100 + 100)
-	  	{
-
-	  		SDC_ReadAll();
-
-
-			if(radiator_startup_complete)
-			{
-				if (inv_temp_r_raw < 100 || inv_temp_r_raw > 640 )
-				{
-					inv_temp_r_C = 65;
-				}
-				else
-				{
-
-					inv_temp_r_C = (uint8_t)(inv_temp_r_raw / 10);
-				}
-
-				fanspeed = inv_temp_r_C + 35;
-				setFanSpeed(fanspeed);
-			}
-
-	  		HAL_GPIO_TogglePin(GPIOE, LED_RD_Pin);
-	  		last100 = sys_time;
-	  	}
-
-
-	  	/* end 100ms
-	  	#############################################################################################################*/
-
-		if (sys_time>= last1000 + 1000)
-		{
-			if (radiator_startup_complete == 0 )
-			{	  	if(sys_time > WP_start_time)
-					{
-				  		WP_HSD_Init();
-
-				  	}
-
-					if(sys_time > TSAC_FANS_start_time)
-					{
-						TSAC_FANS_Init();
-					}
-
-					if(sys_time > Radiator_start_time)
-					{
-						FAN_RADIATOR_HSD_Init();
-						fanspeed += 1 ;
-						setFanSpeed(fanspeed);
-
-						if(fanspeed > 34){
-						   radiator_startup_complete = 1;
-						}
-					}
-
-
-			}
-			last1000 = sys_time;
-		}
-
-		//end of 1s
-  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
+  }
   /* USER CODE END 3 */
 }
 

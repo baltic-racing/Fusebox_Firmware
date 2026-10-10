@@ -1,0 +1,4 @@
+../Core/Src/CAN_DATA.c:14:6:CAN_DATA_Init	8	static
+../Core/Src/CAN_DATA.c:19:6:CAN_DATA_SendFusebox0	24	static
+../Core/Src/CAN_DATA.c:42:6:CAN_DATA_SendTsacPWM	72	static
+../Core/Src/CAN_DATA.c:73:6:CAN_DATA_SendCurrentSense	64	static

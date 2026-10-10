@@ -1,0 +1,11 @@
+../Core/Src/cooling_control.c:26:6:WP_HSD_Init	8	static
+../Core/Src/cooling_control.c:32:6:FAN_RADIATOR_HSD_Init	8	static
+../Core/Src/cooling_control.c:40:6:TSAC_FANS_Init	8	static
+../Core/Src/cooling_control.c:48:6:setFanSpeed	24	static
+../Core/Src/cooling_control.c:54:6:COOLING_CONTROL_Update	16	static
+../Core/Src/cooling_control.c:74:6:COOLING_CONTROL_Startup	16	static
+../Core/Src/cooling_control.c:102:6:TSAC_PWM_Init	8	static
+../Core/Src/cooling_control.c:120:6:TSAC_PWM_TimerElapsed	16	static
+../Core/Src/cooling_control.c:161:9:TSAC_PWM_IsEnabled	4	static
+../Core/Src/cooling_control.c:166:9:TSAC_PWM_GetDuty	4	static
+../Core/Src/cooling_control.c:171:10:TSAC_PWM_GetPulseCount	4	static

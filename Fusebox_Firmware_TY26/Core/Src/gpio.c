@@ -132,4 +132,10 @@ void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 2 */
 
+/* Rote Status-LED umschalten; der Zeitabstand wird in main.c geprüft. */
+void STATUS_LED_Update(void)
+{
+    HAL_GPIO_TogglePin(LED_RD_GPIO_Port, LED_RD_Pin);
+}
+
 /* USER CODE END 2 */

@@ -65,3 +65,15 @@ void SDC_ReadAll(void)
 
 	sdc_status = status;
 }
+void SDC_Task(uint32_t now)
+	{
+	    static uint32_t last100 = 0U;
+
+	    if ((uint32_t)(now - last100) < 100U)
+	    {
+	        return;
+	    }
+	    last100 = now;
+
+	    SDC_ReadAll();
+	}

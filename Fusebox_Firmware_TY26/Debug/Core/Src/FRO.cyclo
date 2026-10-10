@@ -1,0 +1,4 @@
+../Core/Src/FRO.c:15:13:FRO_SelectChannel	1
+../Core/Src/FRO.c:27:6:FRO_Init	1
+../Core/Src/FRO.c:36:6:FRO_Task	4
+../Core/Src/FRO.c:65:10:FRO_GetStatus	1
